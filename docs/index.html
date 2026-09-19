@@ -102,12 +102,27 @@
 
   <h3>Dataset at a glance</h3>
 
-  <!-- TODO(figure): replace this placeholder with figures/rq1-class-distribution.png
-       Recommended: log-scale bar chart of record counts per label across the seven
-       capture files. Our own figure, so no attribution needed. -->
-  <div class="placeholder">
-    Figure pending — class distribution across the seven capture files.
-  </div>
+  <!-- Regenerate with: python src/make_class_distribution.py -->
+  <figure>
+    <picture>
+      <source srcset="assets/class_distribution-dark.png"
+              media="(prefers-color-scheme: dark)">
+      <img src="assets/class_distribution.png"
+           alt="Horizontal bar chart of CICIDS2017 record counts per traffic
+                class on a logarithmic scale. Benign traffic dominates by
+                several orders of magnitude; the rarest attack classes number in
+                the tens of records.">
+    </picture>
+    <figcaption>
+      Records per traffic class across all seven capture files, log scale. The
+      spread is the first constraint the project has to work around: the largest
+      and smallest classes differ by roughly five orders of magnitude, so
+      aggregate accuracy is dominated entirely by benign traffic and says almost
+      nothing about whether the rare classes are detected. Own figure, generated
+      from the published CSVs by
+      <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/src/make_class_distribution.py">src/make_class_distribution.py</a>.
+    </figcaption>
+  </figure>
 
   <table>
     <thead>

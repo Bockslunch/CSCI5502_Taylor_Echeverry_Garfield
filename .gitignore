@@ -24,6 +24,8 @@ data/processed/*
 *.feather
 !data/sample/*.csv
 !data/**/README.md
+# Small aggregate tables behind figures are results, not data — keep them.
+!figures/*.csv
 
 # ---------------------------------------------------------------
 # Secrets — never commit credentials, keys, or tokens
