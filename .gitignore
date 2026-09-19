@@ -1,0 +1,87 @@
+# ---------------------------------------------------------------
+# Data — CICIDS2017 may not be redistributed. Never commit raw data.
+# ---------------------------------------------------------------
+# Contents ignored, but the folders themselves are kept via .gitkeep so that
+# a fresh clone has somewhere to put the downloaded data.
+data/raw/*
+data/interim/*
+data/processed/*
+!data/raw/.gitkeep
+!data/interim/.gitkeep
+!data/processed/.gitkeep
+*.pcap
+*.pcap_ISCX.csv
+*.zip
+*.gz
+*.tar
+*.7z
+
+# Ignore data files broadly, then re-allow the small committed sample
+# and any documentation inside data/.
+*.csv
+*.tsv
+*.parquet
+*.feather
+!data/sample/*.csv
+!data/**/README.md
+
+# ---------------------------------------------------------------
+# Secrets — never commit credentials, keys, or tokens
+# ---------------------------------------------------------------
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+secrets.yaml
+config.local.*
+
+# ---------------------------------------------------------------
+# Python
+# ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+env/
+ENV/
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ---------------------------------------------------------------
+# Jupyter
+# ---------------------------------------------------------------
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+profile_default/
+ipython_config.py
+
+# ---------------------------------------------------------------
+# Models and large generated artifacts
+# ---------------------------------------------------------------
+*.pkl
+*.joblib
+*.h5
+*.pt
+*.pth
+models/
+
+# ---------------------------------------------------------------
+# Editors and OS
+# ---------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini

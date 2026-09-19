@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Distinguishing Malicious from Benign Network Traffic — CSCI 5502</title>
+<meta name="description" content="CSCI 5502 Data Mining semester project: flow-level detection of malicious network traffic in CICIDS2017, and the dataset defects that complicate it.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="masthead__inner">
+    <p class="eyebrow">CSCI 5502 · Data Mining · University of Colorado Boulder</p>
+    <h1>Distinguishing Malicious from Benign Network Traffic in CICIDS2017</h1>
+    <p class="byline">Christopher Taylor · Luis Echeverry · Tyler Garfield</p>
+  </div>
+</header>
+
+<nav class="nav" aria-label="Sections">
+  <ul>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#questions">Research Questions</a></li>
+    <li><a href="#background">Background</a></li>
+    <li><a href="#team">Team</a></li>
+    <li><a href="#proposal">Proposal Overview</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+
+<main id="main">
+
+<!-- ============================ A. INTRODUCTION ============================ -->
+<section id="introduction">
+  <h2>Introduction</h2>
+
+  <p class="lede">
+    Every second, millions of packets move across enterprise networks. A small
+    fraction of them are hostile. Network intrusion detection is the problem of
+    telling those apart from ordinary traffic, quickly enough to act on the
+    difference.
+  </p>
+
+  <p>
+    Deep packet inspection — reading payload contents — is expensive at line rate
+    and often impossible once traffic is encrypted. Operational detection
+    therefore leans on <strong>flow records</strong>: compact per-connection
+    summaries of timing, volume, direction, and packet-size statistics, carrying
+    no payload at all. This project asks how much of the malicious-versus-benign
+    distinction survives in that reduced representation, and whether different
+    attack types leave traces distinguishable from one another within it.
+  </p>
+
+  <h3>Stakeholders</h3>
+  <ul>
+    <li>
+      <strong>Network defenders and SOC analysts</strong>, who tune detection
+      thresholds and absorb the cost of false positives — every spurious alert
+      consumes analyst attention that a real incident needs.
+    </li>
+    <li>
+      <strong>Organizations operating internet-facing infrastructure</strong>, for
+      whom undetected intrusion means data loss, service disruption, and
+      regulatory exposure.
+    </li>
+    <li>
+      <strong>End users</strong>, whose data sits behind those systems and who
+      have no visibility into whether detection is working.
+    </li>
+    <li>
+      <strong>The security research community</strong>, which depends on shared
+      benchmark datasets to compare methods — and is affected when those
+      benchmarks turn out to have defects.
+    </li>
+  </ul>
+
+  <h3>What is already known, and the gap</h3>
+  <p>
+    Flow-based intrusion detection is a mature field, and CICIDS2017 is one of its
+    most widely used benchmarks. A large published literature reports detection
+    results on it, frequently at accuracies above 99%.
+  </p>
+  <p>
+    That headline number is the gap. Two independent peer-reviewed audits
+    (<a href="#references">[2]</a>, <a href="#references">[3]</a>) found that the
+    dataset contains flow-construction errors affecting roughly a quarter of all
+    records, and that labels were assigned by source/destination IP address and
+    time window without verifying that an attack had actually executed. Because
+    attacker hosts are fixed throughout the capture, a model given IP or timestamp
+    features can reach near-perfect accuracy by memorizing <em>which machine</em>
+    was the attacker — learning nothing transferable about attacks at all.
+  </p>
+  <p>
+    Much of the published work on this dataset predates those audits or does not
+    account for them. The open question is therefore not whether a model can
+    classify CICIDS2017 accurately — that is settled, and possibly meaningless —
+    but <strong>which of the apparent distinctions between traffic classes survive
+    once the known artifacts are removed.</strong>
+  </p>
+
+  <h3>Dataset at a glance</h3>
+
+  <!-- TODO(figure): replace this placeholder with figures/rq1-class-distribution.png
+       Recommended: log-scale bar chart of record counts per label across the seven
+       capture files. Our own figure, so no attribution needed. -->
+  <div class="placeholder">
+    Figure pending — class distribution across the seven capture files.
+  </div>
+
+  <table>
+    <thead>
+      <tr><th scope="col">Capture file</th><th scope="col">Size</th><th scope="col">Primary content</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Monday-WorkingHours</td><td>256 MB</td><td>Benign only</td></tr>
+      <tr><td>Tuesday-WorkingHours</td><td>167 MB</td><td>Brute force (FTP, SSH)</td></tr>
+      <tr><td>Wednesday-workingHours</td><td>272 MB</td><td>DoS / Heartbleed</td></tr>
+      <tr><td>Thursday-Morning-WebAttacks</td><td>88 MB</td><td>Web attacks</td></tr>
+      <tr><td>Thursday-Afternoon-Infilteration</td><td>104 MB</td><td>Infiltration</td></tr>
+      <tr><td>Friday-Morning</td><td>72 MB</td><td>Botnet</td></tr>
+      <tr><td>Friday-Afternoon-PortScan</td><td>97 MB</td><td>Port scan</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.85rem;color:var(--text-muted)">
+    CICIDS2017, Canadian Institute for Cybersecurity <a href="#references">[1]</a>.
+    Roughly 1.05 GB across seven files, ~85 features per flow record.
+  </p>
+
+  <h3>Project blueprint</h3>
+  <ol>
+    <li>Characterize the dataset as it actually is — class balance, feature
+        distributions, per-day composition, missing and degenerate values.</li>
+    <li>Establish which flow features separate benign from malicious traffic, and
+        attack categories from each other, with host identifiers and timestamps
+        excluded from the outset.</li>
+    <li>Test whether those separations hold across capture days, including against
+        attack types absent from training.</li>
+    <li>Quantify how much the documented labeling defects move the results, by
+        comparing outcomes with known-suspect classes retained versus excluded.</li>
+    <li>Report per class, with scope limits stated plainly: the findings describe a
+        five-day simulated capture from July 2017 and a fixed attack catalog.</li>
+  </ol>
+</section>
+
+<!-- ========================= B. RESEARCH QUESTIONS ========================= -->
+<section id="questions">
+  <h2>Research Questions</h2>
+
+  <ol class="rq">
+    <li>
+      <span class="tag">Descriptive</span>
+      How are flow-level features distributed across benign and malicious traffic
+      in CICIDS2017, and how severe is the class imbalance across attack
+      categories and across the five capture days?
+    </li>
+    <li>
+      <span class="tag">Comparative</span>
+      Which flow features most sharply separate attack categories from one another
+      — and does each separation reflect attacker behavior, or an artifact of the
+      capture setup such as fixed host identity or flow-termination handling?
+    </li>
+    <li>
+      <span class="tag">Relationship / pattern</span>
+      Do attack categories form distinct, internally coherent groupings in
+      flow-feature space, or do some categories overlap enough that they are not
+      separable at the flow level?
+    </li>
+    <li>
+      <span class="tag">Predictive</span>
+      How well does a benign-versus-malicious distinction learned on one capture
+      day transfer to a different day containing attack types not seen during
+      training?
+    </li>
+    <li>
+      <span class="tag">Explanatory</span>
+      How much do the documented labeling and flow-construction errors change
+      per-class results, when known-suspect classes are excluded versus retained?
+    </li>
+  </ol>
+
+  <p style="font-size:.9rem;color:var(--text-muted)">
+    The questions are ordered to build on one another: RQ1 establishes what the
+    data contains, RQ2 and RQ3 examine separability, RQ4 tests whether it
+    generalizes, and RQ5 asks how much of the preceding is an artifact.
+  </p>
+</section>
+
+<!-- ============================ BACKGROUND ================================ -->
+<section id="background">
+  <h2>Background &amp; Related Work</h2>
+
+  <h3>The dataset and its intent</h3>
+  <p>
+    Sharafaldin, Habibi Lashkari, and Ghorbani <a href="#references">[1]</a>
+    introduced CICIDS2017 as a response to the ageing benchmarks the field had
+    been relying on. Their paper documents the testbed, the abstracted user
+    profiles used to generate realistic benign background traffic, the schedule of
+    attacks executed across the five days, and the CICFlowMeter extraction that
+    produces the ~85 features per flow. It is the authoritative source for what
+    each label is supposed to mean, and we treat it as the specification against
+    which the data is checked.
+  </p>
+
+  <h3>What later audits found</h3>
+  <p>
+    Engelen, Rimmer, and Joosen <a href="#references">[2]</a> rebuilt the dataset
+    from the original packet captures and found three problems that bear directly
+    on any analysis of it. CICFlowMeter terminated flows on a single FIN packet
+    rather than waiting for a bidirectional teardown, generating spurious trailing
+    flows that inherited attack labels — 25.9% of the dataset, and as much as 50%
+    within some attack classes. The labeling procedure used only IP addresses and
+    time windows, so several Web Attack classes consist largely of connections
+    whose payload never executed. And the DoS Hulk tool used in the capture was
+    deprecated, sending malformed HTTP headers that did not produce the intended
+    effect.
+  </p>
+  <p>
+    Lanvin and colleagues <a href="#references">[3]</a> reached compatible
+    conclusions independently, by a different route — documenting packet
+    misordering, duplication, and attacks executed but never labeled — and then
+    quantified how much supervised detection performance shifts once corrections
+    are applied. That two separate teams converged here is what makes the finding
+    hard to set aside.
+  </p>
+
+  <h3>How this shapes our work</h3>
+  <p>
+    We adopt the methodological recommendations these audits make rather than
+    treating them as caveats to mention and move past. Source and destination IP
+    addresses and timestamps are excluded from modelling, because attacker hosts
+    are fixed and including them invites a model to identify attacks by machine
+    identity. Results are reported per class rather than as aggregate accuracy,
+    since aggregate figures on an imbalanced dataset conceal exactly the failures
+    that matter. And label reliability is treated as a question the project
+    investigates, not an assumption it inherits.
+  </p>
+
+  <div class="note">
+    <strong>A note on corrected data.</strong> The authors of [2] publish a patched
+    CICFlowMeter and their labeling scripts, but no corrected CSV files. Producing
+    corrected data requires downloading the raw packet captures and re-running the
+    full extraction pipeline — out of scope for this semester. We work with the
+    published CSVs, apply the corrections that can be applied at the CSV level, and
+    state clearly which findings are limited by the ones that cannot.
+  </div>
+</section>
+
+<!-- =============================== C. TEAM ================================ -->
+<section id="team">
+  <h2>Team</h2>
+
+  <div class="grid">
+
+    <!-- TODO(bio): replace placeholder portrait and bio text -->
+    <div class="card">
+      <div class="portrait portrait--empty">Photo</div>
+      <h3>Christopher Taylor</h3>
+      <p>Bio pending.</p>
+      <span class="role">Role TBD</span>
+    </div>
+
+    <div class="card">
+      <div class="portrait portrait--empty">Photo</div>
+      <h3>Luis Echeverry</h3>
+      <p>Bio pending.</p>
+      <span class="role">Role TBD</span>
+    </div>
+
+    <div class="card">
+      <div class="portrait portrait--empty">Photo</div>
+      <h3>Tyler Garfield</h3>
+      <p>Bio pending.</p>
+      <span class="role">Role TBD</span>
+    </div>
+
+  </div>
+
+  <h3>Responsibilities</h3>
+  <p>
+    Roles are initial assignments. They overlap in practice and may change as the
+    project develops.
+  </p>
+  <ul>
+    <li><strong>Coordination &amp; documentation</strong> — milestone tracking,
+        website content, repository documentation.</li>
+    <li><strong>Data &amp; reproducibility</strong> — acquisition, cleaning,
+        sampling, environment setup, repository hygiene.</li>
+    <li><strong>Analysis &amp; visualization</strong> — exploratory analysis,
+        comparative work, figures.</li>
+  </ul>
+</section>
+
+<!-- ========================= D. PROPOSAL OVERVIEW ========================== -->
+<section id="proposal">
+  <h2>Proposal Overview</h2>
+
+  <dl class="overview">
+    <dt>Problem</dt>
+    <dd>
+      Network intrusion detection depends on distinguishing malicious from benign
+      traffic, and on separating attack types from one another, using flow records
+      rather than payload inspection. High-volume environments need detection that
+      is both fast and reliable.
+    </dd>
+
+    <dt>Goal</dt>
+    <dd>
+      Characterize the flow-level patterns that separate benign from malicious
+      traffic and attack categories from each other, while assessing how far those
+      patterns reflect attacker behavior rather than artifacts of how the dataset
+      was constructed.
+    </dd>
+
+    <dt>Data sources</dt>
+    <dd>
+      CICIDS2017 (Canadian Institute for Cybersecurity): seven CSV files of
+      labeled bidirectional flow records covering five days of simulated
+      enterprise traffic in July 2017, ~85 features per flow, roughly 1.05 GB in
+      total. Obtained under CIC's research-use terms after registration.
+      Redistribution is not permitted, so the project repository carries
+      acquisition instructions and a small derived sample rather than the raw
+      files.
+    </dd>
+
+    <dt>Current questions</dt>
+    <dd>See <a href="#questions">Research Questions</a>.</dd>
+
+    <dt>Major constraints</dt>
+    <dd>
+      Data volume relative to available compute; severe class imbalance, with
+      benign flows dominating and Monday benign-only; a fixed 2017 attack
+      catalog that cannot speak to novel or contemporary attack vectors; and
+      documented labeling and flow-construction errors that limit which per-class
+      findings can be trusted.
+    </dd>
+  </dl>
+
+  <h3>Change since Milestone 0</h3>
+  <p>
+    The approved proposal treated source and destination IP address and port as
+    core descriptive features, and did not account for published errata on this
+    dataset. Both have been revised.
+  </p>
+  <p>
+    Host identifiers and timestamps are now excluded from modelling, because
+    attacker hosts are fixed in this simulation and including them lets a model
+    memorize machine identity rather than attack behavior. Label reliability is
+    treated as an explicit analysis question rather than an assumption. The change
+    narrows the scope but makes the findings defensible — it converts a hidden
+    threat to validity into a stated one, and gives the project a question worth
+    answering rather than a benchmark score worth reporting.
+  </p>
+</section>
+
+<!-- ============================= REFERENCES =============================== -->
+<section id="references">
+  <h2>References</h2>
+  <p style="font-size:.9rem;color:var(--text-muted)">IEEE citation style.</p>
+
+  <ol class="refs">
+    <li>
+      I. Sharafaldin, A. Habibi Lashkari, and A. A. Ghorbani, "Toward Generating a
+      New Intrusion Detection Dataset and Intrusion Traffic Characterization," in
+      <em>Proc. 4th Int. Conf. Information Systems Security and Privacy
+      (ICISSP)</em>, Funchal, Portugal, Jan. 2018, pp. 108–116.
+      <a href="https://www.scitepress.org/papers/2018/66398/66398.pdf">PDF</a>
+      <p class="contrib">
+        The primary source for CICIDS2017 — testbed design, attack schedule,
+        benign traffic generation, and feature extraction. Supplies the ground
+        truth for what each label is intended to mean.
+      </p>
+    </li>
+    <li>
+      G. Engelen, V. Rimmer, and W. Joosen, "Troubleshooting an Intrusion Detection
+      Dataset: the CICIDS2017 Case Study," in <em>Proc. IEEE Security and Privacy
+      Workshops (SPW) — Workshop on Traffic Measurements for Cybersecurity
+      (WTMC)</em>, 2021, pp. 7–12.
+      <a href="https://intrusion-detection.distrinet-research.be/WTMC2021/Resources/wtmc2021_Engelen_Troubleshooting.pdf">PDF</a>
+      <p class="contrib">
+        A systematic audit reconstructing the dataset from the original packet
+        captures. Identifies the flow-construction bug affecting 25.9% of records,
+        the IP-and-time-window labeling procedure, and the shortcut-learning risk
+        from host identifiers. Its recommendations — feature-importance sanity
+        checks, per-class reporting — are adopted directly in this project.
+      </p>
+    </li>
+    <li>
+      M. Lanvin, P.-F. Gimenez, Y. Han, F. Majorczyk, L. Mé, and É. Totel, "Errors
+      in the CICIDS2017 Dataset and the Significant Differences in Detection
+      Performances It Makes," in <em>Risks and Security of Internet and Systems
+      (CRiSIS 2022)</em>, Lecture Notes in Computer Science, vol. 13857. Cham,
+      Switzerland: Springer, 2023, pp. 18–33.
+      <a href="https://doi.org/10.1007/978-3-031-31108-6_2">DOI</a>
+      <p class="contrib">
+        Independent confirmation by a separate team using a different method.
+        Documents packet misordering, duplication, and unlabeled executed attacks,
+        and quantifies the resulting shift in detection performance — the
+        justification for RQ5.
+      </p>
+    </li>
+  </ol>
+</section>
+
+</main>
+
+<footer>
+  <div>
+    <p>CSCI 5502 — Data Mining · University of Colorado Boulder · Fall 2026</p>
+    <p>Source and analysis code:
+       <a href="https://github.com/">project repository</a>
+       <!-- TODO: replace with the real repository URL -->
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
