@@ -3,7 +3,7 @@
 CSCI 5502 — Data Mining — Semester Group Project
 University of Colorado Boulder
 
-**Project website:** (https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/)
+**Project website:** https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/
 
 The site lives in [`docs/`](docs/) and is published with GitHub Pages. To turn it
 on: **Settings → Pages → Source: "Deploy from a branch" → Branch: `main`,
