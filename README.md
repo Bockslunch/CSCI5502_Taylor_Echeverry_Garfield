@@ -23,7 +23,7 @@ python -m http.server -d docs 8000   # then open http://localhost:8000
 | Member | Role (initial) |
 | --- | --- |
 | Christopher Taylor | _TBD_ |
-| Luis Echeverry | _TBD_ |
+| Luis Echeverry | Analysis & Visualization|
 | Tyler Garfield | _TBD_ |
 
 Suggested role split — adjust before submitting. Roles may overlap and may change.
