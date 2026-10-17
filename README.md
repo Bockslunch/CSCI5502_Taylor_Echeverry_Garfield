@@ -51,8 +51,9 @@ modeling technique. Method selection is deferred to later milestones.
 
 ## Research Questions
 
-Revised after the Milestone 2 exploratory analysis; the reasons for each change are
-in the Milestone 2 report (Section 6).
+Revised after the Milestone 2 exploratory analysis. The reason for each change is
+listed on the [project website](https://bockslunch.github.io/CSCI5502_Taylor_Echeverry_Garfield/#questions)
+and in the Milestone 2 report (Section 6).
 
 1. **(Descriptive)** How are flow-level features distributed across benign traffic
    and each attack class, how severe is the class imbalance, and how do the known
@@ -132,7 +133,7 @@ Consequences we carry through the analysis:
 
 ```
 .
-├── data/           Acquisition instructions and a small derived sample.
+├── data/           Acquisition instructions and empty raw/processed folders.
 │                   Raw CICIDS2017 files are gitignored — never commit them.
 ├── notebooks/      01-data-cleaning.ipynb (raw → cleaned), 02-eda.ipynb (exploration).
 ├── src/            Scripts: cleaning replay, quality statistics, EDA figures.
