@@ -527,7 +527,7 @@
            alt="Two bar charts by class: the share of flows sent to the class's most common destination port, and the number of distinct ports. Ten attack classes send 100% of flows to one port; BENIGN uses 53,788 ports, PortScan 1,000 and Bot 702.">
     </picture>
     </a>
-    <figcaption><strong>Figure 5. Most attack classes target a single destination port.</strong> Ten of 14 attack classes use exactly one port, seven of them port 80; benign traffic spans 53,788 ports. Destination Port mostly records which services the testbed's attack scripts targeted, so a model would learn the testbed's layout rather than attack behavior. We keep it for description and exclude it from modeling. Redrawn from Tyler's analysis.</figcaption>
+    <figcaption><strong>Figure 5. Most attack classes target a single destination port.</strong> Ten of 14 attack classes use exactly one port, seven of them port 80; benign traffic spans 53,788 ports. Destination Port mostly records which services the testbed's attack scripts targeted, so a model would learn the testbed's layout rather than attack behavior. We keep it for description and exclude it from modeling. Redrawn from Tyler's analysis in <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/02-eda.ipynb">notebooks/02-eda.ipynb</a>.</figcaption>
   </figure>
 
   <figure>
@@ -538,7 +538,7 @@
            alt="Left: histogram of flow durations between 118 and 120 seconds, with a sharp spike in the last 20 milliseconds before 120 s. Right: share of each class lasting at least 119 seconds; Heartbleed 91%, Infiltration 19%, all others under 1%.">
     </picture>
     </a>
-    <figcaption><strong>Figure 6. The 120-second CICFlowMeter timeout caps Flow Duration.</strong> Durations pile up just below the cap and none exceeds 119.999998 s. The cap barely touches most classes but defines Heartbleed: 10 of its 11 flows end within 0.05 s of one another, about 0.7 s short of the timeout — likely one long exploit connection split into many records. Redrawn from Tyler's analysis.</figcaption>
+    <figcaption><strong>Figure 6. The 120-second CICFlowMeter timeout caps Flow Duration.</strong> Durations pile up just below the cap and none exceeds 119.999998 s. The cap barely touches most classes but defines Heartbleed: 10 of its 11 flows end within 0.05 s of one another, about 0.7 s short of the timeout — likely one long exploit connection split into many records. DoS slowloris is the contrast: its long flows cluster around 100 s, short of the cap, so that peak reflects the attack holding connections open rather than the timeout. Redrawn from Tyler's analysis in <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/02-eda.ipynb">notebooks/02-eda.ipynb</a>, which also covers the slowloris and FTP-Patator duration distributions.</figcaption>
   </figure>
 
   <figure>
@@ -558,9 +558,11 @@
     120-second cap need special handling; some classes cannot be told apart at the
     flow level and three are too small to analyze; and day and class are confounded.
     The <a href="#questions">research questions</a> were revised accordingly. The
-    analysis code is in
-    <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/tree/main/src">src/</a>
-    and <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/tree/main/notebooks">notebooks/</a>.
+    analysis code is in two notebooks,
+    <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/01-data-cleaning.ipynb">01-data-cleaning.ipynb</a>
+    and <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/02-eda.ipynb">02-eda.ipynb</a>,
+    and the scripts in
+    <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/tree/main/src">src/</a>.
   </p>
 </section>
 
