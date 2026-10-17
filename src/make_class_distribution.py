@@ -173,7 +173,7 @@ def render(totals: pd.Series, theme: dict) -> Path:
         text.set_color(theme["ink"])
 
     ax.set_title(
-        "CICIDS2017 records per traffic class, all seven capture files",
+        "CICIDS2017 records per traffic class, all eight capture files",
         fontsize=11, color=theme["ink"], loc="left", pad=14,
     )
 

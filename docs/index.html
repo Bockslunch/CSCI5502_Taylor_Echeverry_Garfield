@@ -24,8 +24,9 @@
     <li><a href="#introduction">Introduction</a></li>
     <li><a href="#questions">Research Questions</a></li>
     <li><a href="#background">Background</a></li>
+    <li><a href="#data">Data</a></li>
     <li><a href="#team">Team</a></li>
-    <li><a href="#proposal">Proposal Overview</a></li>
+    <li><a href="#proposal">Proposal</a></li>
     <li><a href="#references">References</a></li>
   </ul>
 </nav>
@@ -114,7 +115,7 @@
                 the tens of records.">
     </picture>
     <figcaption>
-      Records per traffic class across all seven capture files, log scale. The
+      Records per traffic class across all eight capture files, log scale. The
       spread is the first constraint the project has to work around: the largest
       and smallest classes differ by roughly five orders of magnitude, so
       aggregate accuracy is dominated entirely by benign traffic and says almost
@@ -129,18 +130,19 @@
       <tr><th scope="col">Capture file</th><th scope="col">Size</th><th scope="col">Primary content</th></tr>
     </thead>
     <tbody>
-      <tr><td>Monday-WorkingHours</td><td>256 MB</td><td>Benign only</td></tr>
-      <tr><td>Tuesday-WorkingHours</td><td>167 MB</td><td>Brute force (FTP, SSH)</td></tr>
-      <tr><td>Wednesday-workingHours</td><td>272 MB</td><td>DoS / Heartbleed</td></tr>
-      <tr><td>Thursday-Morning-WebAttacks</td><td>88 MB</td><td>Web attacks</td></tr>
-      <tr><td>Thursday-Afternoon-Infilteration</td><td>104 MB</td><td>Infiltration</td></tr>
-      <tr><td>Friday-Morning</td><td>72 MB</td><td>Botnet</td></tr>
-      <tr><td>Friday-Afternoon-PortScan</td><td>97 MB</td><td>Port scan</td></tr>
+      <tr><td>Monday-WorkingHours</td><td>177 MB</td><td>Benign only</td></tr>
+      <tr><td>Tuesday-WorkingHours</td><td>135 MB</td><td>Brute force (FTP, SSH)</td></tr>
+      <tr><td>Wednesday-workingHours</td><td>225 MB</td><td>DoS / Heartbleed</td></tr>
+      <tr><td>Thursday-Morning-WebAttacks</td><td>52 MB</td><td>Web attacks</td></tr>
+      <tr><td>Thursday-Afternoon-Infilteration</td><td>83 MB</td><td>Infiltration</td></tr>
+      <tr><td>Friday-Morning</td><td>58 MB</td><td>Botnet</td></tr>
+      <tr><td>Friday-Afternoon-PortScan</td><td>77 MB</td><td>Port scan</td></tr>
+      <tr><td>Friday-Afternoon-DDos</td><td>77 MB</td><td>DDoS</td></tr>
     </tbody>
   </table>
   <p style="font-size:.85rem;color:var(--text-muted)">
     CICIDS2017, Canadian Institute for Cybersecurity <a href="#references">[1]</a>.
-    Roughly 1.05 GB across seven files, ~85 features per flow record.
+    885 MB across eight files: 2,830,743 flow records × 79 columns (78 flow features plus the label).
   </p>
 
   <h3>Project blueprint</h3>
@@ -166,32 +168,36 @@
   <ol class="rq">
     <li>
       <span class="tag">Descriptive</span>
-      How are flow-level features distributed across benign and malicious traffic
-      in CICIDS2017, and how severe is the class imbalance across attack
-      categories and across the five capture days?
+      How are flow-level features distributed across benign traffic and each attack
+      class, how severe is the class imbalance, and how do the known data-quality
+      issues (duplicates, the 120-second timeout, the −1 window code, zero-payload
+      flows) vary by class?
     </li>
     <li>
       <span class="tag">Comparative</span>
-      Which flow features most sharply separate attack categories from one another
-      — and does each separation reflect attacker behavior, or an artifact of the
-      capture setup such as fixed host identity or flow-termination handling?
+      Excluding destination port, which flow features separate the attack categories
+      that have enough records to compare (the 11 attack classes with at least 600
+      flows), and which separations survive when artifact-prone features
+      (Init_Win_bytes_*, durations at the 120-second cap) are removed?
     </li>
     <li>
       <span class="tag">Relationship / pattern</span>
-      Do attack categories form distinct, internally coherent groupings in
-      flow-feature space, or do some categories overlap enough that they are not
-      separable at the flow level?
+      Do the four behavioral groups seen in the exploratory analysis hold up when
+      individual flows are clustered, and are the overlapping pairs (Web Attack –
+      Brute Force vs. XSS; Bot vs. BENIGN) separable at the flow level at all?
     </li>
     <li>
       <span class="tag">Predictive</span>
-      How well does a benign-versus-malicious distinction learned on one capture
-      day transfer to a different day containing attack types not seen during
-      training?
+      Using leave-one-day-out evaluation on deduplicated data, how well does a
+      benign-versus-malicious model detect the held-out day's attacks, all of which
+      are unseen types, and how much of any drop comes from shifted benign traffic
+      rather than from the new attacks?
     </li>
     <li>
       <span class="tag">Explanatory</span>
-      How much do the documented labeling and flow-construction errors change
-      per-class results, when known-suspect classes are excluded versus retained?
+      How much do per-class results change when flows with identifiable defects
+      (zero-payload web-attack flows, flows at the 120-second cap, feature vectors
+      shared across labels) are excluded versus retained?
     </li>
   </ol>
 
@@ -200,6 +206,22 @@
     data contains, RQ2 and RQ3 examine separability, RQ4 tests whether it
     generalizes, and RQ5 asks how much of the preceding is an artifact.
   </p>
+
+  <h3>Changes after exploring the data (Milestone 2)</h3>
+  <ul>
+    <li><strong>RQ1</strong> now describes data-quality issues per class, because
+        they turned out to be class-specific (<a href="#data">Figure 3</a>).</li>
+    <li><strong>RQ2</strong> excludes destination port, a testbed artifact
+        (Figure 5), drops the three classes too small for statistics, and tests
+        whether separations survive without artifact-prone features (Figure 4).</li>
+    <li><strong>RQ3</strong> turns a general question into specific hypotheses from
+        the per-class profiles (Figure 7).</li>
+    <li><strong>RQ4</strong> becomes leave-one-day-out on deduplicated data, because
+        every attack class lives on a single day and benign traffic shifts between
+        days (Figure 2).</li>
+    <li><strong>RQ5</strong> is kept and defined at the row level, since the
+        exploration identified concrete, measurable defects.</li>
+  </ul>
 </section>
 
 <!-- ============================ BACKGROUND ================================ -->
@@ -260,6 +282,286 @@
     published CSVs, apply the corrections that can be applied at the CSV level, and
     state clearly which findings are limited by the ones that cannot.
   </div>
+</section>
+
+<!-- ======================= DATA & EXPLORATION (MILESTONE 2) ======================= -->
+<!-- Figures: python src/m2_eda_figures.py data/processed figures docs/assets -->
+<section id="data">
+  <h2>Data &amp; Exploration</h2>
+
+  <p class="lede">
+    Where the data comes from, how we turned it into an analysis-ready dataset, what
+    is wrong with it, and what exploratory analysis shows it can and cannot support.
+  </p>
+
+  <h3>Source and provenance</h3>
+  <dl class="overview">
+    <dt>Source</dt>
+    <dd>
+      CICIDS2017, Canadian Institute for Cybersecurity, University of New Brunswick
+      (<a href="https://www.unb.ca/cic/datasets/ids-2017.html">dataset page</a>)
+      <a href="#references">[1]</a>.
+    </dd>
+    <dt>Release, size and access</dt>
+    <dd>
+      <code>MachineLearningCSV.zip</code>: eight CSV files, 885 MB on disk,
+      2,830,743 flow records × 79 columns (78 flow features plus the label).
+      Downloaded directly from CIC after its registration form, in September 2026;
+      no API or scraping is involved. Step-by-step instructions are in
+      <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/data/README.md">data/README.md</a>.
+    </dd>
+    <dt>Coverage</dt>
+    <dd>
+      Five working days, Monday July 3 to Friday July 7, 2017. Not a geographic
+      sample: all traffic comes from one testbed built by CIC, with separate
+      attacker and victim networks. Benign traffic is generated by scripted user
+      profiles, not real users.
+    </dd>
+    <dt>Unit of observation</dt>
+    <dd>
+      One bidirectional network flow as built by CICFlowMeter. A flow ends on a
+      FIN or RST packet or after a 120-second timeout.
+    </dd>
+    <dt>License and terms</dt>
+    <dd>
+      CIC states no license. It grants access to researchers and asks that the
+      dataset paper <a href="#references">[1]</a> be cited. Because no
+      redistribution right is granted, the repository contains code and
+      acquisition instructions but none of the data.
+    </dd>
+    <dt>Why it fits, and what it lacks</dt>
+    <dd>
+      Labeled flows with 78 flow-level timing, volume and size features are exactly
+      what our questions need. This release omits payloads, IP addresses, source
+      ports, protocol and timestamps, so host identity and timing within a day
+      cannot be studied, and it covers only 14 scripted attack types.
+    </dd>
+  </dl>
+
+  <h3>Data dictionary</h3>
+  <p>
+    The 69 features kept after cleaning, grouped by what they measure. Meanings come
+    from the CICFlowMeter documentation; we confirmed units by recomputing Flow
+    Bytes/s from total bytes and duration. The eight CSV files share one schema and
+    were stacked rather than joined, with a <code>source_file</code> column recording
+    each row's origin.
+  </p>
+  <table class="full">
+    <thead>
+      <tr><th scope="col">Group</th><th scope="col">Columns</th><th scope="col">Type · units</th><th scope="col">Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Target</td><td><code>Label</code>, <code>is_attack</code></td><td>text, 15 classes · 0/1</td><td><code>is_attack</code> (derived) is the RQ4 prediction target; <code>Label</code> drives the per-class questions</td></tr>
+      <tr><td>Service</td><td>Destination Port</td><td>integer · port number</td><td>Kept for description, excluded from modeling (Figure 5)</td></tr>
+      <tr><td>Duration and timing</td><td>Flow Duration; Flow / Fwd / Bwd IAT Mean, Std, Max, Min; Fwd / Bwd IAT Total; Active and Idle Mean, Std, Max, Min</td><td>integer or decimal · microseconds</td><td>Flow Duration is capped by the 120 s timeout (Figure 6)</td></tr>
+      <tr><td>Volume</td><td>Total Fwd / Backward Packets; Total Length of Fwd / Bwd Packets; Subflow Fwd / Bwd Packets and Bytes; act_data_pkt_fwd</td><td>integer · packets or bytes</td><td>Subflow packet counts are identical to the totals</td></tr>
+      <tr><td>Packet size</td><td>Fwd / Bwd Packet Length Max, Min, Mean, Std; Min / Max Packet Length; Packet Length Mean, Std, Variance; Average Packet Size; Avg Fwd / Bwd Segment Size; Fwd / Bwd Header Length; min_seg_size_forward</td><td>integer or decimal · bytes</td><td>Heavily right-skewed</td></tr>
+      <tr><td>Rates</td><td>Flow Bytes/s, Flow Packets/s, Fwd / Bwd Packets/s; Down/Up Ratio</td><td>decimal · per second; integer ratio</td><td>Undefined when duration is 0 (those rows are removed)</td></tr>
+      <tr><td>TCP flags</td><td>FIN, SYN, RST, PSH, ACK, URG, CWE, ECE Flag Count; Fwd PSH / URG Flags</td><td>integer · 0/1 indicator</td><td>Only 0 or 1 despite the names; Fwd PSH = SYN and Fwd URG = CWE row for row</td></tr>
+      <tr><td>TCP window</td><td>Init_Win_bytes_forward / backward</td><td>integer · bytes</td><td>−1 means no TCP window was seen (non-TCP flow); treated as a category</td></tr>
+      <tr><td>Bookkeeping</td><td><code>source_file</code></td><td>text · 8 capture files</td><td>Added by us</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Cleaning and preprocessing</h3>
+  <p>
+    All cleaning is in
+    <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/01-data-cleaning.ipynb">notebooks/01-data-cleaning.ipynb</a>,
+    which reads the untouched raw files and writes one analysis-ready CSV.
+    <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/src/m2_rebuild_clean.py">src/m2_rebuild_clean.py</a>
+    replays the same steps as a script and reproduces every count below.
+  </p>
+  <table class="full">
+    <thead>
+      <tr><th scope="col">Step</th><th scope="col">Decision</th><th scope="col">Rows after</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Load</td><td>Stack 8 files; strip the leading space from 65 of 79 headers</td><td>2,830,743</td></tr>
+      <tr><td>Missing values</td><td>Remove 2,867 zero-duration rows whose per-second rates were NaN or infinite</td><td>2,827,876</td></tr>
+      <tr><td>Duplicates</td><td>Remove 307,078 exact duplicates (10.86%), keeping one copy</td><td>2,520,798</td></tr>
+      <tr><td>Labels, columns</td><td>Fix the broken dash in three Web Attack labels; drop 8 always-zero columns and a duplicated header-length column</td><td>2,520,798</td></tr>
+      <tr><td>Impossible values</td><td>Remove 142 rows with negative duration or sizes (all BENIGN)</td><td>2,520,656</td></tr>
+      <tr><td>Clipping, target</td><td>Set 2,773 negative minimum inter-arrival times to 0; add <code>is_attack</code></td><td>2,520,656 × 72</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Before and after</strong> — real rows from the raw files:</p>
+  <table class="full">
+    <thead>
+      <tr><th scope="col">Issue</th><th scope="col">Before</th><th scope="col">After, and why</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Zero duration</td><td>Flow Duration 0 µs, 2 packets, 37 bytes; Flow Bytes/s = ∞, Flow Packets/s = ∞</td><td>Row removed. A rate over zero time is undefined, so any filled-in value would be invented.</td></tr>
+      <tr><td>Duplicate</td><td>One SSH-Patator flow (port 22, 74 µs, one packet each way, 0 bytes) appears 116 times</td><td>Kept once; SSH-Patator falls from 5,897 to 3,219 rows. Copies would land on both sides of a train/test split.</td></tr>
+      <tr><td>Encoding</td><td><code>Web Attack � XSS</code></td><td><code>Web Attack - XSS</code></td></tr>
+      <tr><td>Impossible value</td><td>Flow Duration −1 µs; Flow Bytes/s −12,000,000</td><td>Row removed: a flow cannot last less than zero time.</td></tr>
+      <tr><td>Rounding error</td><td>Flow IAT Min −1 µs</td><td>Clipped to 0, the nearest real value. Removing these rows would have cost 4 of the 11 Heartbleed flows.</td></tr>
+    </tbody>
+  </table>
+  <p>
+    <strong>Kept on purpose:</strong> packets larger than the 1,500-byte Ethernet MTU
+    (in 90% of DoS Hulk flows, so part of the attack signal, not noise), the −1
+    window code, and durations at the 120-second cap. Scaling is deferred to modeling
+    so it can be fit on training data only.
+  </p>
+
+  <h3>Data quality, bias and ethics</h3>
+  <table class="full">
+    <thead>
+      <tr><th scope="col">Dimension</th><th scope="col">What we found</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Completeness</td><td>Only 0.10% of rows had missing values, all a division-by-zero artifact. The larger gap is by design: no IPs, timestamps or protocol.</td></tr>
+      <tr><td>Consistency</td><td>Besides the dropped duplicate column, four more column pairs are identical row for row, and 66 feature pairs have |Spearman ρ| ≥ 0.95. The 69 features carry far less independent information than their number suggests.</td></tr>
+      <tr><td>Validity</td><td>The −1 window code marks non-TCP flows: none has a SYN or ACK flag and 96% go to port 53 (DNS). 1,394 cleaned rows have exactly the same features as a row with a different label, a floor on achievable error.</td></tr>
+      <tr><td>Representativeness</td><td>Attacks are 16.9% of rows; the largest class outnumbers the smallest about 190,000 to 1; three classes (DoS Hulk, DDoS, PortScan) make up 92% of attack rows; every attack class sits in exactly one capture file.</td></tr>
+      <tr><td>Usability</td><td>Heartbleed (11 rows), SQL Injection (21) and Infiltration (36) are too small for statistical claims. The cleaned data fits in about 1.45 GB of memory.</td></tr>
+    </tbody>
+  </table>
+
+  <p><strong>Milestone 0 risks, revisited.</strong></p>
+  <ul>
+    <li><strong>Class imbalance — confirmed, worse than expected.</strong> We now plan
+        per-class reporting and class-weighted evaluation. The proposal's
+        oversampling would mostly duplicate Heartbleed's near-identical timeout
+        fragments.</li>
+    <li><strong>Missing attack types — confirmed.</strong> The usable catalog is 11
+        attack classes, not 14.</li>
+    <li><strong>Narrow time window — confirmed and sharpened.</strong> Day and class
+        are confounded, and benign traffic itself shifts between days.</li>
+    <li><strong>Compute — reduced.</strong> All Milestone 2 work ran on one ordinary
+        machine.</li>
+    <li><strong>New:</strong> 10.86% exact duplicates (85,264 of them spanning two
+        capture files), the 120-second timeout artifact, the −1 window code acting as
+        a protocol proxy, and labels that don't reflect executed attacks (90% of Web
+        Attack – Brute Force and 96% of XSS flows carry no forward payload).</li>
+  </ul>
+  <p>
+    <strong>Privacy and licensing.</strong> All traffic is synthetic and the files we
+    use contain no IP addresses, payloads or timestamps. We publish only figures and
+    aggregate tables. The main ethical risk is overstated results: accuracies above
+    99% on this benchmark can mislead defenders, so we report per class and state
+    scope limits plainly.
+  </p>
+  <div class="note">
+    <strong>A limitation we cannot fix.</strong> The flow-construction and labeling
+    errors documented by <a href="#references">[2]</a> are built into the published
+    CSVs (about a quarter of records, by their estimate). Correcting them would mean
+    re-running a patched CICFlowMeter on roughly 51 GB of raw packet captures, which
+    is out of scope. As a result: web-attack results describe connection attempts
+    rather than executed attacks; Flow Duration is treated as censored at 120 s;
+    near-perfect scores will be read as a sign of leakage rather than success; and
+    no evaluation here can fully separate "new attack type" from "different day."
+  </div>
+
+  <h3>Exploratory analysis</h3>
+  <p>
+    Every feature is heavily right-skewed. Benign Flow Duration, for instance, has a
+    mean of 12.2 s but a median of 0.04 s. So we summarize with medians and
+    quartiles, plot on log scales, and compare distributions with the
+    Kolmogorov–Smirnov (KS) distance: 0 means identical distributions, 1 means no
+    overlap, and it works on features with different units.
+  </p>
+  <table class="full">
+    <thead>
+      <tr><th scope="col">Feature</th><th scope="col">Benign median [Q1, Q3]</th><th scope="col">Attack median [Q1, Q3]</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Flow Duration (s)</td><td>0.040 [0.0002, 1.10]</td><td>6.03 [0.012, 85.8]</td></tr>
+      <tr><td>Total Fwd Packets</td><td>2 [2, 4]</td><td>4 [2, 7]</td></tr>
+      <tr><td>Total Length of Fwd Packets (bytes)</td><td>68 [18, 208]</td><td>30 [2, 350]</td></tr>
+      <tr><td>Packet Length Mean (bytes)</td><td>61.4 [6.0, 103.0]</td><td>777.5 [3.3, 918.8]</td></tr>
+      <tr><td>Flow IAT Mean (ms)</td><td>16.1 [0.08, 176.7]</td><td>1,061 [2.9, 7,162]</td></tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <a href="assets/rq1-class-counts-before-after.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/rq1-class-counts-before-after-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/rq1-class-counts-before-after.png" width="2055" height="1256" loading="lazy"
+           alt="Horizontal bar chart on a log scale comparing each class's flow count as downloaded with its count after cleaning. BENIGN has 2,094,915 cleaned flows and Heartbleed 11. PortScan lost 43% and SSH-Patator 45% to duplicate removal.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 1. Class counts before and after cleaning.</strong> The imbalance spans five orders of magnitude even after cleaning, so per-class reporting is required. Cleaning hit classes unevenly: duplicate removal cut PortScan by 43% and SSH-Patator by 45%. The three rarest classes lost nothing but remain far too small for distributional claims (RQ1).</figcaption>
+  </figure>
+
+  <figure>
+    <a href="assets/rq1-rq4-class-by-capture-file.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/rq1-rq4-class-by-capture-file-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/rq1-rq4-class-by-capture-file.png" width="2058" height="1335" loading="lazy"
+           alt="Heatmap of flow counts by capture file (rows) and class (columns). Each attack class has a non-empty cell in only one row; BENIGN appears in all eight files.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 2. Every attack class appears in exactly one capture file.</strong> Monday is benign-only, and Thursday afternoon holds 36 Infiltration flows among 242,245 benign ones. Day and class are therefore inseparable: a train-on-one-day, test-on-another design always tests on unseen attack types, and on benign traffic that has itself shifted (KS 0.25 for Flow Duration, Friday DDoS afternoon vs. Monday). This reshaped RQ4.</figcaption>
+  </figure>
+
+  <figure>
+    <a href="assets/quality-issues-by-class.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/quality-issues-by-class-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/quality-issues-by-class.png" width="2280" height="1295" loading="lazy"
+           alt="Heatmap of the percentage of each class affected by six data-quality issues. Exact duplicates concentrate in SSH-Patator (45%) and PortScan (43%); the −1 window code in BENIGN (43%); the 120-second cap in Heartbleed (91%); zero forward payload in Web Attack XSS (96%) and Brute Force (90%).">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 3. Data-quality issues are concentrated in specific classes.</strong> Duplicates cluster in repetitive attacks; the −1 window code is almost entirely benign, making it a protocol signal rather than an attack signal; the timeout hits the two smallest classes hardest; and most web-attack flows carry no payload, which supports the audit finding that many labeled attacks never executed.</figcaption>
+  </figure>
+
+  <figure>
+    <a href="assets/rq2-benign-vs-attack-ecdf.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/rq2-benign-vs-attack-ecdf-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/rq2-benign-vs-attack-ecdf.png" width="2046" height="1438" loading="lazy"
+           alt="Six cumulative distribution panels comparing benign flows, all attack flows, and a class-balanced attack sample on Flow Duration, Total Fwd Packets, Total Length of Fwd Packets, Packet Length Mean, Flow IAT Mean and Init_Win_bytes_forward.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 4. Benign vs. attack distributions.</strong> Attack flows last longer and space packets further apart (median 6.0 s vs. 0.04 s). But the pooled attack curve is mostly DoS Hulk and DDoS: give each attack class equal weight and the packet-size separation largely disappears (KS for Packet Length Mean drops from 0.53 to 0.28). With classes balanced, the top separator is Init_Win_bytes_forward (0.49), the protocol proxy above. Pooled separability partly reflects the class mix (RQ2).</figcaption>
+  </figure>
+
+  <figure>
+    <a href="assets/rq2-destination-port.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/rq2-destination-port-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/rq2-destination-port.png" width="2041" height="1254" loading="lazy"
+           alt="Two bar charts by class: the share of flows sent to the class's most common destination port, and the number of distinct ports. Ten attack classes send 100% of flows to one port; BENIGN uses 53,788 ports, PortScan 1,000 and Bot 702.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 5. Most attack classes target a single destination port.</strong> Ten of 14 attack classes use exactly one port, seven of them port 80; benign traffic spans 53,788 ports. Destination Port mostly records which services the testbed's attack scripts targeted, so a model would learn the testbed's layout rather than attack behavior. We keep it for description and exclude it from modeling. Redrawn from Tyler's analysis.</figcaption>
+  </figure>
+
+  <figure>
+    <a href="assets/rq2-flow-duration-timeout.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/rq2-flow-duration-timeout-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/rq2-flow-duration-timeout.png" width="2041" height="903" loading="lazy"
+           alt="Left: histogram of flow durations between 118 and 120 seconds, with a sharp spike in the last 20 milliseconds before 120 s. Right: share of each class lasting at least 119 seconds; Heartbleed 91%, Infiltration 19%, all others under 1%.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 6. The 120-second CICFlowMeter timeout caps Flow Duration.</strong> Durations pile up just below the cap and none exceeds 119.999998 s. The cap barely touches most classes but defines Heartbleed: 10 of its 11 flows end within 0.05 s of one another, about 0.7 s short of the timeout — likely one long exploit connection split into many records. Redrawn from Tyler's analysis.</figcaption>
+  </figure>
+
+  <figure>
+    <a href="assets/rq3-class-profiles.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/rq3-class-profiles-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/rq3-class-profiles.png" width="2334" height="1585" loading="lazy"
+           alt="Heatmap of each class's median value on 15 behavioral features, standardized across classes, with rows clustered into four groups separated by lines.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 7. Median flow profile per class, clustered into four groups.</strong> Heartbleed stands alone; high-volume HTTP and brute-force attacks group together; low-payload slow and web attacks form a third group; and PortScan, BENIGN and Bot share short, fast flows. Some pairs barely differ at the flow level: the best single feature separating Web Attack – Brute Force from XSS reaches a KS distance of only 0.23 (RQ3).</figcaption>
+  </figure>
+
+  <p>
+    <strong>What the exploration changes:</strong> pooled benign-vs-attack comparisons
+    overstate separability; Destination Port, the window fields and durations at the
+    120-second cap need special handling; some classes cannot be told apart at the
+    flow level and three are too small to analyze; and day and class are confounded.
+    The <a href="#questions">research questions</a> were revised accordingly. The
+    analysis code is in
+    <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/tree/main/src">src/</a>
+    and <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/tree/main/notebooks">notebooks/</a>.
+  </p>
 </section>
 
 <!-- =============================== C. TEAM ================================ -->
@@ -375,13 +677,13 @@
 
     <dt>Data sources</dt>
     <dd>
-      CICIDS2017 (Canadian Institute for Cybersecurity): seven CSV files of
+      CICIDS2017 (Canadian Institute for Cybersecurity): eight CSV files of
       labeled bidirectional flow records covering five days of simulated
-      enterprise traffic in July 2017, ~85 features per flow, roughly 1.05 GB in
-      total. Obtained under CIC's research-use terms after registration.
-      Redistribution is not permitted, so the project repository carries
-      acquisition instructions and a small derived sample rather than the raw
-      files.
+      enterprise traffic in July 2017 — 2,830,743 flows, 78 features per flow,
+      885 MB in total. Obtained from CIC after registration. CIC states no license
+      and grants no redistribution right, so the project repository carries code
+      and acquisition instructions rather than the data. See
+      <a href="#data">Data &amp; Exploration</a>.
     </dd>
 
     <dt>Current questions</dt>
@@ -389,7 +691,7 @@
 
     <dt>Major constraints</dt>
     <dd>
-      Data volume relative to available compute; severe class imbalance, with
+      Severe class imbalance, with
       benign flows dominating and Monday benign-only; a fixed 2017 attack
       catalog that cannot speak to novel or contemporary attack vectors; and
       documented labeling and flow-construction errors that limit which per-class
