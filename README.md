@@ -185,7 +185,7 @@ read and understood. To run the analysis code:
    ```bash
    python src/m2_rebuild_clean.py data/raw data/processed   # replays notebook 01, logs every step
    python src/m2_quality_stats.py data/processed            # Section 4–5 numbers → m2_stats.json
-   python src/m2_eda_figures.py data/processed figures       # Figures 1–7
+   python src/m2_eda_figures.py data/processed figures docs/assets   # Figures 1–7, light + dark, copied to the site
    ```
 
 ---

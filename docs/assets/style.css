@@ -82,6 +82,11 @@ body {
   border-bottom: 2px solid transparent;
 }
 .nav a:hover, .nav a:focus { color: var(--accent); border-bottom-color: var(--accent); }
+@media (max-width: 40rem) {
+  .nav ul { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .nav ul::-webkit-scrollbar { display: none; }
+  .nav a { white-space: nowrap; }
+}
 
 /* ---------- layout ---------- */
 
@@ -203,6 +208,14 @@ table {
 }
 th, td { text-align: left; padding: .55rem .7rem; border-bottom: 1px solid var(--border); }
 th { font-weight: 650; background: var(--surface); white-space: nowrap; }
+td { vertical-align: top; }
+/* Text-heavy tables (Data & Exploration): fill the column on wider screens so no
+   column collapses; on phones they stay scrollable blocks like every other table. */
+@media (min-width: 40rem) { table.full { display: table; } }
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: .86em; background: var(--surface-2); padding: .05rem .3rem; border-radius: 3px;
+}
 
 .refs { list-style: none; padding: 0; counter-reset: ref; }
 .refs li {

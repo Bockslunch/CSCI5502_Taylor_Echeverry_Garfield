@@ -8,7 +8,7 @@ than being copy-pasted between them.
 | `make_class_distribution.py` | Milestone 1 class-distribution figure | see the script's docstring |
 | `m2_rebuild_clean.py` | Replays `notebooks/01-data-cleaning.ipynb` as a script and logs the row/column count of every step (`cleaning_log.json`); reproduces the notebook's 2,520,656 × 72 output exactly | `python src/m2_rebuild_clean.py data/raw data/processed` |
 | `m2_quality_stats.py` | Milestone 2 Section 4–5 numbers: quality issues by class, label conflicts, redundant features, KS distances, summary statistics → `m2_stats.json` + CSV tables | `python src/m2_quality_stats.py data/processed` |
-| `m2_eda_figures.py` | Milestone 2 Figures 1–7 (PNG, 300 dpi) | `python src/m2_eda_figures.py data/processed figures` |
+| `m2_eda_figures.py` | Milestone 2 Figures 1–7 (PNG, 300 dpi), each in a light and a `-dark` version; the optional third argument copies them into the website's `docs/assets/` | `python src/m2_eda_figures.py data/processed figures docs/assets` |
 
 The three `m2_*` scripts run in that order; each reads what the previous one wrote.
 
