@@ -1,0 +1,97 @@
+outer_day,model,params,inner_day,pr_auc
+Monday,logreg,"{""C"": 0.01}",Tuesday,0.02292203109486228
+Monday,logreg,"{""C"": 0.01}",Wednesday,0.6707898531498193
+Monday,logreg,"{""C"": 0.01}",Thursday,0.01858361637327341
+Monday,logreg,"{""C"": 0.01}",Friday,0.8060174550774429
+Monday,logreg,"{""C"": 0.1}",Tuesday,0.019231868939002212
+Monday,logreg,"{""C"": 0.1}",Wednesday,0.6055133621192766
+Monday,logreg,"{""C"": 0.1}",Thursday,0.017923030992822456
+Monday,logreg,"{""C"": 0.1}",Friday,0.7788376943221635
+Monday,logreg,"{""C"": 1.0}",Tuesday,0.01904851103131175
+Monday,logreg,"{""C"": 1.0}",Wednesday,0.4966038783496409
+Monday,logreg,"{""C"": 1.0}",Thursday,0.015527786079025056
+Monday,logreg,"{""C"": 1.0}",Friday,0.764547878235254
+Monday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Tuesday,0.12460214750133652
+Monday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Wednesday,0.8987849877952259
+Monday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Thursday,0.03722455669416955
+Monday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Friday,0.8585043599068336
+Monday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Tuesday,0.10628977793970577
+Monday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Wednesday,0.9495031610937907
+Monday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Thursday,0.21205539265659
+Monday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Friday,0.8198670856361261
+Monday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Tuesday,0.12248596433258695
+Monday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Wednesday,0.9395815285846768
+Monday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Thursday,0.027327591581075717
+Monday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Friday,0.8372894702358473
+Tuesday,logreg,"{""C"": 0.01}",Wednesday,0.7278032568635704
+Tuesday,logreg,"{""C"": 0.01}",Thursday,0.018718158175370814
+Tuesday,logreg,"{""C"": 0.01}",Friday,0.8072296360667404
+Tuesday,logreg,"{""C"": 0.1}",Wednesday,0.6803582965138005
+Tuesday,logreg,"{""C"": 0.1}",Thursday,0.018213130379934567
+Tuesday,logreg,"{""C"": 0.1}",Friday,0.7606194643148914
+Tuesday,logreg,"{""C"": 1.0}",Wednesday,0.7448013042640445
+Tuesday,logreg,"{""C"": 1.0}",Thursday,0.017633227585276173
+Tuesday,logreg,"{""C"": 1.0}",Friday,0.7170294653150391
+Tuesday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Wednesday,0.797459539120444
+Tuesday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Thursday,0.039475445611338776
+Tuesday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Friday,0.8653214994714349
+Tuesday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Wednesday,0.9741347977781689
+Tuesday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Thursday,0.10562726917543903
+Tuesday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Friday,0.6947408269690932
+Tuesday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Wednesday,0.9845497580720082
+Tuesday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Thursday,0.027338060849388342
+Tuesday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Friday,0.8263352928632689
+Wednesday,logreg,"{""C"": 0.01}",Tuesday,0.021421498671616718
+Wednesday,logreg,"{""C"": 0.01}",Thursday,0.017268993166145163
+Wednesday,logreg,"{""C"": 0.01}",Friday,0.3793601432668088
+Wednesday,logreg,"{""C"": 0.1}",Tuesday,0.029398022805539808
+Wednesday,logreg,"{""C"": 0.1}",Thursday,0.0176658828026118
+Wednesday,logreg,"{""C"": 0.1}",Friday,0.37685802780853433
+Wednesday,logreg,"{""C"": 1.0}",Tuesday,0.03632918118887918
+Wednesday,logreg,"{""C"": 1.0}",Thursday,0.018304221753797565
+Wednesday,logreg,"{""C"": 1.0}",Friday,0.3832914720310412
+Wednesday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Tuesday,0.12428082619572708
+Wednesday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Thursday,0.043026037775102034
+Wednesday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Friday,0.665300665059837
+Wednesday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Tuesday,0.126830776836767
+Wednesday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Thursday,0.03133574727783563
+Wednesday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Friday,0.5895345630757882
+Wednesday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Tuesday,0.0740216356479608
+Wednesday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Thursday,0.02734919020278056
+Wednesday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Friday,0.6217675615495812
+Thursday,logreg,"{""C"": 0.01}",Tuesday,0.023288422103387697
+Thursday,logreg,"{""C"": 0.01}",Wednesday,0.33794345134198234
+Thursday,logreg,"{""C"": 0.01}",Friday,0.7977620310579883
+Thursday,logreg,"{""C"": 0.1}",Tuesday,0.021829893268446213
+Thursday,logreg,"{""C"": 0.1}",Wednesday,0.3357518521176874
+Thursday,logreg,"{""C"": 0.1}",Friday,0.7450791934680189
+Thursday,logreg,"{""C"": 1.0}",Tuesday,0.02017875138647077
+Thursday,logreg,"{""C"": 1.0}",Wednesday,0.2967997086715045
+Thursday,logreg,"{""C"": 1.0}",Friday,0.7534977940366789
+Thursday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Tuesday,0.07891603779681106
+Thursday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Wednesday,0.6892039411694587
+Thursday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Friday,0.8628958965732805
+Thursday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Tuesday,0.056699928817897094
+Thursday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Wednesday,0.8956272737727154
+Thursday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Friday,0.8055085951885875
+Thursday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Tuesday,0.10230329059196475
+Thursday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Wednesday,0.9526840595319791
+Thursday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Friday,0.8182231835028934
+Friday,logreg,"{""C"": 0.01}",Tuesday,0.02110278833508463
+Friday,logreg,"{""C"": 0.01}",Wednesday,0.3194485150260478
+Friday,logreg,"{""C"": 0.01}",Thursday,0.053438784267641946
+Friday,logreg,"{""C"": 0.1}",Tuesday,0.02431645795638198
+Friday,logreg,"{""C"": 0.1}",Wednesday,0.2927178133265065
+Friday,logreg,"{""C"": 0.1}",Thursday,0.038615562613836536
+Friday,logreg,"{""C"": 1.0}",Tuesday,0.030082228967250525
+Friday,logreg,"{""C"": 1.0}",Wednesday,0.2354926378258295
+Friday,logreg,"{""C"": 1.0}",Thursday,0.03283338803789477
+Friday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Tuesday,0.17098127029441193
+Friday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Wednesday,0.7857167563123895
+Friday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",Thursday,0.7137502628891087
+Friday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Tuesday,0.07962904939110993
+Friday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Wednesday,0.6981831308186757
+Friday,hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",Thursday,0.7708469178159072
+Friday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Tuesday,0.09922333031170763
+Friday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Wednesday,0.6262145256018917
+Friday,hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",Thursday,0.7521178432949813

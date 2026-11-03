@@ -1,0 +1,165 @@
+[10:35:36] loaded 2,520,656 rows x 64 features
+[10:35:37] === held-out Monday: train 2,018,044 rows, test 502,612 rows (0 attacks)
+[10:35:41]   single feature: Fwd IAT Std (sign +1)
+[10:36:01]   tune logreg {'C': 0.01}: inner PR-AUC mean 0.380
+[10:36:36]   tune logreg {'C': 0.1}: inner PR-AUC mean 0.355
+/usr/local/lib/python3.13/site-packages/sklearn/linear_model/_logistic.py:599: ConvergenceWarning: lbfgs failed to converge after 300 iteration(s) (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+Increase the number of iterations to improve the convergence (max_iter=300).
+You might also want to scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+/usr/local/lib/python3.13/site-packages/sklearn/linear_model/_logistic.py:599: ConvergenceWarning: lbfgs failed to converge after 300 iteration(s) (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+Increase the number of iterations to improve the convergence (max_iter=300).
+You might also want to scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+/usr/local/lib/python3.13/site-packages/sklearn/linear_model/_logistic.py:599: ConvergenceWarning: lbfgs failed to converge after 300 iteration(s) (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+Increase the number of iterations to improve the convergence (max_iter=300).
+You might also want to scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+[10:37:27]   tune logreg {'C': 1.0}: inner PR-AUC mean 0.324
+[10:37:27]   logreg chosen: {'C': 0.01}
+[10:37:52]   logreg A_lodo: fit 24s thr=0.8540 n_iter=150
+[10:38:21]   logreg B_lodo_plus_day_benign: fit 27s thr=0.8693 n_iter=169
+[10:39:46]   tune hgb {'learning_rate': 0.1, 'max_leaf_nodes': 15}: inner PR-AUC mean 0.480
+[10:41:08]   tune hgb {'learning_rate': 0.1, 'max_leaf_nodes': 63}: inner PR-AUC mean 0.522
+[10:43:30]   tune hgb {'learning_rate': 0.05, 'max_leaf_nodes': 31, 'l2_regularization': 1.0}: inner PR-AUC mean 0.482
+[10:43:30]   hgb chosen: {'learning_rate': 0.1, 'max_leaf_nodes': 63}
+[10:44:20]   hgb A_lodo: fit 49s thr=0.0059
+[10:44:59]   hgb B_lodo_plus_day_benign: fit 37s thr=0.0126
+[10:45:00] === Monday done in 9.4 min
+[10:45:00] === held-out Tuesday: train 2,099,107 rows, test 421,549 rows (9,150 attacks)
+[10:45:04]   single feature: Fwd IAT Std (sign +1)
+[10:45:14]   tune logreg {'C': 0.01}: inner PR-AUC mean 0.518
+[10:45:28]   tune logreg {'C': 0.1}: inner PR-AUC mean 0.486
+/usr/local/lib/python3.13/site-packages/sklearn/linear_model/_logistic.py:599: ConvergenceWarning: lbfgs failed to converge after 300 iteration(s) (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+Increase the number of iterations to improve the convergence (max_iter=300).
+You might also want to scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+[10:45:53]   tune logreg {'C': 1.0}: inner PR-AUC mean 0.493
+[10:45:53]   logreg chosen: {'C': 0.01}
+[10:46:15]   logreg A_lodo: fit 20s thr=0.8077 n_iter=124
+[10:46:40]   logreg B_lodo_plus_day_benign: fit 23s thr=0.8168 n_iter=131
+[10:47:07]   logreg C_in_day: fit 25s thr=0.8400 n_iter=151
+[10:47:55]   tune hgb {'learning_rate': 0.1, 'max_leaf_nodes': 15}: inner PR-AUC mean 0.567
+[10:48:47]   tune hgb {'learning_rate': 0.1, 'max_leaf_nodes': 63}: inner PR-AUC mean 0.592
+[10:50:31]   tune hgb {'learning_rate': 0.05, 'max_leaf_nodes': 31, 'l2_regularization': 1.0}: inner PR-AUC mean 0.613
+[10:50:31]   hgb chosen: {'learning_rate': 0.05, 'max_leaf_nodes': 31, 'l2_regularization': 1.0}
+[10:52:09]   hgb A_lodo: fit 96s thr=0.0131
+[10:53:55]   hgb B_lodo_plus_day_benign: fit 104s thr=0.0150
+[10:55:50]   hgb C_in_day: fit 113s thr=0.0186
+[10:55:51] === Tuesday done in 10.9 min
+[10:55:51] === held-out Wednesday: train 1,918,398 rows, test 602,258 rows (193,756 attacks)
+[10:55:56]   single feature: Fwd Packet Length Max (sign -1)
+[10:56:04]   tune logreg {'C': 0.01}: inner PR-AUC mean 0.139
+[10:56:17]   tune logreg {'C': 0.1}: inner PR-AUC mean 0.141
+[10:56:36]   tune logreg {'C': 1.0}: inner PR-AUC mean 0.146
+[10:56:36]   logreg chosen: {'C': 1.0}
+[10:57:25]   logreg A_lodo: fit 48s thr=0.4930 n_iter=386
+[10:58:21]   logreg B_lodo_plus_day_benign: fit 54s thr=0.4988 n_iter=385
+[10:59:24]   logreg C_in_day: fit 61s thr=0.8593 n_iter=432
+[11:00:03]   tune hgb {'learning_rate': 0.1, 'max_leaf_nodes': 15}: inner PR-AUC mean 0.278
+[11:00:39]   tune hgb {'learning_rate': 0.1, 'max_leaf_nodes': 63}: inner PR-AUC mean 0.249
+[11:01:53]   tune hgb {'learning_rate': 0.05, 'max_leaf_nodes': 31, 'l2_regularization': 1.0}: inner PR-AUC mean 0.241
+[11:01:53]   hgb chosen: {'learning_rate': 0.1, 'max_leaf_nodes': 15}
+[11:02:39]   hgb A_lodo: fit 44s thr=0.0380
+[11:03:15]   hgb B_lodo_plus_day_benign: fit 35s thr=0.0518
+[11:04:10]   hgb C_in_day: fit 53s thr=0.0705
+[11:04:11] === Wednesday done in 8.3 min
+[11:04:11] === held-out Thursday: train 2,122,237 rows, test 398,419 rows (2,179 attacks)
+[11:04:16]   single feature: Fwd IAT Std (sign +1)
+[11:04:31]   tune logreg {'C': 0.01}: inner PR-AUC mean 0.386
+[11:04:52]   tune logreg {'C': 0.1}: inner PR-AUC mean 0.368
+/usr/local/lib/python3.13/site-packages/sklearn/linear_model/_logistic.py:599: ConvergenceWarning: lbfgs failed to converge after 300 iteration(s) (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+Increase the number of iterations to improve the convergence (max_iter=300).
+You might also want to scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+/usr/local/lib/python3.13/site-packages/sklearn/linear_model/_logistic.py:599: ConvergenceWarning: lbfgs failed to converge after 300 iteration(s) (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+Increase the number of iterations to improve the convergence (max_iter=300).
+You might also want to scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+[11:05:28]   tune logreg {'C': 1.0}: inner PR-AUC mean 0.357
+[11:05:28]   logreg chosen: {'C': 0.01}
+[11:05:52]   logreg A_lodo: fit 22s thr=0.8606 n_iter=137
+[11:06:20]   logreg B_lodo_plus_day_benign: fit 26s thr=0.8593 n_iter=153
+[11:06:50]   logreg C_in_day: fit 28s thr=0.8571 n_iter=156
+[11:07:45]   tune hgb {'learning_rate': 0.1, 'max_leaf_nodes': 15}: inner PR-AUC mean 0.544
+[11:08:44]   tune hgb {'learning_rate': 0.1, 'max_leaf_nodes': 63}: inner PR-AUC mean 0.586
+[11:10:37]   tune hgb {'learning_rate': 0.05, 'max_leaf_nodes': 31, 'l2_regularization': 1.0}: inner PR-AUC mean 0.624
+[11:10:37]   hgb chosen: {'learning_rate': 0.05, 'max_leaf_nodes': 31, 'l2_regularization': 1.0}
+[11:12:25]   hgb A_lodo: fit 106s thr=0.0116
+[11:14:16]   hgb B_lodo_plus_day_benign: fit 109s thr=0.0127
+[11:16:13]   hgb C_in_day: fit 115s thr=0.0175
+[11:16:15] === Thursday done in 12.1 min
+[11:16:15] === held-out Friday: train 1,924,838 rows, test 595,818 rows (220,656 attacks)
+[11:16:19]   single feature: Fwd IAT Max (sign +1)
+[11:16:28]   tune logreg {'C': 0.01}: inner PR-AUC mean 0.131
+[11:16:43]   tune logreg {'C': 0.1}: inner PR-AUC mean 0.119
+/usr/local/lib/python3.13/site-packages/sklearn/linear_model/_logistic.py:599: ConvergenceWarning: lbfgs failed to converge after 300 iteration(s) (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+Increase the number of iterations to improve the convergence (max_iter=300).
+You might also want to scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+/usr/local/lib/python3.13/site-packages/sklearn/linear_model/_logistic.py:599: ConvergenceWarning: lbfgs failed to converge after 300 iteration(s) (status=1):
+STOP: TOTAL NO. OF ITERATIONS REACHED LIMIT
+
+Increase the number of iterations to improve the convergence (max_iter=300).
+You might also want to scale the data as shown in:
+    https://scikit-learn.org/stable/modules/preprocessing.html
+Please also refer to the documentation for alternative solver options:
+    https://scikit-learn.org/stable/modules/linear_model.html#logistic-regression
+  n_iter_i = _check_optimize_result(
+[11:17:02]   tune logreg {'C': 1.0}: inner PR-AUC mean 0.099
+[11:17:02]   logreg chosen: {'C': 0.01}
+[11:17:25]   logreg A_lodo: fit 22s thr=0.8646 n_iter=154
+[11:17:53]   logreg B_lodo_plus_day_benign: fit 26s thr=0.8570 n_iter=158
+[11:18:24]   logreg C_in_day: fit 29s thr=0.8776 n_iter=183
+[11:19:20]   tune hgb {'learning_rate': 0.1, 'max_leaf_nodes': 15}: inner PR-AUC mean 0.557
+[11:20:00]   tune hgb {'learning_rate': 0.1, 'max_leaf_nodes': 63}: inner PR-AUC mean 0.516
+[11:21:13]   tune hgb {'learning_rate': 0.05, 'max_leaf_nodes': 31, 'l2_regularization': 1.0}: inner PR-AUC mean 0.493
+[11:21:13]   hgb chosen: {'learning_rate': 0.1, 'max_leaf_nodes': 15}
+[11:22:22]   hgb A_lodo: fit 68s thr=0.0105
+[11:23:09]   hgb B_lodo_plus_day_benign: fit 45s thr=0.0321
+[11:23:47]   hgb C_in_day: fit 37s thr=0.1271
+[11:23:50] === Friday done in 7.6 min
+[11:23:50] 
+                  fpr                                   pr_auc                            recall                           
+day            Friday Monday Thursday Tuesday Wednesday Friday Thursday Tuesday Wednesday Friday Thursday Tuesday Wednesday
+model                                                                                                                      
+hgb             0.021  0.014    0.108   0.026     0.012  0.846    0.031   0.063     0.756  0.372    0.912   0.026     0.614
+logreg          0.014  0.016    0.091   0.015     0.014  0.776    0.018   0.020     0.467  0.375    0.000   0.002     0.058
+majority        0.000  0.000    0.000   0.000     0.000  0.370    0.005   0.022     0.322  0.000    0.000   0.000     0.000
+single_feature  0.027  0.003    0.002   0.003     0.000  0.402    0.020   0.040     0.239  0.058    0.000   0.000     0.000
+stratified      0.107  0.211    0.199   0.198     0.122  0.370    0.005   0.022     0.321  0.107    0.202   0.199     0.120

@@ -1,0 +1,9 @@
+[11:32:51] part 1: 94,119 attack rows, 11 classes: PortScan (20,000), DDoS (20,000), DoS Hulk (20,000), DoS GoldenEye (10,286), FTP-Patator (5,931), DoS slowloris (5,385), DoS Slowhttptest (5,228), SSH-Patator (3,219), Bot (1,948), Web Attack - Brute Force (1,470), Web Attack - XSS (652)
+[11:34:09]   V1_all_features: macro-F1 0.917 on 94,119 rows
+[11:35:37]   V2_no_init_win: macro-F1 0.908 on 94,119 rows
+[11:36:01]   V3_no_init_win_no_timeout_rows: macro-F1 0.893 on 94,028 rows
+[11:36:47]   part 2 Monday: recall nan fpr 0.0115 pr_auc nan
+[11:38:29]   part 2 Tuesday: recall 0.004 fpr 0.0109 pr_auc 0.047
+[11:39:08]   part 2 Wednesday: recall 0.085 fpr 0.0096 pr_auc 0.843
+[11:40:51]   part 2 Thursday: recall 0.850 fpr 0.1074 pr_auc 0.027
+[11:42:10]   part 2 Friday: recall 0.284 fpr 0.0104 pr_auc 0.732

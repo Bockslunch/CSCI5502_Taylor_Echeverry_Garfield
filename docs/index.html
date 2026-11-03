@@ -25,6 +25,7 @@
     <li><a href="#questions">Research Questions</a></li>
     <li><a href="#background">Background</a></li>
     <li><a href="#data">Data</a></li>
+    <li><a href="#models">Models</a></li>
     <li><a href="#team">Team</a></li>
     <li><a href="#proposal">Proposal</a></li>
     <li><a href="#references">References</a></li>
@@ -567,6 +568,293 @@
 </section>
 
 <!-- =============================== C. TEAM ================================ -->
+<!-- ======================= MODELS & EVALUATION (M3) ======================= -->
+<section id="models">
+  <h2>Models &amp; Evaluation</h2>
+
+  <p class="lede">
+    Milestone 3 asks whether the flow-level differences found in Milestone 2 hold up
+    when models must generalize. The short answer: attack types are highly separable
+    from one another once a model has seen them, but a detector trained on four
+    capture days catches about half of a fifth day's never-seen attacks, and much of
+    what looks like success or failure traces back to known dataset artifacts.
+  </p>
+
+  <h3>Modeling plan</h3>
+  <table class="full">
+    <thead>
+      <tr><th scope="col">Question</th><th scope="col">Task</th><th scope="col">Methods</th><th scope="col">Why these</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>RQ4</strong> — does benign-vs-attack detection transfer to an unseen day?</td>
+        <td>Binary classification, leave-one-day-out</td>
+        <td>Baselines: majority class, stratified guess (Tyler), single-feature rule.
+            Candidates: logistic regression, histogram gradient boosting.</td>
+        <td>2.5M rows, 64 skewed numeric features, rare positives. Logistic regression is a
+            transparent linear reference; gradient boosting captures thresholds and
+            interactions, needs no scaling, and fits in 8 GB of RAM. Distance-based methods
+            (k-NN, SVM) do not scale to 2M rows.</td>
+      </tr>
+      <tr>
+        <td><strong>RQ4, part 2</strong> — benign shift or unseen attacks?</td>
+        <td>Controlled comparison</td>
+        <td>Same models under three training conditions (A/B/C, below)</td>
+        <td>Isolates the two causes RQ4 names, on identical test rows.</td>
+      </tr>
+      <tr>
+        <td><strong>RQ5</strong> — do known defects change per-class results?</td>
+        <td>Binary classification</td>
+        <td>RQ4 models retrained without defect-flagged flows</td>
+        <td>Same protocol as RQ4, so only the training rows differ.</td>
+      </tr>
+      <tr>
+        <td><strong>RQ2</strong> — which features separate attack types, without artifacts?</td>
+        <td>Multi-class classification (11 classes)</td>
+        <td>Gradient boosting vs. majority / stratified; permutation importance</td>
+        <td>A model that can use any combination of features is a stronger separability test
+            than one-feature-at-a-time KS distances.</td>
+      </tr>
+      <tr>
+        <td><strong>RQ3</strong> — do the EDA groups hold at the flow level?</td>
+        <td>Clustering</td>
+        <td>k-means: the hypothesized k = 4 vs. a tuned k (Tyler)</td>
+        <td>Unsupervised, so the groups are not forced by the labels.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Data preparation and leakage controls</h3>
+  <ul>
+    <li><strong>Features (64):</strong> the 69 cleaned flow features minus
+        <code>Destination Port</code> (a testbed identifier; Figure 5) and four
+        columns that are exact copies of others. The two
+        <code>Init_Win_bytes_*</code> window fields stay in the main models and are
+        removed in an RQ2 robustness run. The list was fixed from Milestone 2
+        decisions before any model was trained.</li>
+    <li><strong>Preprocessing:</strong> logistic regression gets a signed
+        log transform and standardization, both fit inside a pipeline on
+        training rows only. Gradient boosting uses raw values. Both use balanced
+        class weights.</li>
+    <li><strong>The held-out day is never used to fit anything.</strong>
+        Hyperparameters are chosen by an inner leave-one-day-out loop over the four
+        training days. The alert threshold is set on a calibration split of those
+        days. Early stopping uses a split of the training rows.</li>
+    <li><strong>No duplicate crosses the split:</strong> exact duplicates were
+        removed across all files before modeling (Milestone 2).</li>
+  </ul>
+
+  <h3>Validation and metrics</h3>
+  <p>
+    <strong>Leave-one-day-out</strong> (5 folds) is the only split that answers RQ4:
+    every attack type lives on a single day (Figure 2), so a random split would test
+    on attack types the model has already seen. Each model's alert threshold is set
+    so that <strong>1% of benign training-day flows</strong> would raise an alert,
+    which is a fixed analyst budget. We then measure what happens on the new day:
+  </p>
+  <ul>
+    <li><strong>Recall</strong>: share of the unseen day's attack flows that raised an
+        alert (the detection rate RQ4 asks about).</li>
+    <li><strong>False-alarm rate (FPR)</strong>: share of the unseen day's benign
+        flows that raised an alert. If it drifts above 1%, the budget did not
+        transfer.</li>
+    <li><strong>PR-AUC</strong>: threshold-free ranking quality for a rare positive
+        class, always shown next to its no-skill level (the day's attack share).</li>
+  </ul>
+  <p>
+    Accuracy is not reported: the always-benign baseline already scores 80% or
+    more on every day. Monday has no attacks, so it measures false alarms only.
+  </p>
+
+  <h3>Result 1: detection of never-seen attacks is partial and uneven (RQ4)</h3>
+  <table class="full">
+    <thead>
+      <tr><th scope="col">Model (4 attack days pooled)</th><th scope="col">Recall</th><th scope="col">False alarms</th><th scope="col">Precision</th><th scope="col">PR-AUC</th><th scope="col">Monday FPR</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Majority class (baseline)</td><td>0%</td><td>0%</td><td>—</td><td>0.18*</td><td>0%</td></tr>
+      <tr><td>Stratified guess (baseline)</td><td>11.5%</td><td>15.7%</td><td>16.4%</td><td>0.18*</td><td>21.1%</td></tr>
+      <tr><td>Single-feature rule (best one feature per fold)</td><td>3.0%</td><td>0.8%</td><td>51.3%</td><td>0.18</td><td>0.3%</td></tr>
+      <tr><td>Logistic regression</td><td>22.1%</td><td>3.3%</td><td>63.9%</td><td>0.32</td><td>1.6%</td></tr>
+      <tr><td><strong>Gradient boosting</strong></td><td><strong>47.7%</strong></td><td>4.2%</td><td>75.4%</td><td><strong>0.42</strong></td><td>1.4%</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.85rem;color:var(--text-muted)">
+    PR-AUC is the mean over the four attack days. *No-skill level: the mean attack share of those days. Recall, false
+    alarms and precision pool the confusion counts of all four days; per-day values
+    are in Figure 8 and <code>results/m3/m3_summary_rq4_by_day.csv</code>.
+  </p>
+
+  <figure>
+    <a href="assets/m3-rq4-transfer-by-day.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/m3-rq4-transfer-by-day-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/m3-rq4-transfer-by-day.png" width="2970" height="1191" loading="lazy"
+           alt="Three panels by held-out day for the single-feature rule, logistic regression and gradient boosting. Recall: Tuesday near 0 for all; Wednesday 6% logistic, 61% boosting; Thursday 0% logistic, 91% boosting; Friday about 37% for both. False alarms: about 1.4 to 2.6% except Thursday, 9.1% logistic and 10.8% boosting. PR-AUC: boosting 0.06, 0.76, 0.03, 0.85 for Tuesday to Friday.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 8. Detection on each never-seen day.</strong> Gradient boosting ranks attacks better than every baseline and logistic regression on all four attack days (PR-AUC), and catches far more on Wednesday and Thursday; on Friday the two candidates catch the same share. But transfer is uneven. Tuesday's brute-force attacks are essentially invisible (2.6% recall). Wednesday's DoS attacks are partly caught (61%, at 1.2% false alarms). Thursday's 91% comes with false alarms more than ten times the budget. For both candidates the 1% budget held on no unseen day: false alarms ran 1.2% to 2.6% on the other days and 9–11% on Thursday.</figcaption>
+  </figure>
+
+  <h3>Result 2: most of the drop comes from unseen attacks, except on Thursday (RQ4, part 2)</h3>
+  <p>
+    Each held-out day was split in half, and the same test half was scored under
+    three training conditions: <strong>A</strong> the other four days only;
+    <strong>B</strong> A plus that day's <em>benign</em> flows (benign shift removed,
+    attacks still unseen); <strong>C</strong> A plus that day's benign
+    <em>and attack</em> flows (in-distribution). A→B measures the benign-shift
+    effect; B→C measures the unseen-attack effect.
+  </p>
+  <figure>
+    <a href="assets/m3-rq4-shift-decomposition.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/m3-rq4-shift-decomposition-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/m3-rq4-shift-decomposition.png" width="2270" height="1649" loading="lazy"
+           alt="Line charts of recall and false-alarm rate across conditions A, B and C for each day. For gradient boosting, recall on Tuesday goes 3%, 1%, 100%; Wednesday 61%, 60%, 100%; Friday 37%, 45%, 100%; Thursday 91%, 91%, 99%. Thursday's false alarms fall from 10.8% to 1.3% between A and B.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 9. Benign shift vs. unseen attacks.</strong> For gradient boosting, adding a day's benign traffic (B) barely moves recall on Tuesday or Wednesday. Adding that day's attacks (C) takes every day to 99–100%: these attacks are separable, the model just has not seen them. Thursday is the exception, where the problem is false alarms on benign traffic (10.8% → 1.3% from A to B, recall unchanged). Logistic regression stays at 0% on Thursday even under C: a linear boundary cannot isolate the web attacks at this alert budget.</figcaption>
+  </figure>
+
+  <figure>
+    <a href="assets/m3-rq4-recall-by-class.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/m3-rq4-recall-by-class-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/m3-rq4-recall-by-class.png" width="2232" height="1426" loading="lazy"
+           alt="Heatmap of recall per attack class for three models when the class's day was held out. Gradient boosting: FTP-Patator under 1%, SSH-Patator 7%, DoS Hulk 63%, GoldenEye 68%, slowloris 33%, Slowhttptest 26%, Heartbleed 100% of 11, web brute force 92%, XSS 94%, infiltration 6%, SQL injection 100% of 21, DDoS 63%, PortScan 1%, Bot 0%.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 10. Recall per attack class on its unseen day.</strong> High-volume DoS attacks partly transfer. Brute force, PortScan and Bot do not. Heartbleed (11 flows) and SQL injection (21) are too small to support any claim. The web-attack scores are revisited in Result 4.</figcaption>
+  </figure>
+
+  <h3>Result 3: error analysis — what the misses and false alarms are</h3>
+  <ul>
+    <li><strong>Thursday's "false alarms" are probably a mislabeled attack.</strong>
+        96% of them (40,922 of 42,787) come from the afternoon infiltration capture.
+        They hit 2,603 different ports and are tiny (median 65 µs, 4 bytes). 89% carry
+        a 1024-byte initial window, a value found in half of all PortScan flows but in
+        only 0.04% of benign flows on the other days. The dataset's own documentation
+        says the infiltration scenario included a second-stage port scan from the
+        compromised host <a href="#references">[4]</a>, yet only 36 flows are labeled Infiltration. The
+        model is likely flagging real scan traffic that the labels call benign, which
+        is the kind of unlabeled executed attack the audits describe <a href="#references">[3]</a>. The CSVs
+        omit IP addresses, so we cannot confirm this flow by flow.</li>
+    <li><strong>Half of PortScan cannot be detected from flow features at all.</strong>
+        Once destination port is excluded, 47% of PortScan flows (42,858) have a
+        feature vector identical to some benign flow. A scan probe is a 1-packet,
+        2-byte connection attempt indistinguishable from an ordinary failed connection.</li>
+    <li><strong>Bot traffic (0% caught) looks like benign traffic</strong>: short,
+        small flows, consistent with the EDA, which placed Bot in BENIGN's group (Figure 7).</li>
+    <li><strong>The window field steers decisions.</strong> Among Wednesday's DoS Hulk
+        flows, those caught have a median <code>Init_Win_bytes_forward</code> of 251;
+        those missed have 0. Missed FTP- and SSH-Patator flows have a median of 29,200.
+        These values identify host operating systems rather than attack behavior, so
+        Result 5 tests their removal.</li>
+    <li><strong>Stability:</strong> refitting the detector with three other random seeds moves held-out recall by under 2 points on Wednesday, Thursday and Friday, but from 1.9% to 22% on Tuesday (FTP-Patator alone: 0.2% to 31%). Where the model has almost no signal for an unseen attack, small arbitrary training choices decide what it catches.</li>
+  </ul>
+
+  <h3>Result 4: defective flows inflate Thursday's success (RQ5)</h3>
+  <p>
+    Three defect flags, defined as in Milestone 2, cover 55,392 flows (2.2%):
+    web-attack flows with no forward payload (90% of Brute Force, 96% of XSS),
+    flows cut at the 120-second timeout (91% of Heartbleed), and feature vectors
+    shared with another label (47% of PortScan).
+  </p>
+  <figure>
+    <a href="assets/m3-rq5-defects-by-class.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/m3-rq5-defects-by-class-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/m3-rq5-defects-by-class.png" width="2413" height="1639" loading="lazy"
+           alt="Dot plot of gradient-boosting recall per class under three settings. Web brute force falls from 92% on all flows to 50% on clean flows; XSS from 94% to 33%. FTP-Patator rises from under 1% to 37% when defects are removed from training. Other classes change by a few points.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 11. Effect of removing defective flows.</strong> Gray vs. blue: the same model scored on all vs. clean test flows. Blue vs. orange: retrained without defects. Thursday's web-attack recall was mostly earned on zero-payload flows, which probably contain no attack. On the 175 clean Brute Force and XSS flows it is 50% and 33%, and Thursday's overall recall falls from 91% to 45%. FTP-Patator's jump (under 1% to 37%) comes from a class with no defects of its own. It is comparable to the seed-to-seed swing on Tuesday (up to 31%), so it reflects how fragile unseen-attack detection is, not a benefit of cleaning.</figcaption>
+  </figure>
+
+  <h3>Result 5: attack types separate cleanly once seen; transfer leans on the window field (RQ2)</h3>
+  <p>
+    Among the 11 attack classes with at least 600 flows (5-fold cross-validation,
+    each class capped at 20,000 flows), gradient boosting reaches a macro-F1 of
+    <strong>0.917</strong> against 0.090 for stratified guessing. Removing the window
+    fields costs almost nothing (0.908), and also removing timeout-capped flows
+    leaves 0.893. The one pair that does not separate is the pair the EDA flagged:
+    63% of XSS flows are predicted as Brute Force (Figure 12).
+  </p>
+  <figure>
+    <a href="assets/m3-rq2-attack-separability.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/m3-rq2-attack-separability-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/m3-rq2-attack-separability.png" width="3167" height="1535" loading="lazy"
+           alt="Left: per-class F1 under three feature variants; nine classes stay at or above 0.93, web brute force about 0.7 and XSS 0.29 to 0.39. Right: confusion matrix without window fields; the diagonal is 96 to 100% except web brute force (75%) and XSS (32%, with 63% predicted as brute force).">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 12. Separability among attack classes.</strong> Nine of eleven classes keep F1 ≥ 0.93 in every variant, so their separation does not depend on the artifact-prone features. Web Attack – Brute Force and XSS remain confused, consistent with the EDA's KS distance of 0.23 between them.</figcaption>
+  </figure>
+  <figure>
+    <a href="assets/m3-rq2-feature-importance.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/m3-rq2-feature-importance-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/m3-rq2-feature-importance.png" width="2811" height="1203" loading="lazy"
+           alt="Permutation importance, top 12 features. With all features, Init_Win_bytes_backward leads at 0.22, followed by packet-rate and timing features. Without window fields, min_seg_size_forward leads at 0.10, followed by packet counts and byte rates.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 13. Which features the attack-type model relies on.</strong> With them available, the window field ranks first. Without them, the model shifts to segment size, packet counts and byte rates and loses less than 0.01 macro-F1. Correlated features share credit under permutation, so a low bar means "replaceable", not "uninformative".</figcaption>
+  </figure>
+  <p>
+    <strong>Transfer is a different story.</strong> Retraining the RQ4 detector without
+    the two window fields lowers Wednesday's recall at the 1% budget from 61% to 9%
+    and Friday's from 37% to 28%. Ranking quality holds up (PR-AUC 0.84 and 0.73),
+    which means the calibrated threshold, not the ordering, no longer carries over
+    to the new day. Part of the apparent cross-day DoS detection rests on a
+    host-identifying field.
+  </p>
+
+  <h3>Result 6: the EDA's four groups only partly hold under clustering (RQ3)</h3>
+  <table class="full">
+    <thead>
+      <tr><th scope="col">k-means configuration</th><th scope="col">ARI vs. EDA groups</th><th scope="col">Silhouette</th><th scope="col">What it shows</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>k = 4, all flows (reference)</td><td>0.058</td><td>0.387</td><td>BENIGN is the majority of every cluster; imbalance drowns the structure.</td></tr>
+      <tr><td>k = 4, 2,000 flows per class</td><td>0.227</td><td>0.467</td><td>Better alignment, but no cluster is dominated by one class; Heartbleed shares a cluster with SSH-Patator.</td></tr>
+      <tr><td>k = 22, balanced, 6 low-correlation features</td><td>—</td><td>0.704</td><td>Tighter clusters that split the EDA groups. Brute Force and XSS still land together (83% and 93% in one cluster).</td></tr>
+    </tbody>
+  </table>
+  <p>
+    Tyler's analysis
+    (<a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/03-kmeans-clustering.ipynb">03-kmeans-clustering.ipynb</a>)
+    chose k from the inertia and silhouette curves over k = 2–69. The clustering and
+    the supervised results agree: Brute Force and XSS are not separable at the flow
+    level, and Bot sits with benign traffic.
+  </p>
+
+  <h3>What this evaluation does not show</h3>
+  <ul>
+    <li>Not causal: features that predict an attack class describe this testbed's
+        tools and hosts, not why attacks look the way they do.</li>
+    <li>Not general: one simulated week from 2017, one attack catalog, and attacker
+        hosts fixed throughout. Each held-out day contains only one or two attack
+        families, so each fold is closer to a case study than a sample.</li>
+    <li>Not final on small classes: Heartbleed (11), SQL injection (21) and
+        Infiltration (36) results are anecdotes.</li>
+    <li>Limited by labels: where labels are wrong (Thursday's scan, zero-payload web
+        flows), recall and false alarms are measured against the wrong answer.</li>
+  </ul>
+
+  <p>
+    <strong>Code:</strong> every number above comes from scripts in
+    <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/tree/main/src">src/</a>
+    (<code>m3_common.py</code>, <code>m3_rq4_transfer.py</code>, <code>m3_rq5_defects.py</code>,
+    <code>m3_rq2_separability.py</code>, <code>m3_error_analysis.py</code>,
+    <code>m3_stability.py</code>, <code>m3_figures.py</code>), with seed 5502. The
+    result tables are in
+    <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/tree/main/results/m3">results/m3/</a>,
+    and the baselines and clustering are in Tyler's notebooks
+    <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/04-prediction-baselines.ipynb">04</a>
+    and <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/03-kmeans-clustering.ipynb">03</a>.
+  </p>
+</section>
+
 <section id="team">
   <h2>Team</h2>
 
@@ -762,6 +1050,23 @@
         Documents packet misordering, duplication, and unlabeled executed attacks,
         and quantifies the resulting shift in detection performance — the
         justification for RQ5.
+      </p>
+    </li>
+    <li>
+      Canadian Institute for Cybersecurity, "Intrusion Detection Evaluation Dataset
+      (CIC-IDS2017)," dataset page. Accessed Nov. 3, 2026.
+      <a href="https://www.unb.ca/cic/datasets/ids-2017.html">Link</a>
+      <p class="contrib">
+        The official attack schedule. Its description of the Thursday-afternoon
+        infiltration, including a second-stage port scan from the compromised host,
+        explains the false alarms analyzed in Milestone 3.
+      </p>
+    </li>
+    <li>
+      F. Pedregosa <em>et al.</em>, "Scikit-learn: Machine Learning in Python,"
+      <em>Journal of Machine Learning Research</em>, vol. 12, pp. 2825–2830, 2011.
+      <p class="contrib">
+        The library used for every Milestone 3 model, split and metric.
       </p>
     </li>
   </ol>

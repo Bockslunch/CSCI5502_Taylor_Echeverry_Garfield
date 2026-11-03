@@ -1,0 +1,85 @@
+day,model,training,test_set,attack_class,n,recall
+Tuesday,logreg,retained,all_test,FTP-Patator,5931,0.0006744225257123588
+Tuesday,logreg,retained,all_test,SSH-Patator,3219,0.004970487729108419
+Tuesday,logreg,retained,clean_test,FTP-Patator,5931,0.0006744225257123588
+Tuesday,logreg,retained,clean_test,SSH-Patator,3217,0.004973577867578489
+Tuesday,logreg,excluded,clean_test,FTP-Patator,5931,0.0003372112628561794
+Tuesday,logreg,excluded,clean_test,SSH-Patator,3217,0.00031084861672365556
+Tuesday,hgb,retained,all_test,FTP-Patator,5931,0.0018546619457089867
+Tuesday,hgb,retained,all_test,SSH-Patator,3219,0.07114010562286424
+Tuesday,hgb,retained,clean_test,FTP-Patator,5931,0.0018546619457089867
+Tuesday,hgb,retained,clean_test,SSH-Patator,3217,0.07118433322971712
+Tuesday,hgb,excluded,clean_test,FTP-Patator,5931,0.3648625864103861
+Tuesday,hgb,excluded,clean_test,SSH-Patator,3217,0.06185887472800746
+Wednesday,logreg,retained,all_test,DoS GoldenEye,10286,0.2945751506902586
+Wednesday,logreg,retained,all_test,DoS Hulk,172846,0.035071682306793334
+Wednesday,logreg,retained,all_test,DoS Slowhttptest,5228,0.090283091048202
+Wednesday,logreg,retained,all_test,DoS slowloris,5385,0.3192200557103064
+Wednesday,logreg,retained,all_test,Heartbleed,11,0.09090909090909091
+Wednesday,logreg,retained,clean_test,DoS GoldenEye,10276,0.2948618139353834
+Wednesday,logreg,retained,clean_test,DoS Hulk,172652,0.035111090517341244
+Wednesday,logreg,retained,clean_test,DoS Slowhttptest,5200,0.09076923076923077
+Wednesday,logreg,retained,clean_test,DoS slowloris,5340,0.3219101123595506
+Wednesday,logreg,retained,clean_test,Heartbleed,1,0.0
+Wednesday,logreg,excluded,clean_test,DoS GoldenEye,10276,0.3445893343713507
+Wednesday,logreg,excluded,clean_test,DoS Hulk,172652,0.025594838171582143
+Wednesday,logreg,excluded,clean_test,DoS Slowhttptest,5200,0.05884615384615385
+Wednesday,logreg,excluded,clean_test,DoS slowloris,5340,0.32078651685393256
+Wednesday,logreg,excluded,clean_test,Heartbleed,1,0.0
+Wednesday,hgb,retained,all_test,DoS GoldenEye,10286,0.6844254326268715
+Wednesday,hgb,retained,all_test,DoS Hulk,172846,0.6286578804253498
+Wednesday,hgb,retained,all_test,DoS Slowhttptest,5228,0.26472838561591433
+Wednesday,hgb,retained,all_test,DoS slowloris,5385,0.33073351903435466
+Wednesday,hgb,retained,all_test,Heartbleed,11,1.0
+Wednesday,hgb,retained,clean_test,DoS GoldenEye,10276,0.6850914752822109
+Wednesday,hgb,retained,clean_test,DoS Hulk,172652,0.6290341264508954
+Wednesday,hgb,retained,clean_test,DoS Slowhttptest,5200,0.26615384615384613
+Wednesday,hgb,retained,clean_test,DoS slowloris,5340,0.3254681647940075
+Wednesday,hgb,retained,clean_test,Heartbleed,1,1.0
+Wednesday,hgb,excluded,clean_test,DoS GoldenEye,10276,0.6508369015181005
+Wednesday,hgb,excluded,clean_test,DoS Hulk,172652,0.6345423163357505
+Wednesday,hgb,excluded,clean_test,DoS Slowhttptest,5200,0.28
+Wednesday,hgb,excluded,clean_test,DoS slowloris,5340,0.3404494382022472
+Wednesday,hgb,excluded,clean_test,Heartbleed,1,1.0
+Thursday,logreg,retained,all_test,Infiltration,36,0.0
+Thursday,logreg,retained,all_test,Web Attack - Brute Force,1470,0.0
+Thursday,logreg,retained,all_test,Web Attack - Sql Injection,21,0.0
+Thursday,logreg,retained,all_test,Web Attack - XSS,652,0.0
+Thursday,logreg,retained,clean_test,Infiltration,29,0.0
+Thursday,logreg,retained,clean_test,Web Attack - Brute Force,151,0.0
+Thursday,logreg,retained,clean_test,Web Attack - Sql Injection,12,0.0
+Thursday,logreg,retained,clean_test,Web Attack - XSS,24,0.0
+Thursday,logreg,excluded,clean_test,Infiltration,29,0.0
+Thursday,logreg,excluded,clean_test,Web Attack - Brute Force,151,0.0
+Thursday,logreg,excluded,clean_test,Web Attack - Sql Injection,12,0.0
+Thursday,logreg,excluded,clean_test,Web Attack - XSS,24,0.0
+Thursday,hgb,retained,all_test,Infiltration,36,0.05555555555555555
+Thursday,hgb,retained,all_test,Web Attack - Brute Force,1470,0.917687074829932
+Thursday,hgb,retained,all_test,Web Attack - Sql Injection,21,1.0
+Thursday,hgb,retained,all_test,Web Attack - XSS,652,0.9447852760736196
+Thursday,hgb,retained,clean_test,Infiltration,29,0.06896551724137931
+Thursday,hgb,retained,clean_test,Web Attack - Brute Force,151,0.5033112582781457
+Thursday,hgb,retained,clean_test,Web Attack - Sql Injection,12,1.0
+Thursday,hgb,retained,clean_test,Web Attack - XSS,24,0.3333333333333333
+Thursday,hgb,excluded,clean_test,Infiltration,29,0.06896551724137931
+Thursday,hgb,excluded,clean_test,Web Attack - Brute Force,151,0.5099337748344371
+Thursday,hgb,excluded,clean_test,Web Attack - Sql Injection,12,1.0
+Thursday,hgb,excluded,clean_test,Web Attack - XSS,24,0.2916666666666667
+Friday,logreg,retained,all_test,Bot,1948,0.0
+Friday,logreg,retained,all_test,DDoS,128014,0.6431874638711391
+Friday,logreg,retained,all_test,PortScan,90694,0.004597878580721988
+Friday,logreg,retained,clean_test,Bot,1829,0.0
+Friday,logreg,retained,clean_test,DDoS,128011,0.6432025372819523
+Friday,logreg,retained,clean_test,PortScan,47835,0.008717466290373158
+Friday,logreg,excluded,clean_test,Bot,1829,0.0
+Friday,logreg,excluded,clean_test,DDoS,128011,0.6518971025927459
+Friday,logreg,excluded,clean_test,PortScan,47835,0.0093237169436605
+Friday,hgb,retained,all_test,Bot,1948,0.0
+Friday,hgb,retained,all_test,DDoS,128014,0.6346180886465543
+Friday,hgb,retained,all_test,PortScan,90694,0.009780139810792335
+Friday,hgb,retained,clean_test,Bot,1829,0.0
+Friday,hgb,retained,clean_test,DDoS,128011,0.6346329612298943
+Friday,hgb,retained,clean_test,PortScan,47835,0.018522002717675342
+Friday,hgb,excluded,clean_test,Bot,1829,0.0
+Friday,hgb,excluded,clean_test,DDoS,128011,0.5919725648577076
+Friday,hgb,excluded,clean_test,PortScan,47835,0.016180620884289745

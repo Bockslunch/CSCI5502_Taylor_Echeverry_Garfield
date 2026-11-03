@@ -45,7 +45,10 @@ benchmark dataset — while assessing how far those patterns reflect attacker
 behavior rather than artifacts of how the dataset was constructed.
 
 The project is framed around a detection problem, not around a particular
-modeling technique. Method selection is deferred to later milestones.
+modeling technique. Milestone 3 compares baselines, logistic regression and
+gradient boosting under leave-one-day-out evaluation, plus k-means clustering;
+see the [Models & Evaluation](https://bockslunch.github.io/CSCI5502_Taylor_Echeverry_Garfield/#models)
+section of the website.
 
 ---
 
@@ -135,8 +138,11 @@ Consequences we carry through the analysis:
 .
 ├── data/           Acquisition instructions and empty raw/processed folders.
 │                   Raw CICIDS2017 files are gitignored — never commit them.
-├── notebooks/      01-data-cleaning.ipynb (raw → cleaned), 02-eda.ipynb (exploration).
-├── src/            Scripts: cleaning replay, quality statistics, EDA figures.
+├── notebooks/      01 cleaning, 02 EDA, 03 k-means clustering (RQ3),
+│                   04 leave-one-day-out baselines (RQ4).
+├── src/            Scripts: cleaning replay, quality statistics, EDA figures (m2_*),
+│                   modeling and evaluation (m3_*).
+├── results/m3/     Milestone 3 result tables (CSV/JSON) and run logs.
 ├── figures/        Generated figures referenced by the website and report.
 ├── docs/           The project website (GitHub Pages) plus project documentation.
 │   ├── index.html      The site itself — all four required sections
@@ -154,11 +160,11 @@ Consequences we carry through the analysis:
 | --- | --- | --- |
 | 0 | Project idea and proposal | Approved |
 | 1 | Project framing & foundation — research questions, background, team, repository, website | Complete |
-| 2 | Data acquisition, preparation & exploration — provenance, cleaning, data dictionary, quality assessment, EDA | In progress |
-| 3 | _Fill in from Canvas_ | Not started |
+| 2 | Data acquisition, preparation & exploration — provenance, cleaning, data dictionary, quality assessment, EDA | Complete |
+| 3 | Modeling & evaluation — baselines, candidate methods, leave-one-day-out validation, error analysis | Complete (due Nov 13) |
 | 4 | _Fill in from Canvas_ | Not started |
 
-> Replace milestones 3–4 with the actual titles and due dates from Canvas.
+> Replace milestone 4 with the actual title and due date from Canvas.
 
 ---
 
@@ -188,6 +194,20 @@ read and understood. To run the analysis code:
    python src/m2_quality_stats.py data/processed            # Section 4–5 numbers → m2_stats.json
    python src/m2_eda_figures.py data/processed figures docs/assets   # Figures 1–7, light + dark, copied to the site
    ```
+
+5. Run the Milestone 3 models and evaluation from the repository root, in order
+   (they need `data/processed/cicids2017_clean.pkl` from step 4; seed 5502 throughout):
+
+   ```bash
+   python src/m3_rq4_transfer.py data/processed results/m3      # RQ4: baselines vs. logistic regression vs. gradient boosting (~50 min)
+   python src/m3_rq5_defects.py data/processed results/m3       # RQ5: retrain without defect-flagged flows
+   python src/m3_rq2_separability.py data/processed results/m3  # RQ2: attack-type separability, with/without window fields
+   python src/m3_error_analysis.py data/processed results/m3    # profiles of false alarms and missed attacks
+   python src/m3_stability.py data/processed results/m3         # seed-to-seed spread of the RQ4 results
+   python src/m3_figures.py results/m3 figures docs/assets      # Figures 8–13, light + dark, copied to the site
+   ```
+
+   About 8 GB of RAM is enough; `m3_rq4_transfer.py` is the slow step.
 
 ---
 

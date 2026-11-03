@@ -1,0 +1,155 @@
+day,model,condition,test_set,attack_class,n,recall
+Tuesday,majority,A_lodo,full_day,FTP-Patator,5931,0.0
+Tuesday,majority,A_lodo,full_day,SSH-Patator,3219,0.0
+Tuesday,stratified,A_lodo,full_day,FTP-Patator,5931,0.19625695498229642
+Tuesday,stratified,A_lodo,full_day,SSH-Patator,3219,0.20441130785958372
+Tuesday,single_feature,A_lodo,full_day,FTP-Patator,5931,0.0
+Tuesday,single_feature,A_lodo,full_day,SSH-Patator,3219,0.0
+Tuesday,logreg,A_lodo,half_day,FTP-Patator,2966,0.00033715441672285906
+Tuesday,logreg,A_lodo,half_day,SSH-Patator,1609,0.005593536357986327
+Tuesday,logreg,A_lodo,full_day,FTP-Patator,5931,0.0006744225257123588
+Tuesday,logreg,A_lodo,full_day,SSH-Patator,3219,0.004970487729108419
+Tuesday,logreg,B_lodo_plus_day_benign,half_day,FTP-Patator,2966,0.00033715441672285906
+Tuesday,logreg,B_lodo_plus_day_benign,half_day,SSH-Patator,1609,0.0006215040397762585
+Tuesday,logreg,C_in_day,half_day,FTP-Patator,2966,0.0020229265003371545
+Tuesday,logreg,C_in_day,half_day,SSH-Patator,1609,0.0006215040397762585
+Tuesday,hgb,A_lodo,half_day,FTP-Patator,2966,0.0020229265003371545
+Tuesday,hgb,A_lodo,half_day,SSH-Patator,1609,0.07085146053449347
+Tuesday,hgb,A_lodo,full_day,FTP-Patator,5931,0.0018546619457089867
+Tuesday,hgb,A_lodo,full_day,SSH-Patator,3219,0.07114010562286424
+Tuesday,hgb,B_lodo_plus_day_benign,half_day,FTP-Patator,2966,0.004383007417397168
+Tuesday,hgb,B_lodo_plus_day_benign,half_day,SSH-Patator,1609,0.015537600994406464
+Tuesday,hgb,C_in_day,half_day,FTP-Patator,2966,0.9989885367498315
+Tuesday,hgb,C_in_day,half_day,SSH-Patator,1609,1.0
+Wednesday,majority,A_lodo,full_day,DoS GoldenEye,10286,0.0
+Wednesday,majority,A_lodo,full_day,DoS Hulk,172846,0.0
+Wednesday,majority,A_lodo,full_day,DoS Slowhttptest,5228,0.0
+Wednesday,majority,A_lodo,full_day,DoS slowloris,5385,0.0
+Wednesday,majority,A_lodo,full_day,Heartbleed,11,0.0
+Wednesday,stratified,A_lodo,full_day,DoS GoldenEye,10286,0.12201049970834144
+Wednesday,stratified,A_lodo,full_day,DoS Hulk,172846,0.11977135716186663
+Wednesday,stratified,A_lodo,full_day,DoS Slowhttptest,5228,0.12260902830910482
+Wednesday,stratified,A_lodo,full_day,DoS slowloris,5385,0.12627669452181986
+Wednesday,stratified,A_lodo,full_day,Heartbleed,11,0.09090909090909091
+Wednesday,single_feature,A_lodo,full_day,DoS GoldenEye,10286,0.0
+Wednesday,single_feature,A_lodo,full_day,DoS Hulk,172846,0.0
+Wednesday,single_feature,A_lodo,full_day,DoS Slowhttptest,5228,0.0
+Wednesday,single_feature,A_lodo,full_day,DoS slowloris,5385,0.0
+Wednesday,single_feature,A_lodo,full_day,Heartbleed,11,0.0
+Wednesday,logreg,A_lodo,half_day,DoS GoldenEye,5143,0.29360295547345905
+Wednesday,logreg,A_lodo,half_day,DoS Hulk,86423,0.0353725281464425
+Wednesday,logreg,A_lodo,half_day,DoS Slowhttptest,2614,0.09219586840091813
+Wednesday,logreg,A_lodo,half_day,DoS slowloris,2692,0.312778603268945
+Wednesday,logreg,A_lodo,half_day,Heartbleed,6,0.0
+Wednesday,logreg,A_lodo,full_day,DoS GoldenEye,10286,0.2945751506902586
+Wednesday,logreg,A_lodo,full_day,DoS Hulk,172846,0.035071682306793334
+Wednesday,logreg,A_lodo,full_day,DoS Slowhttptest,5228,0.090283091048202
+Wednesday,logreg,A_lodo,full_day,DoS slowloris,5385,0.3192200557103064
+Wednesday,logreg,A_lodo,full_day,Heartbleed,11,0.09090909090909091
+Wednesday,logreg,B_lodo_plus_day_benign,half_day,DoS GoldenEye,5143,0.25432626871475794
+Wednesday,logreg,B_lodo_plus_day_benign,half_day,DoS Hulk,86423,0.021637758467074737
+Wednesday,logreg,B_lodo_plus_day_benign,half_day,DoS Slowhttptest,2614,0.060443764345830146
+Wednesday,logreg,B_lodo_plus_day_benign,half_day,DoS slowloris,2692,0.3112927191679049
+Wednesday,logreg,B_lodo_plus_day_benign,half_day,Heartbleed,6,0.0
+Wednesday,logreg,C_in_day,half_day,DoS GoldenEye,5143,0.7273964612094108
+Wednesday,logreg,C_in_day,half_day,DoS Hulk,86423,0.8921699084734388
+Wednesday,logreg,C_in_day,half_day,DoS Slowhttptest,2614,0.612088752869166
+Wednesday,logreg,C_in_day,half_day,DoS slowloris,2692,0.8436106983655275
+Wednesday,logreg,C_in_day,half_day,Heartbleed,6,0.0
+Wednesday,hgb,A_lodo,half_day,DoS GoldenEye,5143,0.6789811394127941
+Wednesday,hgb,A_lodo,half_day,DoS Hulk,86423,0.628802517848258
+Wednesday,hgb,A_lodo,half_day,DoS Slowhttptest,2614,0.27314460596786533
+Wednesday,hgb,A_lodo,half_day,DoS slowloris,2692,0.3361812778603269
+Wednesday,hgb,A_lodo,half_day,Heartbleed,6,1.0
+Wednesday,hgb,A_lodo,full_day,DoS GoldenEye,10286,0.6844254326268715
+Wednesday,hgb,A_lodo,full_day,DoS Hulk,172846,0.6286578804253498
+Wednesday,hgb,A_lodo,full_day,DoS Slowhttptest,5228,0.26472838561591433
+Wednesday,hgb,A_lodo,full_day,DoS slowloris,5385,0.33073351903435466
+Wednesday,hgb,A_lodo,full_day,Heartbleed,11,1.0
+Wednesday,hgb,B_lodo_plus_day_benign,half_day,DoS GoldenEye,5143,0.635232354656815
+Wednesday,hgb,B_lodo_plus_day_benign,half_day,DoS Hulk,86423,0.6225078972032908
+Wednesday,hgb,B_lodo_plus_day_benign,half_day,DoS Slowhttptest,2614,0.17329762815608263
+Wednesday,hgb,B_lodo_plus_day_benign,half_day,DoS slowloris,2692,0.12184249628528974
+Wednesday,hgb,B_lodo_plus_day_benign,half_day,Heartbleed,6,1.0
+Wednesday,hgb,C_in_day,half_day,DoS GoldenEye,5143,0.9990278047832004
+Wednesday,hgb,C_in_day,half_day,DoS Hulk,86423,0.9997917221110121
+Wednesday,hgb,C_in_day,half_day,DoS Slowhttptest,2614,0.9992348890589136
+Wednesday,hgb,C_in_day,half_day,DoS slowloris,2692,0.9988855869242199
+Wednesday,hgb,C_in_day,half_day,Heartbleed,6,1.0
+Thursday,majority,A_lodo,full_day,Infiltration,36,0.0
+Thursday,majority,A_lodo,full_day,Web Attack - Brute Force,1470,0.0
+Thursday,majority,A_lodo,full_day,Web Attack - Sql Injection,21,0.0
+Thursday,majority,A_lodo,full_day,Web Attack - XSS,652,0.0
+Thursday,stratified,A_lodo,full_day,Infiltration,36,0.16666666666666666
+Thursday,stratified,A_lodo,full_day,Web Attack - Brute Force,1470,0.20136054421768707
+Thursday,stratified,A_lodo,full_day,Web Attack - Sql Injection,21,0.09523809523809523
+Thursday,stratified,A_lodo,full_day,Web Attack - XSS,652,0.2085889570552147
+Thursday,single_feature,A_lodo,full_day,Infiltration,36,0.0
+Thursday,single_feature,A_lodo,full_day,Web Attack - Brute Force,1470,0.0
+Thursday,single_feature,A_lodo,full_day,Web Attack - Sql Injection,21,0.0
+Thursday,single_feature,A_lodo,full_day,Web Attack - XSS,652,0.0
+Thursday,logreg,A_lodo,half_day,Infiltration,18,0.0
+Thursday,logreg,A_lodo,half_day,Web Attack - Brute Force,735,0.0
+Thursday,logreg,A_lodo,half_day,Web Attack - Sql Injection,11,0.0
+Thursday,logreg,A_lodo,half_day,Web Attack - XSS,326,0.0
+Thursday,logreg,A_lodo,full_day,Infiltration,36,0.0
+Thursday,logreg,A_lodo,full_day,Web Attack - Brute Force,1470,0.0
+Thursday,logreg,A_lodo,full_day,Web Attack - Sql Injection,21,0.0
+Thursday,logreg,A_lodo,full_day,Web Attack - XSS,652,0.0
+Thursday,logreg,B_lodo_plus_day_benign,half_day,Infiltration,18,0.0
+Thursday,logreg,B_lodo_plus_day_benign,half_day,Web Attack - Brute Force,735,0.0
+Thursday,logreg,B_lodo_plus_day_benign,half_day,Web Attack - Sql Injection,11,0.0
+Thursday,logreg,B_lodo_plus_day_benign,half_day,Web Attack - XSS,326,0.0
+Thursday,logreg,C_in_day,half_day,Infiltration,18,0.0
+Thursday,logreg,C_in_day,half_day,Web Attack - Brute Force,735,0.0
+Thursday,logreg,C_in_day,half_day,Web Attack - Sql Injection,11,0.0
+Thursday,logreg,C_in_day,half_day,Web Attack - XSS,326,0.0
+Thursday,hgb,A_lodo,half_day,Infiltration,18,0.1111111111111111
+Thursday,hgb,A_lodo,half_day,Web Attack - Brute Force,735,0.9156462585034013
+Thursday,hgb,A_lodo,half_day,Web Attack - Sql Injection,11,1.0
+Thursday,hgb,A_lodo,half_day,Web Attack - XSS,326,0.941717791411043
+Thursday,hgb,A_lodo,full_day,Infiltration,36,0.05555555555555555
+Thursday,hgb,A_lodo,full_day,Web Attack - Brute Force,1470,0.917687074829932
+Thursday,hgb,A_lodo,full_day,Web Attack - Sql Injection,21,1.0
+Thursday,hgb,A_lodo,full_day,Web Attack - XSS,652,0.9447852760736196
+Thursday,hgb,B_lodo_plus_day_benign,half_day,Infiltration,18,0.1111111111111111
+Thursday,hgb,B_lodo_plus_day_benign,half_day,Web Attack - Brute Force,735,0.9156462585034013
+Thursday,hgb,B_lodo_plus_day_benign,half_day,Web Attack - Sql Injection,11,0.8181818181818182
+Thursday,hgb,B_lodo_plus_day_benign,half_day,Web Attack - XSS,326,0.9386503067484663
+Thursday,hgb,C_in_day,half_day,Infiltration,18,0.8333333333333334
+Thursday,hgb,C_in_day,half_day,Web Attack - Brute Force,735,1.0
+Thursday,hgb,C_in_day,half_day,Web Attack - Sql Injection,11,0.9090909090909091
+Thursday,hgb,C_in_day,half_day,Web Attack - XSS,326,0.9754601226993865
+Friday,majority,A_lodo,full_day,Bot,1948,0.0
+Friday,majority,A_lodo,full_day,DDoS,128014,0.0
+Friday,majority,A_lodo,full_day,PortScan,90694,0.0
+Friday,stratified,A_lodo,full_day,Bot,1948,0.11498973305954825
+Friday,stratified,A_lodo,full_day,DDoS,128014,0.10641804802599715
+Friday,stratified,A_lodo,full_day,PortScan,90694,0.10734999007652105
+Friday,single_feature,A_lodo,full_day,Bot,1948,0.0
+Friday,single_feature,A_lodo,full_day,DDoS,128014,0.09916102926242443
+Friday,single_feature,A_lodo,full_day,PortScan,90694,0.0005402782984541425
+Friday,logreg,A_lodo,half_day,Bot,974,0.0
+Friday,logreg,A_lodo,half_day,DDoS,64007,0.6431796522255379
+Friday,logreg,A_lodo,half_day,PortScan,45347,0.004454539440315787
+Friday,logreg,A_lodo,full_day,Bot,1948,0.0
+Friday,logreg,A_lodo,full_day,DDoS,128014,0.6431874638711391
+Friday,logreg,A_lodo,full_day,PortScan,90694,0.004597878580721988
+Friday,logreg,B_lodo_plus_day_benign,half_day,Bot,974,0.0
+Friday,logreg,B_lodo_plus_day_benign,half_day,DDoS,64007,0.6478197697126876
+Friday,logreg,B_lodo_plus_day_benign,half_day,PortScan,45347,0.004454539440315787
+Friday,logreg,C_in_day,half_day,Bot,974,0.0
+Friday,logreg,C_in_day,half_day,DDoS,64007,0.9716905963410252
+Friday,logreg,C_in_day,half_day,PortScan,45347,0.5190420534985777
+Friday,hgb,A_lodo,half_day,Bot,974,0.0
+Friday,hgb,A_lodo,half_day,DDoS,64007,0.6340868967456684
+Friday,hgb,A_lodo,half_day,PortScan,45347,0.009769113723068781
+Friday,hgb,A_lodo,full_day,Bot,1948,0.0
+Friday,hgb,A_lodo,full_day,DDoS,128014,0.6346180886465543
+Friday,hgb,A_lodo,full_day,PortScan,90694,0.009780139810792335
+Friday,hgb,B_lodo_plus_day_benign,half_day,Bot,974,0.0
+Friday,hgb,B_lodo_plus_day_benign,half_day,DDoS,64007,0.7758370178261753
+Friday,hgb,B_lodo_plus_day_benign,half_day,PortScan,45347,0.01007784417932829
+Friday,hgb,C_in_day,half_day,Bot,974,0.9640657084188912
+Friday,hgb,C_in_day,half_day,DDoS,64007,0.9996719108847469
+Friday,hgb,C_in_day,half_day,PortScan,45347,0.9999338434736587

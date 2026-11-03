@@ -18,3 +18,9 @@ all of them live in `docs/assets/` because GitHub Pages only publishes `docs/`.
 | `rq2-destination-port.png` | Fig. 5: destination-port concentration by class (from Tyler's analysis in `02-eda.ipynb`) | `src/m2_eda_figures.py` |
 | `rq2-flow-duration-timeout.png` | Fig. 6: Flow Duration piles up at the 120 s CICFlowMeter timeout (from Tyler's analysis) | `src/m2_eda_figures.py` |
 | `rq3-class-profiles.png` | Fig. 7: median flow profile per class, Ward-clustered into 4 groups | `src/m2_eda_figures.py` |
+| `m3-rq4-transfer-by-day.png` | Fig. 8: recall, false alarms and PR-AUC on each unseen day | `src/m3_figures.py` |
+| `m3-rq4-shift-decomposition.png` | Fig. 9: benign shift vs. unseen attacks (conditions A/B/C) | `src/m3_figures.py` |
+| `m3-rq4-recall-by-class.png` | Fig. 10: recall per attack class on its unseen day | `src/m3_figures.py` |
+| `m3-rq5-defects-by-class.png` | Fig. 11: per-class recall with defective flows kept vs. removed | `src/m3_figures.py` |
+| `m3-rq2-attack-separability.png` | Fig. 12: per-class F1 across feature variants and confusion matrix | `src/m3_figures.py` |
+| `m3-rq2-feature-importance.png` | Fig. 13: permutation importance with and without the window fields | `src/m3_figures.py` |

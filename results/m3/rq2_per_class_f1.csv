@@ -1,0 +1,34 @@
+variant,attack_class,f1,n
+V1_all_features,Bot,0.9804518913429805,1948
+V1_all_features,DDoS,0.9986237269474264,20000
+V1_all_features,DoS GoldenEye,0.9953822971856316,10286
+V1_all_features,DoS Hulk,0.9965221307578752,20000
+V1_all_features,DoS Slowhttptest,0.9909186502246439,5228
+V1_all_features,DoS slowloris,0.9920237432758301,5385
+V1_all_features,FTP-Patator,0.9963856434395225,5931
+V1_all_features,PortScan,0.9976970061079403,20000
+V1_all_features,SSH-Patator,0.9947089947089947,3219
+V1_all_features,Web Attack - Brute Force,0.7551487414187643,1470
+V1_all_features,Web Attack - XSS,0.39084219133278825,652
+V2_no_init_win,Bot,0.9920533196616252,1948
+V2_no_init_win,DDoS,0.9994747242302209,20000
+V2_no_init_win,DoS GoldenEye,0.9951385512882839,10286
+V2_no_init_win,DoS Hulk,0.9965250868728281,20000
+V2_no_init_win,DoS Slowhttptest,0.9902130109383995,5228
+V2_no_init_win,DoS slowloris,0.9887703016241299,5385
+V2_no_init_win,FTP-Patator,0.9974734714502274,5931
+V2_no_init_win,PortScan,0.999249849969994,20000
+V2_no_init_win,SSH-Patator,0.9653134235495412,3219
+V2_no_init_win,Web Attack - Brute Force,0.7166018158236057,1470
+V2_no_init_win,Web Attack - XSS,0.3435177539223782,652
+V3_no_init_win_no_timeout_rows,Bot,0.9396857577293461,1948
+V3_no_init_win_no_timeout_rows,DDoS,0.998024654314505,20000
+V3_no_init_win_no_timeout_rows,DoS GoldenEye,0.9923954372623575,10276
+V3_no_init_win_no_timeout_rows,DoS Hulk,0.9946459844883663,19992
+V3_no_init_win_no_timeout_rows,DoS Slowhttptest,0.9788143828960155,5200
+V3_no_init_win_no_timeout_rows,DoS slowloris,0.9837482386096759,5342
+V3_no_init_win_no_timeout_rows,FTP-Patator,0.9975562484199882,5931
+V3_no_init_win_no_timeout_rows,PortScan,0.995651087228193,20000
+V3_no_init_win_no_timeout_rows,SSH-Patator,0.9457755359394704,3217
+V3_no_init_win_no_timeout_rows,Web Attack - Brute Force,0.6989512646514497,1470
+V3_no_init_win_no_timeout_rows,Web Attack - XSS,0.2931174089068826,652

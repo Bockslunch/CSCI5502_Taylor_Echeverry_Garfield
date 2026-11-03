@@ -26,6 +26,10 @@ data/processed/*
 !data/**/README.md
 # Small aggregate tables behind figures are results, not data — keep them.
 !figures/*.csv
+# Milestone 3 model-result tables (aggregates, no flow records) — keep them.
+!results/**/*.csv
+# Per-flow model scores are large and regenerable; never commit them.
+results/**/*.npz
 
 # ---------------------------------------------------------------
 # Secrets — never commit credentials, keys, or tokens

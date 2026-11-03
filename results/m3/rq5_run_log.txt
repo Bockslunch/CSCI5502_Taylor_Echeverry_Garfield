@@ -1,0 +1,43 @@
+[11:25:00] defects by class:
+                               rows  zero_payload_web  timeout_capped  shared_vector  any_defect  clean_rows  pct_defective
+Label                                                                                                                      
+BENIGN                      2094915                 0            9015           1144       10159     2084756           0.48
+Bot                            1948                 0               0            119         119        1829           6.11
+DDoS                         128014                 0               0              3           3      128011           0.00
+DoS GoldenEye                 10286                 0              10              0          10       10276           0.10
+DoS Hulk                     172846                 0              60            134         194      172652           0.11
+DoS Slowhttptest               5228                 0              28              0          28        5200           0.54
+DoS slowloris                  5385                 0              43              2          45        5340           0.84
+FTP-Patator                    5931                 0               0              0           0        5931           0.00
+Heartbleed                       11                 0              10              0          10           1          90.91
+Infiltration                     36                 0               7              0           7          29          19.44
+PortScan                      90694                 0               1          42858       42859       47835          47.26
+SSH-Patator                    3219                 0               2              0           2        3217           0.06
+Web Attack - Brute Force       1470              1319               0              0        1319         151          89.73
+Web Attack - Sql Injection       21                 9               0              0           9          12          42.86
+Web Attack - XSS                652               628               0              0         628          24          96.32
+[11:25:01] === Monday: 1,733 of 502,612 test rows defective; clean training rows 1,964,385
+[11:25:23]   logreg: refit 20s
+[11:26:22]   hgb: refit 57s
+[11:26:22] === Tuesday: 1,905 of 421,549 test rows defective; clean training rows 2,045,620
+[11:26:43]   logreg: refit 19s
+[11:28:19]   hgb: refit 94s
+[11:28:19] === Wednesday: 2,226 of 602,258 test rows defective; clean training rows 1,865,232
+[11:29:06]   logreg: refit 44s
+[11:29:35]   hgb: refit 28s
+[11:29:35] === Thursday: 4,673 of 398,419 test rows defective; clean training rows 2,071,518
+[11:29:58]   logreg: refit 20s
+[11:31:41]   hgb: refit 101s
+[11:31:41] === Friday: 44,855 of 595,818 test rows defective; clean training rows 1,914,301
+[11:32:04]   logreg: refit 21s
+[11:32:45]   hgb: refit 39s
+[11:32:46] 
+                              fpr                                   recall                           
+day                        Friday Monday Thursday Tuesday Wednesday Friday Thursday Tuesday Wednesday
+model  training test_set                                                                             
+hgb    excluded clean_test  0.026  0.017    0.106   0.024     0.018  0.431    0.454   0.258     0.618
+       retained all_test    0.021  0.014    0.108   0.026     0.012  0.372    0.912   0.026     0.614
+                clean_test  0.021  0.014    0.106   0.026     0.012  0.462    0.454   0.026     0.614
+logreg excluded clean_test  0.014  0.018    0.038   0.013     0.015  0.472    0.000   0.000     0.052
+       retained all_test    0.014  0.016    0.091   0.015     0.014  0.375    0.000   0.002     0.058
+                clean_test  0.014  0.016    0.089   0.015     0.014  0.466    0.000   0.002     0.058

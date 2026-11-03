@@ -1,0 +1,16 @@
+Label,rows,zero_payload_web,timeout_capped,shared_vector,any_defect,clean_rows,pct_defective
+BENIGN,2094915,0,9015,1144,10159,2084756,0.48
+Bot,1948,0,0,119,119,1829,6.11
+DDoS,128014,0,0,3,3,128011,0.0
+DoS GoldenEye,10286,0,10,0,10,10276,0.1
+DoS Hulk,172846,0,60,134,194,172652,0.11
+DoS Slowhttptest,5228,0,28,0,28,5200,0.54
+DoS slowloris,5385,0,43,2,45,5340,0.84
+FTP-Patator,5931,0,0,0,0,5931,0.0
+Heartbleed,11,0,10,0,10,1,90.91
+Infiltration,36,0,7,0,7,29,19.44
+PortScan,90694,0,1,42858,42859,47835,47.26
+SSH-Patator,3219,0,2,0,2,3217,0.06
+Web Attack - Brute Force,1470,1319,0,0,1319,151,89.73
+Web Attack - Sql Injection,21,9,0,0,9,12,42.86
+Web Attack - XSS,652,628,0,0,628,24,96.32

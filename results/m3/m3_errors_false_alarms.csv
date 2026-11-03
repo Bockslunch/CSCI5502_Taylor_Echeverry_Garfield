@@ -1,0 +1,11 @@
+day,group,n,median Flow Duration,median Total Fwd Packets,median Total Backward Packets,median Total Length of Fwd Packets,median Packet Length Mean,median Flow IAT Mean,median Init_Win_bytes_forward
+Monday,false_alarm,7039,25000.0,2.0,0.0,6.0,4.5,12672.75,256.0
+Monday,benign_quiet,495573,36945.0,2.0,2.0,68.0,62.3333333333,13658.0,118.0
+Tuesday,false_alarm,10711,164.0,2.0,0.0,0.0,0.0,159.0,256.0
+Tuesday,benign_quiet,401688,41165.0,2.0,2.0,70.0,62.6,15690.33333,60.0
+Wednesday,false_alarm,4997,97.0,1.0,1.0,6.0,6.0,93.0,255.0
+Wednesday,benign_quiet,403505,45231.0,2.0,2.0,70.0,64.0,17657.4,67.0
+Thursday,false_alarm,42787,65.0,2.0,2.0,4.0,3.6,24.0,1024.0
+Thursday,benign_quiet,353453,46736.0,2.0,2.0,70.0,62.33333333,16911.66667,110.0
+Friday,false_alarm,7739,73092396.0,5.0,9.0,11607.0,686.7647059,5130960.438,229.0
+Friday,benign_quiet,367423,51026.0,2.0,2.0,70.0,64.14285714,23349.0,123.0
