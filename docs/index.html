@@ -26,6 +26,7 @@
     <li><a href="#background">Background</a></li>
     <li><a href="#data">Data</a></li>
     <li><a href="#models">Models</a></li>
+    <li><a href="#guide">Guide</a></li>
     <li><a href="#team">Team</a></li>
     <li><a href="#proposal">Proposal</a></li>
     <li><a href="#references">References</a></li>
@@ -567,7 +568,6 @@
   </p>
 </section>
 
-<!-- =============================== C. TEAM ================================ -->
 <!-- ======================= MODELS & EVALUATION (M3) ======================= -->
 <section id="models">
   <h2>Models &amp; Evaluation</h2>
@@ -588,13 +588,16 @@
     <tbody>
       <tr>
         <td><strong>RQ4</strong> — does benign-vs-attack detection transfer to an unseen day?</td>
-        <td>Binary classification, leave-one-day-out</td>
-        <td>Baselines: majority class, stratified guess (Tyler), single-feature rule.
-            Candidates: logistic regression, histogram gradient boosting.</td>
+        <td>Binary classification, <a class="term" href="#g-lodo">leave-one-day-out</a></td>
+        <td><a class="term" href="#g-baseline">Baselines</a>: majority class, stratified guess (Tyler), single-feature rule.
+            Candidates: <a class="term" href="#g-logreg">logistic regression</a>, <a class="term" href="#g-hgb">histogram gradient boosting</a>.
+            Comparison: <a class="term" href="#g-forest">random forest</a> (Luis).</td>
         <td>2.5M rows, 64 skewed numeric features, rare positives. Logistic regression is a
             transparent linear reference; gradient boosting captures thresholds and
             interactions, needs no scaling, and fits in 8 GB of RAM. Distance-based methods
-            (k-NN, SVM) do not scale to 2M rows.</td>
+            (k-NN, SVM) do not scale to 2M rows. The random forest was added after the
+            stability check: <a class="term" href="#g-forest">bagging</a> averages independently trained trees, the standard
+            remedy for a model whose results swing with the <a class="term" href="#g-seed">random seed</a>.</td>
       </tr>
       <tr>
         <td><strong>RQ4, part 2</strong> — benign shift or unseen attacks?</td>
@@ -611,14 +614,14 @@
       <tr>
         <td><strong>RQ2</strong> — which features separate attack types, without artifacts?</td>
         <td>Multi-class classification (11 classes)</td>
-        <td>Gradient boosting vs. majority / stratified; permutation importance</td>
+        <td>Gradient boosting vs. majority / stratified; <a class="term" href="#g-permutation">permutation importance</a></td>
         <td>A model that can use any combination of features is a stronger separability test
             than one-feature-at-a-time KS distances.</td>
       </tr>
       <tr>
         <td><strong>RQ3</strong> — do the EDA groups hold at the flow level?</td>
         <td>Clustering</td>
-        <td>k-means: the hypothesized k = 4 vs. a tuned k (Tyler)</td>
+        <td><a class="term" href="#g-kmeans">k-means</a>: the hypothesized k = 4 vs. a tuned k (Tyler)</td>
         <td>Unsupervised, so the groups are not forced by the labels.</td>
       </tr>
     </tbody>
@@ -629,16 +632,23 @@
     <li><strong>Features (64):</strong> the 69 cleaned flow features minus
         <code>Destination Port</code> (a testbed identifier; Figure 5) and four
         columns that are exact copies of others. The two
-        <code>Init_Win_bytes_*</code> window fields stay in the main models and are
+        <a class="term" href="#g-window"><code>Init_Win_bytes_*</code> window fields</a> stay in the main models and are
         removed in an RQ2 robustness run. The list was fixed from Milestone 2
         decisions before any model was trained.</li>
-    <li><strong>Preprocessing:</strong> logistic regression gets a signed
-        log transform and standardization, both fit inside a pipeline on
-        training rows only. Gradient boosting uses raw values. Both use balanced
-        class weights.</li>
-    <li><strong>The held-out day is never used to fit anything.</strong>
-        Hyperparameters are chosen by an inner leave-one-day-out loop over the four
-        training days. The alert threshold is set on a calibration split of those
+    <li><strong>Preprocessing:</strong> logistic regression gets a <a class="term" href="#g-scaling">signed
+        log transform and standardization</a>, both fit inside a pipeline on
+        training rows only. Gradient boosting and the random forest use raw values.
+        All three use <a class="term" href="#g-imbalance">balanced class weights</a>.</li>
+    <li><strong>The held-out day is never used to fit anything</strong> (no <a class="term" href="#g-leakage">leakage</a>).
+        <a class="term" href="#g-tuning">Hyperparameters</a> are chosen by an inner leave-one-day-out loop over the four
+        training days (the random forest was not tuned; see Result 7). The search is a
+        small manual grid: three settings each for logistic regression (the
+        regularization strength <code>C</code>) and gradient boosting (tree size,
+        learning rate, L2 shrinkage). Each setting is scored by its mean PR-AUC on the
+        inner held-out days. To keep run time down, tuning uses every attack row but
+        only 20% of benign training rows.
+        The winner is refit on all training rows. Every inner score is in
+        <code>results/m3/rq4_tuning.csv</code>. The alert threshold is set on a <a class="term" href="#g-calibration">calibration split</a> of those
         days. Early stopping uses a split of the training rows.</li>
     <li><strong>No duplicate crosses the split:</strong> exact duplicates were
         removed across all files before modeling (Milestone 2).</li>
@@ -649,20 +659,20 @@
     <strong>Leave-one-day-out</strong> (5 folds) is the only split that answers RQ4:
     every attack type lives on a single day (Figure 2), so a random split would test
     on attack types the model has already seen. Each model's alert threshold is set
-    so that <strong>1% of benign training-day flows</strong> would raise an alert,
+    so that <a class="term" href="#g-threshold"><strong>1% of benign training-day flows</strong></a> would raise an alert,
     which is a fixed analyst budget. We then measure what happens on the new day:
   </p>
   <ul>
-    <li><strong>Recall</strong>: share of the unseen day's attack flows that raised an
+    <li><a class="term" href="#g-recall"><strong>Recall</strong></a>: share of the unseen day's attack flows that raised an
         alert (the detection rate RQ4 asks about).</li>
-    <li><strong>False-alarm rate (FPR)</strong>: share of the unseen day's benign
+    <li><a class="term" href="#g-fpr"><strong>False-alarm rate (FPR)</strong></a>: share of the unseen day's benign
         flows that raised an alert. If it drifts above 1%, the budget did not
         transfer.</li>
-    <li><strong>PR-AUC</strong>: threshold-free ranking quality for a rare positive
-        class, always shown next to its no-skill level (the day's attack share).</li>
+    <li><a class="term" href="#g-prauc"><strong>PR-AUC</strong></a>: threshold-free ranking quality for a rare positive
+        class, always shown next to its <a class="term" href="#g-prauc">no-skill level</a> (the day's attack share).</li>
   </ul>
   <p>
-    Accuracy is not reported: the always-benign baseline already scores 80% or
+    <a class="term" href="#g-accuracy">Accuracy</a> is not reported: the always-benign baseline already scores 80% or
     more on every day. Monday has no attacks, so it measures false alarms only.
   </p>
 
@@ -677,12 +687,16 @@
       <tr><td>Single-feature rule (best one feature per fold)</td><td>3.0%</td><td>0.8%</td><td>51.3%</td><td>0.18</td><td>0.3%</td></tr>
       <tr><td>Logistic regression</td><td>22.1%</td><td>3.3%</td><td>63.9%</td><td>0.32</td><td>1.6%</td></tr>
       <tr><td><strong>Gradient boosting</strong></td><td><strong>47.7%</strong></td><td>4.2%</td><td>75.4%</td><td><strong>0.42</strong></td><td>1.4%</td></tr>
+      <tr><td>Random forest (comparison, untuned)</td><td>55.4%</td><td>4.2%</td><td>77.9%</td><td>0.46</td><td>1.9%</td></tr>
     </tbody>
   </table>
   <p style="font-size:.85rem;color:var(--text-muted)">
     PR-AUC is the mean over the four attack days. *No-skill level: the mean attack share of those days. Recall, false
-    alarms and precision pool the confusion counts of all four days; per-day values
-    are in Figure 8 and <code>results/m3/m3_summary_rq4_by_day.csv</code>.
+    alarms and <a class="term" href="#g-precision">precision</a> <a class="term" href="#g-pooled">pool the confusion counts</a> of all four days; per-day values
+    are in Figure 8 and <code>results/m3/m3_summary_rq4_by_day.csv</code>. The random
+    forest's higher pooled recall comes from one Wednesday class: it catches about
+    37,000 more DoS Hulk flows, more than its whole lead, while catching fewer on
+    most other classes. It is compared day by day in Result 7.
   </p>
 
   <figure>
@@ -702,7 +716,7 @@
     three training conditions: <strong>A</strong> the other four days only;
     <strong>B</strong> A plus that day's <em>benign</em> flows (benign shift removed,
     attacks still unseen); <strong>C</strong> A plus that day's benign
-    <em>and attack</em> flows (in-distribution). A→B measures the benign-shift
+    <em>and attack</em> flows (in-distribution). A→B measures the <a class="term" href="#g-shift">benign-shift</a>
     effect; B→C measures the unseen-attack effect.
   </p>
   <figure>
@@ -741,7 +755,7 @@
         omit IP addresses, so we cannot confirm this flow by flow.</li>
     <li><strong>Half of PortScan cannot be detected from flow features at all.</strong>
         Once destination port is excluded, 47% of PortScan flows (42,858) have a
-        feature vector identical to some benign flow. A scan probe is a 1-packet,
+        <a class="term" href="#g-shared">feature vector identical</a> to some benign flow. A scan probe is a 1-packet,
         2-byte connection attempt indistinguishable from an ordinary failed connection.</li>
     <li><strong>Bot traffic (0% caught) looks like benign traffic</strong>: short,
         small flows, consistent with the EDA, which placed Bot in BENIGN's group (Figure 7).</li>
@@ -750,14 +764,14 @@
         those missed have 0. Missed FTP- and SSH-Patator flows have a median of 29,200.
         These values identify host operating systems rather than attack behavior, so
         Result 5 tests their removal.</li>
-    <li><strong>Stability:</strong> refitting the detector with three other random seeds moves held-out recall by under 2 points on Wednesday, Thursday and Friday, but from 1.9% to 22% on Tuesday (FTP-Patator alone: 0.2% to 31%). Where the model has almost no signal for an unseen attack, small arbitrary training choices decide what it catches.</li>
+    <li><strong>Stability:</strong> refitting the detector with three other random seeds moves held-out recall by under 2 points on Wednesday, Thursday and Friday, but from 1.9% to 22% on Tuesday (FTP-Patator alone: 0.2% to 31%). Where the model has almost no signal for an unseen attack, small arbitrary training choices decide what it catches. A random forest, built to reduce exactly this kind of variance, did not fix it (Result 7).</li>
   </ul>
 
   <h3>Result 4: defective flows inflate Thursday's success (RQ5)</h3>
   <p>
     Three defect flags, defined as in Milestone 2, cover 55,392 flows (2.2%):
-    web-attack flows with no forward payload (90% of Brute Force, 96% of XSS),
-    flows cut at the 120-second timeout (91% of Heartbleed), and feature vectors
+    <a class="term" href="#g-zero-payload">web-attack flows with no forward payload</a> (90% of Brute Force, 96% of XSS),
+    flows cut at the <a class="term" href="#g-timeout">120-second timeout</a> (91% of Heartbleed), and feature vectors
     shared with another label (47% of PortScan).
   </p>
   <figure>
@@ -773,8 +787,8 @@
 
   <h3>Result 5: attack types separate cleanly once seen; transfer leans on the window field (RQ2)</h3>
   <p>
-    Among the 11 attack classes with at least 600 flows (5-fold cross-validation,
-    each class capped at 20,000 flows), gradient boosting reaches a macro-F1 of
+    Among the 11 attack classes with at least 600 flows (<a class="term" href="#g-cv">5-fold cross-validation</a>,
+    each class capped at 20,000 flows), gradient boosting reaches a <a class="term" href="#g-f1">macro-F1</a> of
     <strong>0.917</strong> against 0.090 for stratified guessing. Removing the window
     fields costs almost nothing (0.908), and also removing timeout-capped flows
     leaves 0.893. The one pair that does not separate is the pair the EDA flagged:
@@ -788,7 +802,7 @@
            alt="Left: per-class F1 under three feature variants; nine classes stay at or above 0.93, web brute force about 0.7 and XSS 0.29 to 0.39. Right: confusion matrix without window fields; the diagonal is 96 to 100% except web brute force (75%) and XSS (32%, with 63% predicted as brute force).">
     </picture>
     </a>
-    <figcaption><strong>Figure 12. Separability among attack classes.</strong> Nine of eleven classes keep F1 ≥ 0.93 in every variant, so their separation does not depend on the artifact-prone features. Web Attack – Brute Force and XSS remain confused, consistent with the EDA's KS distance of 0.23 between them.</figcaption>
+    <figcaption><strong>Figure 12. Separability among attack classes.</strong> Nine of eleven classes keep F1 ≥ 0.93 in every variant, so their separation does not depend on the artifact-prone features. Web Attack – Brute Force and XSS remain confused, consistent with the EDA's <a class="term" href="#g-ks">KS distance</a> of 0.23 between them.</figcaption>
   </figure>
   <figure>
     <a href="assets/m3-rq2-feature-importance.png" title="Open full-size image">
@@ -806,13 +820,13 @@
     and Friday's from 37% to 28%. Ranking quality holds up (PR-AUC 0.84 and 0.73),
     which means the calibrated threshold, not the ordering, no longer carries over
     to the new day. Part of the apparent cross-day DoS detection rests on a
-    host-identifying field.
+    host-identifying field (a likely <a class="term" href="#g-shortcut">shortcut</a>).
   </p>
 
   <h3>Result 6: the EDA's four groups only partly hold under clustering (RQ3)</h3>
   <table class="full">
     <thead>
-      <tr><th scope="col">k-means configuration</th><th scope="col">ARI vs. EDA groups</th><th scope="col">Silhouette</th><th scope="col">What it shows</th></tr>
+      <tr><th scope="col">k-means configuration</th><th scope="col"><a class="term" href="#g-ari">ARI</a> vs. EDA groups</th><th scope="col"><a class="term" href="#g-silhouette">Silhouette</a></th><th scope="col">What it shows</th></tr>
     </thead>
     <tbody>
       <tr><td>k = 4, all flows (reference)</td><td>0.058</td><td>0.387</td><td>BENIGN is the majority of every cluster; imbalance drowns the structure.</td></tr>
@@ -826,6 +840,88 @@
     chose k from the inertia and silhouette curves over k = 2–69. The clustering and
     the supervised results agree: Brute Force and XSS are not separable at the flow
     level, and Bot sits with benign traffic.
+  </p>
+
+  <h3>Result 7: a random forest does not stabilize unseen-day detection (RQ4)</h3>
+  <p>
+    The stability check (Result 3) found that gradient boosting's Tuesday recall
+    ranges from 1.9% to 22% when only the random seed changes. There the seed only
+    decides which 10% of training rows early stopping holds out, so the model is
+    sensitive to very small training differences. Gradient boosting builds its trees
+    in sequence, each correcting the last. A random forest instead trains 100 trees
+    independently, each on its own random 200,000-row sample and considering a random
+    8 of the 64 features at each split, and averages their votes. If Tuesday's swings
+    were random noise, averaging should cancel them. The forest uses the RQ4 protocol
+    unchanged: leave-one-day-out, the same 64 features, the same fit/calibration split,
+    the same 1% benign threshold, and the same metrics. It ran once per day with seed
+    5502 and on Tuesday with the three extra stability seeds
+    (<a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/05-random-forest.ipynb">05-random-forest.ipynb</a>).
+  </p>
+
+  <table class="full">
+    <thead>
+      <tr><th scope="col">Tuesday, seeds 5502 / 1 / 2 / 3</th><th scope="col">Recall range</th><th scope="col">FTP-Patator recall range</th><th scope="col">PR-AUC range</th><th scope="col">False alarms</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Gradient boosting</td><td>1.9% – 22.2%</td><td>0.2% – 30.7%</td><td>0.063 – 0.109</td><td>2.4% – 2.6%</td></tr>
+      <tr><td>Random forest</td><td>0.9% – 17.5%</td><td>0.8% – 26.4%</td><td>0.059 – 0.077</td><td>2.7% – 2.8%</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The forest's recall range is only slightly narrower (17 points vs. 20), so bagging
+    did not make Tuesday's detection reliable. Its ranking quality varies less
+    between seeds but stays low at every seed (PR-AUC 0.059 to 0.077, against a
+    no-skill level of 0.022, the attack share of Tuesday's flows). With this little
+    signal for the brute-force attacks, small training differences decide which
+    flows clear the threshold, for either ensemble.
+  </p>
+
+  <table class="full">
+    <thead>
+      <tr><th scope="col">Held-out day (seed 5502)</th><th scope="col">No-skill PR-AUC</th><th scope="col">PR-AUC: LR / GB / RF</th><th scope="col">Recall: LR / GB / RF</th><th scope="col">False alarms: LR / GB / RF</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Monday (benign only)</td><td>—</td><td>—</td><td>—</td><td>1.6% / 1.4% / 1.9%</td></tr>
+      <tr><td>Tuesday</td><td>0.022</td><td>0.020 / 0.063 / 0.059</td><td>0.2% / 2.6% / 0.9%</td><td>1.5% / 2.6% / 2.8%</td></tr>
+      <tr><td>Wednesday</td><td>0.322</td><td>0.467 / 0.756 / <strong>0.954</strong></td><td>5.8% / 61.4% / <strong>78.9%</strong></td><td>1.4% / 1.2% / 1.2%</td></tr>
+      <tr><td>Thursday</td><td>0.005</td><td>0.018 / 0.031 / 0.023</td><td>0.0% / 91.2% / 2.6%</td><td>9.1% / 10.8% / 10.7%</td></tr>
+      <tr><td>Friday</td><td>0.370</td><td>0.776 / 0.846 / 0.808</td><td>37.5% / 37.2% / 37.6%</td><td>1.4% / 2.1% / 2.2%</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.85rem;color:var(--text-muted)">
+    LR = logistic regression, GB = gradient boosting, RF = random forest. Source:
+    <code>results/m3/rq4_forest.csv</code> and <code>results/m3/m3_summary_rq4_by_day.csv</code>.
+  </p>
+
+  <ul>
+    <li><strong>Wednesday is the one clear difference.</strong> The forest's PR-AUC
+        (0.954) is above gradient boosting's best across all four of its seeds (0.897),
+        so the gap is larger than seed noise. The gain is concentrated in DoS Hulk,
+        the largest class (84% caught vs. 63%). On the smaller DoS classes the forest
+        catches less: GoldenEye 51% vs. 68%, Slowhttptest 5% vs. 26%, slowloris 28%
+        vs. 33%. Result 5 showed that gradient boosting's Wednesday transfer leans on
+        the host-identifying window field. The forest was not rerun without it, so
+        its Wednesday gain may rest on the same field.</li>
+    <li><strong>Thursday's gap does not mean the forest detects worse.</strong> The
+        forest catches 2% of web Brute Force and XSS flows, where gradient boosting
+        catches 92% and 94%. But Result 4 showed most of gradient boosting's
+        catches there are zero-payload flows that probably contain no attack. Both
+        models raise about 11% false alarms on Thursday, consistent with the same
+        unlabeled scan traffic. The forest's Thursday errors were not analyzed
+        separately.</li>
+    <li><strong>Friday is a tie</strong> (37.6% vs. 37.2%): both catch about 64% of
+        DDoS, about 1% of PortScan, and no Bot traffic.</li>
+    <li><strong>Neither model held the 1% alarm budget on any unseen day.</strong></li>
+  </ul>
+  <p>
+    <strong>Decision:</strong> gradient boosting stays the primary RQ4 model and the
+    forest is reported as a comparison. The forest was not tuned. An inner
+    leave-one-day-out search like gradient boosting's was too costly on 2.5M rows,
+    and an ordinary grid search with random folds would leak each day's attack types
+    into validation. It also ran with one seed on four of the five days. Both points
+    favor gradient boosting, so the comparison is conservative. Either way, the forest
+    does not change the answer to RQ4: what a model catches on a day with
+    never-seen attacks depends more on the attack type than on the ensemble method.
   </p>
 
   <h3>What this evaluation does not show</h3>
@@ -852,9 +948,293 @@
     and the baselines and clustering are in Tyler's notebooks
     <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/04-prediction-baselines.ipynb">04</a>
     and <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/03-kmeans-clustering.ipynb">03</a>.
+    The random forest comparison is in Luis's notebook
+    <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/05-random-forest.ipynb">05-random-forest.ipynb</a>, which imports the same
+    <code>m3_common.py</code> functions.
   </p>
 </section>
 
+<!-- ===================== PLAIN-LANGUAGE GUIDE (M3) ======================== -->
+<section id="guide">
+  <h2>Plain-Language Guide</h2>
+
+  <p class="lede">
+    The Models &amp; Evaluation section is written for readers who already know
+    machine learning. This guide explains its terms for someone who doesn't, using
+    our own data as the example wherever possible. Terms with a dotted underline in
+    that section link here; your browser's Back button returns you to where you were.
+  </p>
+
+  <h3>The data</h3>
+  <dl class="glossary">
+    <dt id="g-flow">Flow</dt>
+    <dd>One conversation between two computers: all the packets sent back and forth
+        in one connection, summarized as a single row of numbers (how long it lasted,
+        how many packets and bytes went each way, the time gaps between packets).
+        The CICFlowMeter tool built these rows from the raw traffic. Our cleaned data
+        has 2,520,656 flows, and every model here judges one flow at a time.</dd>
+
+    <dt id="g-feature">Feature</dt>
+    <dd>One measured column of a flow, such as <code>Flow Duration</code> or
+        <code>Total Fwd Packets</code>. The models use 64 of them. A feature is the
+        evidence a model gets to look at; it never sees the actual content of the
+        traffic.</dd>
+
+    <dt id="g-label">Label, benign, attack</dt>
+    <dd>Each flow comes tagged by the dataset's creators as <em>BENIGN</em> (normal
+        traffic) or with one of 14 attack names. RQ4's models only answer "benign or
+        attack?". The labels were assigned by matching flows to the attack schedule
+        by machine and time window, which is how some normal flows ended up
+        labeled as attacks, and some attack flows as normal (Results 3 and 4).</dd>
+
+    <dt id="g-imbalance">Class imbalance and balanced class weights</dt>
+    <dd>About 83% of flows are benign and some attack types have only a handful of
+        flows. A model can look good just by saying "benign" every time. Balanced
+        class weights fix this during training: each attack flow counts for more, so
+        that attacks and benign traffic carry equal total weight in what the model
+        tries to get right.</dd>
+
+    <dt id="g-window">Window field (<code>Init_Win_bytes_*</code>)</dt>
+    <dd>The TCP window size a computer announces when it opens a connection. It is
+        mostly a setting of the computer's operating system, not something the
+        attack chooses. Because the testbed used the same few attacker and victim
+        machines all week, this number can quietly tell a model "this is the
+        attacker's computer". That works inside this dataset and would fail on any
+        other network (see <a href="#g-shortcut">shortcut</a>).</dd>
+
+    <dt id="g-zero-payload">Zero-payload flow</dt>
+    <dd>A flow in which the client sent no data at all. A web attack works by sending
+        malicious text in a request, so a "web attack" flow that sent nothing cannot
+        contain the attack. It is most likely a normal connection that happened
+        during the attack's time window and got the attack's label. 90% of Brute
+        Force and 96% of XSS flows are like this.</dd>
+
+    <dt id="g-timeout">120-second timeout</dt>
+    <dd>CICFlowMeter ends any flow still open after 120 seconds and starts a new one.
+        For a flow cut at that limit, its duration and per-second rates describe the
+        tool's cutoff rather than the connection itself.</dd>
+
+    <dt id="g-shared">Shared feature vector</dt>
+    <dd>Two flows whose 64 numbers are exactly the same but whose labels differ.
+        No model can get both right, because it has nothing to tell them apart. Half
+        of PortScan flows look exactly like some benign flow.</dd>
+  </dl>
+
+  <h3>How we test the models</h3>
+  <dl class="glossary">
+    <dt id="g-train-test">Training and test data</dt>
+    <dd>A model learns patterns from training rows and is graded on test rows it has
+        never seen, like an exam whose questions were not in the homework. Grading
+        on training rows would only show how well it memorized.</dd>
+
+    <dt id="g-lodo">Leave-one-day-out</dt>
+    <dd>The data covers five days. We train on four days and test on the fifth, then
+        repeat so each day takes a turn as the test day. Every attack type in this
+        dataset happened on only one day, so the test day's attacks are always types
+        the model has never seen. That imitates the real question: will the
+        detector catch a <em>new</em> kind of attack? A random split would put
+        Wednesday's DoS flows in both training and test and make detection look far
+        easier than it is.</dd>
+
+    <dt id="g-leakage">Leakage</dt>
+    <dd>Any way information about the test data slips into training, which makes
+        results look better than they would be in real use. We guard against it by
+        removing duplicate flows, which could land on both sides of the split, and by
+        never using the test day to train, scale features, set the threshold or
+        choose settings.</dd>
+
+    <dt id="g-baseline">Baseline</dt>
+    <dd>A deliberately simple reference point that a real model must beat to show it
+        learned anything. Ours are <em>majority class</em> (always say benign; catches
+        nothing), <em>stratified guess</em> (guess at random, saying "attack" as often
+        as attacks occurred in training), and a <em>single-feature rule</em> (alert on
+        the one column that best separated attacks on the training days).</dd>
+
+    <dt id="g-calibration">Calibration split</dt>
+    <dd>20% of the training days' rows that are held back from model training and
+        used only to set the <a href="#g-threshold">alert threshold</a>. A model is
+        overconfident on rows it trained on, so the threshold is set on rows it has
+        not seen, still without touching the test day.</dd>
+
+    <dt id="g-threshold">Alert threshold and the 1% budget</dt>
+    <dd>The model gives every flow a score from 0 to 1 for how attack-like it looks.
+        To turn scores into alarms we need a cutoff line. We take the benign flows in
+        the calibration split, line up their scores, and put the line where only the
+        top 1% sit above it. That is all <code>pick_threshold</code> in
+        <code>m3_common.py</code> does: <code>np.quantile(benign_scores, 0.99)</code>
+        means "the score that 99% of normal flows fall below". On Tuesday the random
+        forest's line came out at 0.168. Think of setting a smoke detector so it only
+        goes off once per 100 times you cook normally. On the unseen day we then ask
+        how many attacks scored above the line (<a href="#g-recall">recall</a>) and
+        whether normal traffic still crossed it only 1% of the time. It never did:
+        1.2% to 11%, depending on the day.</dd>
+
+    <dt id="g-tuning">Hyperparameters and tuning</dt>
+    <dd>Settings chosen before training rather than learned from the data, such as
+        the number of trees or how fast a model learns. Tuning means trying several
+        settings and keeping the best. To avoid <a href="#g-leakage">leakage</a> we
+        tune with an inner leave-one-day-out loop over the four training days only.
+        The random forest was not tuned.</dd>
+
+    <dt id="g-seed">Random seed and variance</dt>
+    <dd>Many training steps involve random choices (which rows to sample, which
+        rows to hold out). The seed is the starting number for those choices: same
+        seed, same result. Rerunning with different seeds is a stress test. If the
+        results swing a lot (high <em>variance</em>), one run cannot be trusted.
+        Gradient boosting's Tuesday recall swung from 1.9% to 22% this way.</dd>
+
+    <dt id="g-cv">Cross-validation (5-fold)</dt>
+    <dd>Split the data into five parts, train on four and test on the fifth, rotate
+        five times and average. RQ2 uses random parts because its question is
+        whether attack types the model <em>has</em> seen can be told apart; RQ4 uses
+        days instead because it asks about unseen types.</dd>
+  </dl>
+
+  <h3>How we score them</h3>
+  <dl class="glossary">
+    <dt id="g-confusion">True/false positives and negatives</dt>
+    <dd>Every flow lands in one of four boxes. <em>True positive</em>: an attack that
+        raised an alarm. <em>False negative</em>: an attack that was missed.
+        <em>False positive</em>: a false alarm on normal traffic. <em>True
+        negative</em>: normal traffic correctly left alone. Every metric below is
+        built from these four counts.</dd>
+
+    <dt id="g-recall">Recall (detection rate)</dt>
+    <dd>Of all the attack flows, the share that raised an alarm. On Wednesday the
+        random forest flagged 152,808 of 193,756 attack flows: 78.9% recall.</dd>
+
+    <dt id="g-fpr">False-alarm rate (FPR)</dt>
+    <dd>Of all the normal flows, the share that raised an alarm, which is the analyst's
+        wasted effort. Gradient boosting's 10.8% on Thursday means 42,787 of
+        396,240 normal flows were flagged.</dd>
+
+    <dt id="g-precision">Precision</dt>
+    <dd>Of all the alarms raised, the share that were real attacks. Gradient
+        boosting's Thursday precision of 4.4% means about 96 of every 100 alarms
+        were false.</dd>
+
+    <dt id="g-accuracy">Why not accuracy</dt>
+    <dd>Accuracy is the share of all flows judged correctly. Because most flows are
+        benign, a model that never raises an alarm already scores 80% or more on
+        every day, so accuracy says almost nothing about catching attacks.</dd>
+
+    <dt id="g-prauc">PR-AUC and the no-skill level</dt>
+    <dd>Recall and precision depend on where the threshold sits. PR-AUC ignores the
+        threshold and asks a broader question: if you sorted all of a day's flows
+        from most to least attack-like, how close to the top are the attacks? 1.0
+        means every attack ranks above every normal flow. The <em>no-skill level</em>
+        is what a model that learned nothing would score, one that gives every flow a
+        random score. Its attacks end up scattered evenly through the sorted list, so
+        every part of the list, top included, is about as attack-heavy as the day
+        overall. Its PR-AUC therefore comes out at about the day's share of attacks:
+        2.2% of Tuesday's flows are attacks, so a random scorer gets about 0.022 there,
+        and 32% of Wednesday's are, so it gets about 0.32. Each day's score has to be
+        read against its own floor. Tuesday's 0.06 is about three times the floor but
+        still weak. Wednesday's 0.95 against a floor of 0.32 is strong.</dd>
+
+    <dt id="g-f1">F1 and macro-F1</dt>
+    <dd>F1 combines precision and recall into one number that is high only when both
+        are high. Macro-F1 averages F1 over the attack classes with each class
+        counting equally, so a small class like XSS matters as much as DoS Hulk.</dd>
+
+    <dt id="g-pooled">Pooled results</dt>
+    <dd>Result 1 adds up the four boxes across the four attack days before computing
+        recall, false alarms and precision, so days with many flows (Wednesday,
+        Friday) weigh the most. Its PR-AUC is instead the plain average of the four
+        days.</dd>
+  </dl>
+
+  <h3>The models</h3>
+  <dl class="glossary">
+    <dt id="g-tree">Decision tree</dt>
+    <dd>A flowchart of yes/no questions about a flow's features ("Did it last more
+        than 5 seconds? Were its packets under 40 bytes?") that ends in a verdict.
+        Training picks the questions that best separate attacks from normal
+        traffic. The models below are built from many trees.</dd>
+
+    <dt id="g-logreg">Logistic regression</dt>
+    <dd>Multiplies each feature by a learned weight, adds them up and turns the total
+        into a probability. It can only draw a straight boundary between attack and
+        normal (after the transform below), so it cannot express a rule like
+        "attacks are either very short or very long". We use it as a transparent
+        reference.</dd>
+
+    <dt id="g-scaling">Signed log transform and standardization</dt>
+    <dd>Feature values run from 0 to over 100 million, which swamps logistic
+        regression. The signed log shrinks large numbers (120,000,000 becomes about
+        18.6) while keeping the &minus;1 "not observed" code distinct from 0.
+        Standardization then puts every feature on the same scale. Both are fit on
+        training rows only. Tree models do not need either.</dd>
+
+    <dt id="g-hgb">Gradient boosting (HGB)</dt>
+    <dd>Builds trees one after another, each trying to fix the mistakes of the trees
+        before it. "Histogram" means each feature's values are grouped into 255 bins
+        first, which keeps 2 million rows in memory. <em>Early stopping</em> holds out
+        10% of the training rows and stops adding trees once they stop improving the
+        score on those rows. This is our primary RQ4 model.</dd>
+
+    <dt id="g-forest">Random forest and bagging</dt>
+    <dd>Trains 100 trees independently, each on its own random sample of rows and
+        looking at a random 8 of the 64 features at each question, then averages
+        their votes. <em>Bagging</em> (bootstrap aggregating) is this idea of
+        training many models on random resamples and averaging them. Averaging
+        cancels the random mistakes individual trees make, but not mistakes they all
+        share, which is why it did not fix Tuesday (Result 7).</dd>
+
+    <dt id="g-ensemble">Ensemble</dt>
+    <dd>A model made of many smaller models whose answers are combined. Gradient
+        boosting and the random forest are both ensembles of trees; they differ in
+        whether the trees are built in sequence or independently.</dd>
+  </dl>
+
+  <h3>Reading the results</h3>
+  <dl class="glossary">
+    <dt id="g-shortcut">Shortcut learning</dt>
+    <dd>When a model succeeds by picking up something that happens to predict the
+        labels in this dataset, such as which machine sent the traffic, instead of
+        the behavior of the attack. That is why destination port is excluded and why
+        Result 5 retests without the <a href="#g-window">window field</a>.</dd>
+
+    <dt id="g-shift">Benign shift</dt>
+    <dd>Each day's normal traffic is somewhat different from the others. A detector
+        trained on four days may find the fifth day's normal traffic unusual and
+        raise false alarms on it, even if the attacks were familiar. Result 2
+        separates this effect from the effect of the attacks being new.</dd>
+
+    <dt id="g-permutation">Permutation importance</dt>
+    <dd>Shuffle one feature's values randomly across flows and see how much the
+        model's score drops. A big drop means the model relied on that feature. If
+        two features carry the same information, shuffling one barely hurts, so a
+        low score means "replaceable", not "useless".</dd>
+
+    <dt id="g-ks">KS distance</dt>
+    <dd>A number from 0 to 1 for how different two groups' values of a feature are:
+        0 means the same distribution, 1 means no overlap at all. The EDA found 0.23
+        between Brute Force and XSS, which is fairly similar, and Result 5's models
+        could not reliably tell those two apart either.</dd>
+
+    <dt id="g-kmeans">k-means clustering</dt>
+    <dd>Sorts flows into <em>k</em> groups without looking at the labels. It places
+        <em>k</em> center points, assigns each flow to the nearest one, moves each
+        center to the middle of its flows and repeats until nothing changes. We
+        then check whether the groups it finds match the attack types.</dd>
+
+    <dt id="g-silhouette">Silhouette</dt>
+    <dd>A score from &minus;1 to 1 for how tight and well separated the clusters are:
+        how much closer each flow is to its own cluster than to the next nearest one.
+        It says nothing about whether the clusters match the attack types.</dd>
+
+    <dt id="g-ari">ARI (adjusted Rand index)</dt>
+    <dd>How well two groupings of the same flows agree, adjusted so that random
+        grouping scores about 0 and identical groupings score 1. We compared
+        k-means clusters with the EDA's four groups: 0.058 is close to no
+        agreement.</dd>
+  </dl>
+
+  <p><a href="#models">Back to Models &amp; Evaluation</a></p>
+</section>
+
+<!-- =============================== C. TEAM ================================ -->
 <section id="team">
   <h2>Team</h2>
 
