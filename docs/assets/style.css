@@ -234,3 +234,13 @@ footer {
 }
 footer div { max-width: var(--max); margin: 0 auto; }
 footer p { margin: 0 0 .4rem; }
+
+/* Plain-language guide: dotted links from technical terms, and the glossary list */
+a.term { color: inherit; text-decoration: underline dotted var(--accent); text-underline-offset: 3px; }
+a.term:hover, a.term:focus { color: var(--accent); }
+dl.glossary { margin: 0 0 1rem; }
+dl.glossary dt { font-weight: 650; margin-top: 1.1rem; scroll-margin-top: 4.5rem; }
+dl.glossary dd { margin: .25rem 0 0; }
+dl.glossary dt:target, dl.glossary dt:target + dd { background: var(--accent-soft); }
+dl.glossary dt:target { padding: .3rem .5rem 0; border-radius: 4px 4px 0 0; }
+dl.glossary dt:target + dd { padding: .2rem .5rem .5rem; border-radius: 0 0 4px 4px; }

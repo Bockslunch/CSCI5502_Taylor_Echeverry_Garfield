@@ -20,11 +20,11 @@ python -m http.server -d docs 8000   # then open http://localhost:8000
 
 ## Team
 
-| Member | Role (initial) |
-| --- | --- |
+| Member             | Role (initial)                 |
+| ------------------ | ------------------------------ |
 | Christopher Taylor | Coordination · Data · Analysis |
-| Luis Echeverry | Data · Reproducibility |
-| Tyler Garfield | Analysis · Visualization |
+| Luis Echeverry     | Data · Reproducibility         |
+| Tyler Garfield     | Analysis · Visualization       |
 
 Suggested role split — adjust before submitting. Roles may overlap and may change.
 
@@ -78,8 +78,6 @@ and in the Milestone 2 report (Section 6).
    identifiable defects (zero-payload web-attack flows, flows at the 120-second
    cap, feature vectors shared across labels) are excluded versus retained?
 
-_Status: revised at Milestone 2, pending team sign-off._
-
 ---
 
 ## Data
@@ -90,16 +88,16 @@ Eight CSV files (`MachineLearningCSV.zip`) of labeled bidirectional network flow
 records covering five days of simulated enterprise traffic (Monday–Friday, July
 3–7, 2017): 2,830,743 flows × 79 columns (78 flow features plus `Label`).
 
-| File | Size | Flows |
-| --- | --- | --- |
-| `Monday-WorkingHours.pcap_ISCX.csv` | 177 MB | 529,918 |
-| `Tuesday-WorkingHours.pcap_ISCX.csv` | 135 MB | 445,909 |
-| `Wednesday-workingHours.pcap_ISCX.csv` | 225 MB | 692,703 |
-| `Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv` | 52 MB | 170,366 |
-| `Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv` | 83 MB | 288,602 |
-| `Friday-WorkingHours-Morning.pcap_ISCX.csv` | 58 MB | 191,033 |
-| `Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv` | 77 MB | 286,467 |
-| `Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv` | 77 MB | 225,745 |
+| File                                                          | Size   | Flows   |
+| ------------------------------------------------------------- | ------ | ------- |
+| `Monday-WorkingHours.pcap_ISCX.csv`                           | 177 MB | 529,918 |
+| `Tuesday-WorkingHours.pcap_ISCX.csv`                          | 135 MB | 445,909 |
+| `Wednesday-workingHours.pcap_ISCX.csv`                        | 225 MB | 692,703 |
+| `Thursday-WorkingHours-Morning-WebAttacks.pcap_ISCX.csv`      | 52 MB  | 170,366 |
+| `Thursday-WorkingHours-Afternoon-Infilteration.pcap_ISCX.csv` | 83 MB  | 288,602 |
+| `Friday-WorkingHours-Morning.pcap_ISCX.csv`                   | 58 MB  | 191,033 |
+| `Friday-WorkingHours-Afternoon-PortScan.pcap_ISCX.csv`        | 77 MB  | 286,467 |
+| `Friday-WorkingHours-Afternoon-DDos.pcap_ISCX.csv`            | 77 MB  | 225,745 |
 
 After cleaning (`notebooks/01-data-cleaning.ipynb`): 2,520,656 flows × 72 columns.
 
@@ -139,7 +137,8 @@ Consequences we carry through the analysis:
 ├── data/           Acquisition instructions and empty raw/processed folders.
 │                   Raw CICIDS2017 files are gitignored — never commit them.
 ├── notebooks/      01 cleaning, 02 EDA, 03 k-means clustering (RQ3),
-│                   04 leave-one-day-out baselines (RQ4).
+│                   04 leave-one-day-out baselines (RQ4), 05 random forest
+│                   comparison (RQ4).
 ├── src/            Scripts: cleaning replay, quality statistics, EDA figures (m2_*),
 │                   modeling and evaluation (m3_*).
 ├── results/m3/     Milestone 3 result tables (CSV/JSON) and run logs.
@@ -156,15 +155,12 @@ Consequences we carry through the analysis:
 
 ## Milestone Roadmap
 
-| Milestone | Focus | Status |
-| --- | --- | --- |
-| 0 | Project idea and proposal | Approved |
-| 1 | Project framing & foundation — research questions, background, team, repository, website | Complete |
-| 2 | Data acquisition, preparation & exploration — provenance, cleaning, data dictionary, quality assessment, EDA | Complete |
-| 3 | Modeling & evaluation — baselines, candidate methods, leave-one-day-out validation, error analysis | Complete (due Nov 13) |
-| 4 | _Fill in from Canvas_ | Not started |
-
-> Replace milestone 4 with the actual title and due date from Canvas.
+| Milestone | Focus                                                                                                        | Status                |
+| --------- | ------------------------------------------------------------------------------------------------------------ | --------------------- |
+| 0         | Project idea and proposal                                                                                    | Approved              |
+| 1         | Project framing & foundation — research questions, background, team, repository, website                     | Complete              |
+| 2         | Data acquisition, preparation & exploration — provenance, cleaning, data dictionary, quality assessment, EDA | Complete              |
+| 3         | Modeling & evaluation — baselines, candidate methods, leave-one-day-out validation, error analysis           | Complete (due Nov 13) |
 
 ---
 
@@ -208,6 +204,10 @@ read and understood. To run the analysis code:
    ```
 
    About 8 GB of RAM is enough; `m3_rq4_transfer.py` is the slow step.
+
+6. Run `notebooks/05-random-forest.ipynb` top to bottom from the `notebooks/` folder.
+   It compares a random forest with the step 5 models, reads `m3_stability.csv` and
+   `m3_summary_rq4_by_day.csv`, and writes `results/m3/rq4_forest.csv`.
 
 ---
 
