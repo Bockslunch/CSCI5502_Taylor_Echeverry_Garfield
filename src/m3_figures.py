@@ -7,7 +7,9 @@ Each figure is written twice at 300 dpi, <name>.png (light) and <name>-dark.png
 (dark), using the same two themes as the Milestone 2 figures so the website
 looks consistent. The optional third argument copies them into docs/assets/.
 Also writes the summary tables quoted in the report and on the website
-(m3_summary_*.csv) into the results folder.
+(m3_summary_*.csv) into the results folder. Luis's random-forest results
+(rq4_forest.csv, notebook 05) and the pooled-split results (m3_pooled_*.csv,
+m3_pooled_split.py) are folded in when those files exist.
 """
 
 # IMPORT STANDARD-LIBRARY HELPERS
@@ -101,10 +103,44 @@ DAY_ATTACKS = {"Monday": "no attacks", "Tuesday": "FTP/SSH brute force",
                "Friday": "Bot, PortScan, DDoS"}
 MODEL_NAMES = {"majority": "Majority class", "stratified": "Stratified guess",
                "single_feature": "Single-feature rule", "logreg": "Logistic regression",
-               "hgb": "Gradient boosting"}
+               "hgb": "Gradient boosting", "rf": "Random forest"}
 
 # HEADLINE RQ4 TABLE: EVERY MODEL ON EVERY FULL HELD-OUT DAY (CONDITION A)
 head = rq4[(rq4["condition"] == "A_lodo") & (rq4["test_set"] == "full_day")].copy()
+
+# FOLD IN LUIS'S RANDOM FOREST (NOTEBOOK 05): HIS SEED-5502 RUN OF EACH HELD-OUT DAY, SAME FOLDS,
+# SAME THRESHOLD RULE AND SAME `evaluate()` METRICS. HIS FILE IS WIDE (ONE "recall <class>" COLUMN
+# PER CLASS), SO IT IS RESHAPED TO MATCH THE LONG TABLES ABOVE.
+RF_FILE = RES / "rq4_forest.csv"
+if RF_FILE.exists():
+    rf = pd.read_csv(RF_FILE)
+    rf = rf[rf["seed"] == 5502].copy()
+    # REBUILD THE COLUMNS LUIS'S FILE DOES NOT STORE FROM THE CONFUSION COUNTS IT DOES STORE
+    rf["n_attack"] = rf["tp"] + rf["fn"]
+    rf["n_benign"] = rf["fp"] + rf["tn"]
+    rf["attack_share"] = rf["n_attack"] / (rf["n_attack"] + rf["n_benign"])
+    rf["f1"] = 2 * rf["precision"] * rf["recall"] / (rf["precision"] + rf["recall"])
+    rf["model"], rf["condition"], rf["test_set"] = "rf", "A_lodo", "full_day"
+    rf["params"] = json.dumps({"n_estimators": 100, "max_features": "sqrt",
+                               "min_samples_leaf": 20, "max_samples": 200000})
+    head = pd.concat([head, rf[[c for c in rf.columns if not c.startswith("recall ")]]],
+                     ignore_index=True)
+    # PER-CLASS RECALLS: ONE ROW PER (DAY, CLASS) WHERE THE CLASS OCCURS ON THAT DAY
+    # (THE WIDE FILE ALSO HAS AN OVERALL "recall" COLUMN, SO ONLY THE id AND PER-CLASS COLUMNS ARE KEPT)
+    wide = rf[["day"] + [c for c in rf.columns if c.startswith("recall ")]]
+    long = wide.melt(id_vars=["day"], var_name="attack_class", value_name="recall").dropna()
+    long["attack_class"] = long["attack_class"].str.replace("recall ", "", regex=False)
+    # CLASS SIZES COME FROM THE HGB ROWS OF THE SAME FOLD (IDENTICAL TEST ROWS)
+    sizes = rq4c[(rq4c["model"] == "hgb") & (rq4c["condition"] == "A_lodo")
+                 & (rq4c["test_set"] == "full_day")].set_index("attack_class")["n"]
+    long["n"] = long["attack_class"].map(sizes)
+    long["model"], long["condition"], long["test_set"] = "rf", "A_lodo", "full_day"
+    rq4c = pd.concat([rq4c, long], ignore_index=True)
+
+# POOLED-SPLIT RESULTS (KNOWN-ATTACK CEILING), IF m3_pooled_split.py HAS BEEN RUN
+POOLED_FILE = RES / "m3_pooled_metrics.csv"
+pool_m = pd.read_csv(POOLED_FILE) if POOLED_FILE.exists() else None
+pool_c = pd.read_csv(RES / "m3_pooled_per_class.csv") if POOLED_FILE.exists() else None
 
 # --- SUMMARY TABLES FOR THE REPORT AND THE WEBSITE ------------------------------------
 
@@ -134,14 +170,16 @@ dec.to_csv(RES / "m3_summary_rq4_decomposition.csv")
 # --- FIGURE 8: RQ4 HEADLINE ------------------------------------------------------------
 def fig_rq4_headline():
     # THREE PANELS PER HELD-OUT DAY: ATTACK RECALL, FALSE-ALARM RATE, PR-AUC
-    models = ["single_feature", "logreg", "hgb"]
-    colors = {"single_feature": T["context"], "logreg": T["blue"], "hgb": T["orange"]}
-    fig, axes = plt.subplots(1, 3, figsize=(10.5, 3.6), gridspec_kw={"wspace": 0.38})
+    models = [m for m in ["single_feature", "logreg", "hgb", "rf"] if m in set(head["model"])]
+    colors = {"single_feature": T["context"], "logreg": T["blue"], "hgb": T["orange"],
+              "rf": T["aqua"]}
+    fig, axes = plt.subplots(1, 3, figsize=(10.5, 3.9), gridspec_kw={"wspace": 0.38})
     y = np.arange(len(DAYS))[::-1]
-    h = 0.26
+    # BAR THICKNESS SHRINKS WITH THE NUMBER OF MODELS SO EACH DAY'S GROUP STAYS THE SAME HEIGHT
+    h = 0.8 / len(models)
     for k, m in enumerate(models):
         sub = head[head["model"] == m].set_index("day").reindex(DAYS)
-        off = (1 - k) * h
+        off = ((len(models) - 1) / 2 - k) * h
         # PANEL 1: SHARE OF THE HELD-OUT DAY'S ATTACK FLOWS THAT RAISED AN ALERT
         axes[0].barh(y + off, sub["recall"].fillna(0), height=h, color=colors[m],
                      label=MODEL_NAMES[m])
@@ -176,7 +214,7 @@ def fig_rq4_headline():
     axes[2].set_xlabel("vertical tick = no-skill level")
     axes[0].text(0.02, y[0], "n/a", va="center", color=T["ink2"], fontsize=7.5)
     axes[2].text(0.02, y[0], "n/a", va="center", color=T["ink2"], fontsize=7.5)
-    axes[0].legend(loc="upper center", bbox_to_anchor=(1.75, -0.2), ncol=3, fontsize=8)
+    axes[0].legend(loc="upper center", bbox_to_anchor=(1.75, -0.2), ncol=len(models), fontsize=8)
     save(fig, "m3-rq4-transfer-by-day")
 
 
@@ -216,15 +254,18 @@ def fig_rq4_decomposition():
 # --- FIGURE 10: PER-CLASS RECALL ON THE HELD-OUT DAY -----------------------------------
 def fig_rq4_per_class():
     # HEATMAP: ATTACK CLASS x MODEL, VALUE = SHARE OF THAT CLASS'S FLOWS CAUGHT WHEN ITS DAY WAS UNSEEN
+    cols4 = [m for m in ["single_feature", "logreg", "hgb", "rf"] if m in set(rq4c["model"])]
     sub = rq4c[(rq4c["condition"] == "A_lodo") & (rq4c["test_set"] == "full_day")
-               & rq4c["model"].isin(["single_feature", "logreg", "hgb"])]
+               & rq4c["model"].isin(cols4)]
     tab = sub.pivot_table(index="attack_class", columns="model", values="recall")
-    tab = tab[["single_feature", "logreg", "hgb"]]
+    tab = tab[cols4]
+    # CLASS SIZE AND DAY ARE TAKEN FROM THE HGB ROWS (EVERY MODEL SCORED THE SAME TEST ROWS)
+    sub = sub[sub["model"] == "hgb"]
     n = sub.drop_duplicates("attack_class").set_index("attack_class")["n"]
     day_of = sub.drop_duplicates("attack_class").set_index("attack_class")["day"]
     order = sorted(tab.index, key=lambda c: (DAYS.index(day_of[c]), -n[c]))
     tab = tab.loc[order]
-    fig, ax = plt.subplots(figsize=(6.4, 5.4))
+    fig, ax = plt.subplots(figsize=(7.4, 5.4))
     ax.imshow(tab.values, cmap=SEQ, vmin=0, vmax=1, aspect="auto")
     for i in range(tab.shape[0]):
         for j in range(tab.shape[1]):
@@ -232,7 +273,7 @@ def fig_rq4_per_class():
             # A NONZERO RECALL UNDER 1% IS SHOWN AS "<1%" SO IT IS NOT READ AS EXACTLY ZERO
             txt = "<1%" if 0 < v < 0.005 else f"{v:.0%}"
             ax.text(j, i, txt, ha="center", va="center", fontsize=7.5, color=ink_on(SEQ, v))
-    ax.set_xticks(range(3))
+    ax.set_xticks(range(len(cols4)))
     ax.set_xticklabels([MODEL_NAMES[m] for m in tab.columns], fontsize=8)
     ax.set_yticks(range(len(order)))
     ax.set_yticklabels([f"{c}  ({day_of[c][:3]}, n={n[c]:,})" for c in order], fontsize=7.6)
@@ -333,6 +374,41 @@ def fig_rq2_importance():
     save(fig, "m3-rq2-feature-importance")
 
 
+# --- FIGURE 14: KNOWN-ATTACK CEILING (POOLED SPLIT) VS. UNSEEN DAY -------------------------
+def fig_pooled_vs_lodo():
+    # FOR GRADIENT BOOSTING AND THE RANDOM FOREST: EACH ATTACK CLASS'S RECALL WHEN ITS DAY WAS NEVER
+    # SEEN (LEAVE-ONE-DAY-OUT) VS. WHEN 80% OF IT WAS IN TRAINING (POOLED SPLIT). THE GAP BETWEEN
+    # THE TWO DOTS IS THE PRICE OF THE ATTACK TYPE BEING NEW.
+    lodo = rq4c[(rq4c["condition"] == "A_lodo") & (rq4c["test_set"] == "full_day")]
+    pool = pool_c[pool_c["subset"] == "all"]
+    models = [m for m in ["hgb", "rf"] if m in set(lodo["model"]) and m in set(pool["model"])]
+    # ORDER CLASSES BY DAY, THEN SIZE, AS IN FIGURE 10 (TOP OF THE CHART = MONDAY'S END OF THE WEEK)
+    ref = lodo[lodo["model"] == "hgb"].drop_duplicates("attack_class").set_index("attack_class")
+    order = sorted(ref.index, key=lambda c: (DAYS.index(ref.loc[c, "day"]), -ref.loc[c, "n"]))[::-1]
+    fig, axes = plt.subplots(1, len(models), figsize=(4.2 * len(models) + 1.6, 5.2), sharey=True,
+                             gridspec_kw={"wspace": 0.08})
+    axes = np.atleast_1d(axes)
+    yy = np.arange(len(order))
+    for ax, m in zip(axes, models):
+        a = lodo[lodo["model"] == m].set_index("attack_class").reindex(order)["recall"]
+        b = pool[pool["model"] == m].set_index("attack_class").reindex(order)["recall"]
+        # A THIN CONNECTOR FROM THE UNSEEN-DAY DOT TO THE KNOWN-ATTACK DOT FOR EACH CLASS
+        for i in range(len(order)):
+            ax.plot([a.iloc[i], b.iloc[i]], [yy[i], yy[i]], color=T["grid"], lw=2.2, zorder=1)
+        ax.scatter(a, yy, color=T["blue"], s=30, zorder=3, label="Day never seen (leave-one-day-out)")
+        ax.scatter(b, yy, color=T["orange"], marker="D", s=26, zorder=3,
+                   label="Attack type seen in training (pooled 80/20 split)")
+        ax.set_xlim(-0.03, 1.03)
+        ax.set_title(MODEL_NAMES[m])
+        ax.set_xlabel("share of the class's attack flows caught")
+        ax.grid(axis="y", visible=False)
+    axes[0].set_yticks(yy)
+    axes[0].set_yticklabels([f"{c} ({ref.loc[c, 'day'][:3]})" for c in order], fontsize=7.6)
+    axes[0].legend(loc="upper center", bbox_to_anchor=(0.5 * len(models) + 0.05, -0.12), ncol=2,
+                   fontsize=7.6)
+    save(fig, "m3-pooled-vs-lodo-by-class")
+
+
 # DRAW EVERY FIGURE IN BOTH THEMES
 for theme in ["light", "dark"]:
     apply_theme(theme)
@@ -342,4 +418,6 @@ for theme in ["light", "dark"]:
     fig_rq5()
     fig_rq2()
     fig_rq2_importance()
+    if pool_c is not None:
+        fig_pooled_vs_lodo()
 print("figures written to", FIG_DIR)

@@ -7,7 +7,7 @@ preprocessing recipe, one threshold rule and one set of metrics:
 - load_clean():        the cleaned data written by m2_rebuild_clean.py
 - FEATURES:            the 64 modeling features (and why the rest are excluded)
 - defect_flags():      the three RQ5 defect flags, defined as in Milestone 2
-- make_model():        the baselines and the two candidate methods
+- make_model():        the baselines and the three candidate methods
 - split_fit_calib():   train-only split used for early stopping and the threshold
 - pick_threshold():    alert threshold set from benign calibration scores only
 - evaluate():          the metrics reported for every model on every fold
@@ -21,7 +21,7 @@ import pandas as pd
 
 # IMPORT THE MODELS, PREPROCESSING AND METRICS FROM SCIKIT-LEARN
 from sklearn.dummy import DummyClassifier
-from sklearn.ensemble import HistGradientBoostingClassifier
+from sklearn.ensemble import HistGradientBoostingClassifier, RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import average_precision_score, roc_auc_score
 from sklearn.model_selection import train_test_split
@@ -115,7 +115,7 @@ def signed_log1p(x):
 
 # BUILD ONE OF THE MODELS COMPARED IN RQ4 BY NAME, WITH OPTIONAL HYPERPARAMETERS
 def make_model(name, **params):
-    """Return an unfitted estimator. Names: majority, stratified, logreg, hgb."""
+    """Return an unfitted estimator. Names: majority, stratified, logreg, hgb, rf."""
     # BASELINE 1 (TYLER'S): ALWAYS PREDICT THE MAJORITY CLASS (BENIGN); CATCHES NO ATTACKS
     if name == "majority":
         return DummyClassifier(strategy="most_frequent")
@@ -142,6 +142,13 @@ def make_model(name, **params):
             l2_regularization=params.get("l2_regularization", 0.0),
             max_iter=300, early_stopping=True, validation_fraction=0.1,
             n_iter_no_change=10, class_weight="balanced", random_state=SEED)
+    # CANDIDATE 3 (LUIS, NOTEBOOK 05): RANDOM FOREST WITH HIS FIXED SETTINGS. 100 TREES, EACH SPLIT
+    # TRIES ~8 OF THE 64 FEATURES ("sqrt"), LEAVES HOLD AT LEAST 20 FLOWS, AND EACH TREE IS GROWN ON
+    # A 200,000-ROW BOOTSTRAP SAMPLE SO 100 TREES FIT IN MEMORY AND IN MINUTES ON 2M TRAINING ROWS
+    if name == "rf":
+        return RandomForestClassifier(
+            n_estimators=100, max_features="sqrt", min_samples_leaf=20, max_samples=200_000,
+            class_weight="balanced", n_jobs=-1, random_state=params.get("random_state", SEED))
     # ANY OTHER NAME IS A TYPO; FAIL LOUDLY RATHER THAN SILENTLY TRAIN THE WRONG THING
     raise ValueError(f"unknown model {name!r}")
 

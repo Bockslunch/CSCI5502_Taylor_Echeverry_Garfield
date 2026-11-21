@@ -1,0 +1,22 @@
+[11:21:44] loaded 2,520,656 rows x 64 features
+[11:21:48] pooled split: train 2,016,524 rows, test 504,132 rows (85,148 attacks)
+[11:21:58] single feature: Fwd IAT Std (sign +1)
+[11:22:05]   tune logreg {'C': 0.01}: calibration PR-AUC 0.9544
+[11:22:19]   tune logreg {'C': 0.1}: calibration PR-AUC 0.9599
+[11:22:42]   tune logreg {'C': 1.0}: calibration PR-AUC 0.9646
+[11:23:54] logreg {'C': 1.0}: fit 72s thr=0.8534
+[11:24:24]   tune hgb {'learning_rate': 0.1, 'max_leaf_nodes': 15}: calibration PR-AUC 0.9979
+[11:24:58]   tune hgb {'learning_rate': 0.1, 'max_leaf_nodes': 63}: calibration PR-AUC 0.9998
+[11:25:45]   tune hgb {'learning_rate': 0.05, 'max_leaf_nodes': 31, 'l2_regularization': 1.0}: calibration PR-AUC 0.9998
+[11:26:40] hgb {'learning_rate': 0.1, 'max_leaf_nodes': 63}: fit 55s thr=0.0154
+[11:27:37] rf {}: fit 57s thr=0.1755
+[11:27:37] 
+                   fpr          pr_auc         precision          recall        
+subset             all   clean     all   clean       all   clean     all   clean
+model                                                                           
+hgb             0.0093  0.0088  0.9991  0.9992    0.9560  0.9538  0.9999  0.9999
+logreg          0.0101  0.0097  0.9649  0.9638    0.9486  0.9452  0.9167  0.9125
+majority        0.0000  0.0000  0.1689  0.1543       NaN     NaN  0.0000  0.0000
+rf              0.0097  0.0091  0.9995  0.9998    0.9546  0.9522  0.9993  0.9994
+single_feature  0.0100  0.0099  0.5172  0.5577    0.8848  0.8871  0.3796  0.4247
+stratified      0.1680  0.1680  0.1691  0.1546    0.1703  0.1558  0.1697  0.1699

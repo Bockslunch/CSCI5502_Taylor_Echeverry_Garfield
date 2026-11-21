@@ -24,3 +24,4 @@ all of them live in `docs/assets/` because GitHub Pages only publishes `docs/`.
 | `m3-rq5-defects-by-class.png` | Fig. 11: per-class recall with defective flows kept vs. removed | `src/m3_figures.py` |
 | `m3-rq2-attack-separability.png` | Fig. 12: per-class F1 across feature variants and confusion matrix | `src/m3_figures.py` |
 | `m3-rq2-feature-importance.png` | Fig. 13: permutation importance with and without the window fields | `src/m3_figures.py` |
+| `m3-pooled-vs-lodo-by-class.png` | Fig. 14: per-class recall, unseen day vs. pooled 80/20 split | `src/m3_figures.py` |

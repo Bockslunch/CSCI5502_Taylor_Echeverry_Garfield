@@ -1,0 +1,7 @@
+model,params,cal_pr_auc
+logreg,"{""C"": 0.01}",0.9543714390118774
+logreg,"{""C"": 0.1}",0.9598625612315187
+logreg,"{""C"": 1.0}",0.9646314215183881
+hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 15}",0.997941203687167
+hgb,"{""learning_rate"": 0.1, ""max_leaf_nodes"": 63}",0.9998156508658713
+hgb,"{""learning_rate"": 0.05, ""max_leaf_nodes"": 31, ""l2_regularization"": 1.0}",0.9997896781389909

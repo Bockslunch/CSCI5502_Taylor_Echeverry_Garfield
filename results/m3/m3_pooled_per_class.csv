@@ -1,0 +1,163 @@
+model,subset,attack_class,n,recall
+majority,all,Bot,390,0.0
+majority,all,DDoS,25603,0.0
+majority,all,DoS GoldenEye,2057,0.0
+majority,all,DoS Hulk,34569,0.0
+majority,all,DoS Slowhttptest,1046,0.0
+majority,all,DoS slowloris,1077,0.0
+majority,all,FTP-Patator,1186,0.0
+majority,all,Heartbleed,2,0.0
+majority,all,Infiltration,7,0.0
+majority,all,PortScan,18139,0.0
+majority,all,SSH-Patator,644,0.0
+majority,all,Web Attack - Brute Force,294,0.0
+majority,all,Web Attack - Sql Injection,4,0.0
+majority,all,Web Attack - XSS,130,0.0
+majority,clean,Bot,369,0.0
+majority,clean,DDoS,25603,0.0
+majority,clean,DoS GoldenEye,2053,0.0
+majority,clean,DoS Hulk,34530,0.0
+majority,clean,DoS Slowhttptest,1044,0.0
+majority,clean,DoS slowloris,1064,0.0
+majority,clean,FTP-Patator,1186,0.0
+majority,clean,Infiltration,5,0.0
+majority,clean,PortScan,9537,0.0
+majority,clean,SSH-Patator,643,0.0
+majority,clean,Web Attack - Brute Force,41,0.0
+majority,clean,Web Attack - Sql Injection,2,0.0
+majority,clean,Web Attack - XSS,5,0.0
+stratified,all,Bot,390,0.20512820512820512
+stratified,all,DDoS,25603,0.16896457446393
+stratified,all,DoS GoldenEye,2057,0.1754982984929509
+stratified,all,DoS Hulk,34569,0.1709045676762417
+stratified,all,DoS Slowhttptest,1046,0.15678776290630975
+stratified,all,DoS slowloris,1077,0.1671309192200557
+stratified,all,FTP-Patator,1186,0.15935919055649242
+stratified,all,Heartbleed,2,0.5
+stratified,all,Infiltration,7,0.14285714285714285
+stratified,all,PortScan,18139,0.16891780142234963
+stratified,all,SSH-Patator,644,0.15838509316770186
+stratified,all,Web Attack - Brute Force,294,0.16666666666666666
+stratified,all,Web Attack - Sql Injection,4,0.0
+stratified,all,Web Attack - XSS,130,0.18461538461538463
+stratified,clean,Bot,369,0.21138211382113822
+stratified,clean,DDoS,25603,0.16896457446393
+stratified,clean,DoS GoldenEye,2053,0.17535314174378958
+stratified,clean,DoS Hulk,34530,0.1709527946713003
+stratified,clean,DoS Slowhttptest,1044,0.15613026819923373
+stratified,clean,DoS slowloris,1064,0.16635338345864661
+stratified,clean,FTP-Patator,1186,0.15935919055649242
+stratified,clean,Infiltration,5,0.0
+stratified,clean,PortScan,9537,0.17017930166719095
+stratified,clean,SSH-Patator,643,0.15707620528771385
+stratified,clean,Web Attack - Brute Force,41,0.1951219512195122
+stratified,clean,Web Attack - Sql Injection,2,0.0
+stratified,clean,Web Attack - XSS,5,0.4
+single_feature,all,Bot,390,0.0
+single_feature,all,DDoS,25603,0.15408350583915947
+single_feature,all,DoS GoldenEye,2057,0.0
+single_feature,all,DoS Hulk,34569,0.8135902108825827
+single_feature,all,DoS Slowhttptest,1046,0.20363288718929254
+single_feature,all,DoS slowloris,1077,0.039925719591457756
+single_feature,all,FTP-Patator,1186,0.0
+single_feature,all,Heartbleed,2,0.0
+single_feature,all,Infiltration,7,0.0
+single_feature,all,PortScan,18139,0.0
+single_feature,all,SSH-Patator,644,0.0
+single_feature,all,Web Attack - Brute Force,294,0.0
+single_feature,all,Web Attack - Sql Injection,4,0.0
+single_feature,all,Web Attack - XSS,130,0.0
+single_feature,clean,Bot,369,0.0
+single_feature,clean,DDoS,25603,0.15408350583915947
+single_feature,clean,DoS GoldenEye,2053,0.0
+single_feature,clean,DoS Hulk,34530,0.8140747176368376
+single_feature,clean,DoS Slowhttptest,1044,0.20402298850574713
+single_feature,clean,DoS slowloris,1064,0.040413533834586464
+single_feature,clean,FTP-Patator,1186,0.0
+single_feature,clean,Infiltration,5,0.0
+single_feature,clean,PortScan,9537,0.0
+single_feature,clean,SSH-Patator,643,0.0
+single_feature,clean,Web Attack - Brute Force,41,0.0
+single_feature,clean,Web Attack - Sql Injection,2,0.0
+single_feature,clean,Web Attack - XSS,5,0.0
+logreg,all,Bot,390,0.005128205128205128
+logreg,all,DDoS,25603,0.9796117642463774
+logreg,all,DoS GoldenEye,2057,0.7535245503159942
+logreg,all,DoS Hulk,34569,0.9133327547802945
+logreg,all,DoS Slowhttptest,1046,0.6281070745697896
+logreg,all,DoS slowloris,1077,0.8458681522748375
+logreg,all,FTP-Patator,1186,0.26812816188870153
+logreg,all,Heartbleed,2,0.0
+logreg,all,Infiltration,7,0.0
+logreg,all,PortScan,18139,0.9898009813109874
+logreg,all,SSH-Patator,644,0.009316770186335404
+logreg,all,Web Attack - Brute Force,294,0.0
+logreg,all,Web Attack - Sql Injection,4,0.0
+logreg,all,Web Attack - XSS,130,0.0
+logreg,clean,Bot,369,0.005420054200542005
+logreg,clean,DDoS,25603,0.9796117642463774
+logreg,clean,DoS GoldenEye,2053,0.7530443253774963
+logreg,clean,DoS Hulk,34530,0.91419055893426
+logreg,clean,DoS Slowhttptest,1044,0.6273946360153256
+logreg,clean,DoS slowloris,1064,0.8458646616541353
+logreg,clean,FTP-Patator,1186,0.26812816188870153
+logreg,clean,Infiltration,5,0.0
+logreg,clean,PortScan,9537,0.9806018664150152
+logreg,clean,SSH-Patator,643,0.00933125972006221
+logreg,clean,Web Attack - Brute Force,41,0.0
+logreg,clean,Web Attack - Sql Injection,2,0.0
+logreg,clean,Web Attack - XSS,5,0.0
+hgb,all,Bot,390,0.9923076923076923
+hgb,all,DDoS,25603,1.0
+hgb,all,DoS GoldenEye,2057,1.0
+hgb,all,DoS Hulk,34569,1.0
+hgb,all,DoS Slowhttptest,1046,1.0
+hgb,all,DoS slowloris,1077,0.9953574744661096
+hgb,all,FTP-Patator,1186,1.0
+hgb,all,Heartbleed,2,1.0
+hgb,all,Infiltration,7,0.7142857142857143
+hgb,all,PortScan,18139,1.0
+hgb,all,SSH-Patator,644,1.0
+hgb,all,Web Attack - Brute Force,294,1.0
+hgb,all,Web Attack - Sql Injection,4,1.0
+hgb,all,Web Attack - XSS,130,0.9923076923076923
+hgb,clean,Bot,369,0.991869918699187
+hgb,clean,DDoS,25603,1.0
+hgb,clean,DoS GoldenEye,2053,1.0
+hgb,clean,DoS Hulk,34530,1.0
+hgb,clean,DoS Slowhttptest,1044,1.0
+hgb,clean,DoS slowloris,1064,0.9971804511278195
+hgb,clean,FTP-Patator,1186,1.0
+hgb,clean,Infiltration,5,0.6
+hgb,clean,PortScan,9537,1.0
+hgb,clean,SSH-Patator,643,1.0
+hgb,clean,Web Attack - Brute Force,41,1.0
+hgb,clean,Web Attack - Sql Injection,2,1.0
+hgb,clean,Web Attack - XSS,5,1.0
+rf,all,Bot,390,0.9538461538461539
+rf,all,DDoS,25603,0.9996094207710033
+rf,all,DoS GoldenEye,2057,0.9985415653864852
+rf,all,DoS Hulk,34569,0.999942144696115
+rf,all,DoS Slowhttptest,1046,0.997131931166348
+rf,all,DoS slowloris,1077,0.9944289693593314
+rf,all,FTP-Patator,1186,0.9983136593591906
+rf,all,Heartbleed,2,1.0
+rf,all,Infiltration,7,0.42857142857142855
+rf,all,PortScan,18139,0.9999448701692486
+rf,all,SSH-Patator,644,0.9953416149068323
+rf,all,Web Attack - Brute Force,294,0.9829931972789115
+rf,all,Web Attack - Sql Injection,4,1.0
+rf,all,Web Attack - XSS,130,0.9923076923076923
+rf,clean,Bot,369,0.9539295392953929
+rf,clean,DDoS,25603,0.9996094207710033
+rf,clean,DoS GoldenEye,2053,0.9985387238188017
+rf,clean,DoS Hulk,34530,0.9999420793512888
+rf,clean,DoS Slowhttptest,1044,0.9971264367816092
+rf,clean,DoS slowloris,1064,0.9962406015037594
+rf,clean,FTP-Patator,1186,0.9983136593591906
+rf,clean,Infiltration,5,0.2
+rf,clean,PortScan,9537,0.9998951452238649
+rf,clean,SSH-Patator,643,0.995334370139969
+rf,clean,Web Attack - Brute Force,41,1.0
+rf,clean,Web Attack - Sql Injection,2,1.0
+rf,clean,Web Attack - XSS,5,1.0
