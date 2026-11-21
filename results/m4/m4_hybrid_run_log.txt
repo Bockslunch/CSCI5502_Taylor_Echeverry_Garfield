@@ -1,0 +1,15 @@
+[11:57:23] Monday hgb+iforest: per-model budget 0.0051, recall nan, fpr 0.0111, IF-only catches 0
+[11:57:23] Monday rf+iforest: per-model budget 0.0053, recall nan, fpr 0.0125, IF-only catches 0
+[11:57:23] === Monday done in 17s
+[11:57:40] Tuesday hgb+iforest: per-model budget 0.0051, recall 0.016, fpr 0.0207, IF-only catches 0
+[11:57:40] Tuesday rf+iforest: per-model budget 0.0053, recall 0.003, fpr 0.0184, IF-only catches 0
+[11:57:40] === Tuesday done in 17s
+[11:57:58] Wednesday hgb+iforest: per-model budget 0.0050, recall 0.621, fpr 0.0092, IF-only catches 3,525
+[11:57:58] Wednesday rf+iforest: per-model budget 0.0051, recall 0.596, fpr 0.0090, IF-only catches 3,524
+[11:57:58] === Wednesday done in 18s
+[11:58:13] Thursday hgb+iforest: per-model budget 0.0051, recall 0.916, fpr 0.1058, IF-only catches 15
+[11:58:13] Thursday rf+iforest: per-model budget 0.0053, recall 0.012, fpr 0.1050, IF-only catches 15
+[11:58:13] === Thursday done in 15s
+[11:58:30] Friday hgb+iforest: per-model budget 0.0052, recall 0.364, fpr 0.0529, IF-only catches 161
+[11:58:30] Friday rf+iforest: per-model budget 0.0053, recall 0.372, fpr 0.0522, IF-only catches 43
+[11:58:30] === Friday done in 17s

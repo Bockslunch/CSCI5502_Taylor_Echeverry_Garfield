@@ -1,0 +1,29 @@
+day,model,attack_class,n,recall
+Tuesday,hgb+iforest,FTP-Patator,5931,0.0001686056314280897
+Tuesday,hgb+iforest,SSH-Patator,3219,0.04473438956197577
+Tuesday,rf+iforest,FTP-Patator,5931,0.0010116337885685382
+Tuesday,rf+iforest,SSH-Patator,3219,0.00807704255980118
+Wednesday,hgb+iforest,DoS GoldenEye,10286,0.6731479681119968
+Wednesday,hgb+iforest,DoS Hulk,172846,0.6207838191222244
+Wednesday,hgb+iforest,DoS Slowhttptest,5228,0.8339709257842387
+Wednesday,hgb+iforest,DoS slowloris,5385,0.32646239554317547
+Wednesday,hgb+iforest,Heartbleed,11,1.0
+Wednesday,rf+iforest,DoS GoldenEye,10286,0.47754229049193075
+Wednesday,rf+iforest,DoS Hulk,172846,0.6119146523494903
+Wednesday,rf+iforest,DoS Slowhttptest,5228,0.6394414690130069
+Wednesday,rf+iforest,DoS slowloris,5385,0.270380687093779
+Wednesday,rf+iforest,Heartbleed,11,1.0
+Thursday,hgb+iforest,Infiltration,36,0.4722222222222222
+Thursday,hgb+iforest,Web Attack - Brute Force,1470,0.9170068027210885
+Thursday,hgb+iforest,Web Attack - Sql Injection,21,0.9047619047619048
+Thursday,hgb+iforest,Web Attack - XSS,652,0.9401840490797546
+Thursday,rf+iforest,Infiltration,36,0.4444444444444444
+Thursday,rf+iforest,Web Attack - Brute Force,1470,0.0013605442176870747
+Thursday,rf+iforest,Web Attack - Sql Injection,21,0.23809523809523808
+Thursday,rf+iforest,Web Attack - XSS,652,0.006134969325153374
+Friday,hgb+iforest,Bot,1948,0.006160164271047228
+Friday,hgb+iforest,DDoS,128014,0.6201743559298202
+Friday,hgb+iforest,PortScan,90694,0.011026087723553929
+Friday,rf+iforest,Bot,1948,0.006673511293634497
+Friday,rf+iforest,DDoS,128014,0.6361335478931992
+Friday,rf+iforest,PortScan,90694,0.0064282091428319406

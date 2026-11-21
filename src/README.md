@@ -9,7 +9,6 @@ than being copy-pasted between them.
 | `m2_rebuild_clean.py` | Replays `notebooks/01-data-cleaning.ipynb` as a script and logs the row/column count of every step (`cleaning_log.json`); reproduces the notebook's 2,520,656 × 72 output exactly | `python src/m2_rebuild_clean.py data/raw data/processed` |
 | `m2_quality_stats.py` | Milestone 2 Section 4–5 numbers: quality issues by class, label conflicts, redundant features, KS distances, summary statistics → `m2_stats.json` + CSV tables | `python src/m2_quality_stats.py data/processed` |
 | `m2_eda_figures.py` | Milestone 2 Figures 1–7 (PNG, 300 dpi), each in a light and a `-dark` version; the optional third argument copies them into the website's `docs/assets/` | `python src/m2_eda_figures.py data/processed figures docs/assets` |
-
 | `m3_common.py` | Shared Milestone 3 pieces: the 64-feature list and its exclusions, defect flags, models (including the random forest settings from notebook 05), train-only threshold rule, metrics | imported by the scripts below and notebook 05 |
 | `m3_rq4_transfer.py` | RQ4: leave-one-day-out comparison of baselines, logistic regression and gradient boosting, with nested tuning and the A/B/C benign-shift decomposition | `python src/m3_rq4_transfer.py data/processed results/m3` |
 | `m3_rq5_defects.py` | RQ5: retrain without defect-flagged flows and compare per-class recall | `python src/m3_rq5_defects.py data/processed results/m3` |
@@ -18,10 +17,17 @@ than being copy-pasted between them.
 | `m3_stability.py` | Seed-to-seed spread of the RQ4 gradient-boosting results | `python src/m3_stability.py data/processed results/m3` |
 | `m3_pooled_split.py` | Known-attack ceiling: the same models on a pooled 80/20 split stratified by day x class | `python src/m3_pooled_split.py data/processed results/m3` |
 | `m3_figures.py` | Milestone 3 Figures 8–14 (light + dark) and summary tables; folds in `rq4_forest.csv` from notebook 05 | `python src/m3_figures.py results/m3 figures docs/assets` |
+| `m4_anomaly.py` | RQ4 extension: benign-only anomaly detectors (Isolation Forest, PCA reconstruction error) on the same leave-one-day-out folds, 1% alert budget, benign-shift test and defect-free view | `python src/m4_anomaly.py data/processed results/m4` |
+| `m4_importance.py` | Refits gradient boosting and the random forest per held-out day (checked against Milestone 3), permutation importance on the unseen day (single features and correlated groups), random-forest seeds 1–3 and no-window-field run | `python src/m4_importance.py data/processed results/m3 results/m4` |
+| `m4_hybrid.py` | Classifier OR Isolation Forest, the pair held to one shared 1% benign alert budget | `python src/m4_hybrid.py data/processed results/m4` |
+| `m4_figures.py` | Milestone 4 figures (light + dark) and the pooled summary table of every approach | `python src/m4_figures.py results/m3 results/m4 figures docs/assets` |
 
 The three `m2_*` scripts run in that order; each reads what the previous one wrote.
 The `m3_*` scripts run after them in the order listed; `m3_rq4_transfer.py` must come
-first because the others reuse its chosen hyperparameters and saved scores.
+first because the others reuse its chosen hyperparameters and saved scores. The `m4_*`
+scripts run last, in the order listed; `m4_importance.py` reads Milestone 3's chosen
+gradient-boosting settings and `rq4_forest.csv`, and `m4_hybrid.py` needs the scores the
+two scripts before it save.
 
 `m2_rebuild_clean.py` peaks at about 6 GB of RAM (the full 2.8M-row dataset is held in
 memory); close other programs on an 8 GB machine.

@@ -141,8 +141,10 @@ Consequences we carry through the analysis:
 │                   04 leave-one-day-out baselines (RQ4), 05 random forest
 │                   comparison (RQ4).
 ├── src/            Scripts: cleaning replay, quality statistics, EDA figures (m2_*),
-│                   modeling and evaluation (m3_*).
+│                   modeling and evaluation (m3_*), Milestone 4 extensions (m4_*).
 ├── results/m3/     Milestone 3 result tables (CSV/JSON) and run logs.
+├── results/m4/     Milestone 4 result tables: anomaly detectors, held-out importance,
+│                   random-forest robustness, hybrid detector.
 ├── figures/        Generated figures referenced by the website and report.
 ├── docs/           The project website (GitHub Pages) plus project documentation.
 │   ├── index.html      The site itself — all four required sections
@@ -212,6 +214,18 @@ read and understood. To run the analysis code:
    `m3_summary_rq4_by_day.csv`, and writes `results/m3/rq4_forest.csv`. Then rerun
    `python src/m3_figures.py results/m3 figures docs/assets` so Figures 8 and 10
    include the random forest.
+
+7. Run the Milestone 4 extensions from the repository root, in order (they need the
+   cleaned data from step 4 and the Milestone 3 results from steps 5–6):
+
+   ```bash
+   python src/m4_anomaly.py data/processed results/m4                # benign-only anomaly detectors (~12 min)
+   python src/m4_importance.py data/processed results/m3 results/m4  # refit check, held-out importance, forest robustness (~45 min)
+   python src/m4_hybrid.py data/processed results/m4                 # classifier OR anomaly detector, shared 1% budget (~2 min)
+   python src/m4_figures.py results/m3 results/m4 figures docs/assets  # Milestone 4 figures and summary table
+   ```
+
+   Times are for a 2-core, 8 GB machine.
 
 ---
 

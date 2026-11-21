@@ -1,0 +1,97 @@
+outer_day,model,params,inner_day,pr_auc
+Monday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Tuesday,0.12067520472361727
+Monday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Wednesday,0.9044357659310088
+Monday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Thursday,0.0582337053741193
+Monday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Friday,0.7290646905023237
+Monday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Tuesday,0.19468138346575384
+Monday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Wednesday,0.9421642039182838
+Monday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Thursday,0.02180289215855
+Monday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Friday,0.7924497801758666
+Monday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Tuesday,0.11104214974243579
+Monday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Wednesday,0.9001841210113315
+Monday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Thursday,0.067207463951561
+Monday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Friday,0.7389376210839077
+Monday,pca,"{""var_kept"": 0.9}",Tuesday,0.1552430537626812
+Monday,pca,"{""var_kept"": 0.9}",Wednesday,0.9547116898749617
+Monday,pca,"{""var_kept"": 0.9}",Thursday,0.028953509507168643
+Monday,pca,"{""var_kept"": 0.9}",Friday,0.7944506558430224
+Monday,pca,"{""var_kept"": 0.95}",Tuesday,0.13362189559482146
+Monday,pca,"{""var_kept"": 0.95}",Wednesday,0.9449035377882461
+Monday,pca,"{""var_kept"": 0.95}",Thursday,0.03689745791413602
+Monday,pca,"{""var_kept"": 0.95}",Friday,0.7359722274503866
+Monday,pca,"{""var_kept"": 0.99}",Tuesday,0.08007804871926742
+Monday,pca,"{""var_kept"": 0.99}",Wednesday,0.9642849966673208
+Monday,pca,"{""var_kept"": 0.99}",Thursday,0.01503149931308169
+Monday,pca,"{""var_kept"": 0.99}",Friday,0.8079683757200637
+Tuesday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Wednesday,0.9259088018559836
+Tuesday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Thursday,0.08955238867477448
+Tuesday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Friday,0.7401393415169357
+Tuesday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Wednesday,0.9480449437391864
+Tuesday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Thursday,0.030245271642077794
+Tuesday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Friday,0.8001814385256427
+Tuesday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Wednesday,0.9015364788054899
+Tuesday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Thursday,0.09095617852255133
+Tuesday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Friday,0.7441958782874709
+Tuesday,pca,"{""var_kept"": 0.9}",Wednesday,0.9570410284163793
+Tuesday,pca,"{""var_kept"": 0.9}",Thursday,0.033902144767645456
+Tuesday,pca,"{""var_kept"": 0.9}",Friday,0.7947722762210799
+Tuesday,pca,"{""var_kept"": 0.95}",Wednesday,0.9507750252817669
+Tuesday,pca,"{""var_kept"": 0.95}",Thursday,0.043825138233787066
+Tuesday,pca,"{""var_kept"": 0.95}",Friday,0.7794823861957954
+Tuesday,pca,"{""var_kept"": 0.99}",Wednesday,0.9554033041590013
+Tuesday,pca,"{""var_kept"": 0.99}",Thursday,0.016937838951286355
+Tuesday,pca,"{""var_kept"": 0.99}",Friday,0.8316612596811486
+Wednesday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Tuesday,0.1139219700958264
+Wednesday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Thursday,0.06502112344594017
+Wednesday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Friday,0.7380407239078375
+Wednesday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Tuesday,0.19966158416171048
+Wednesday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Thursday,0.024283672912571618
+Wednesday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Friday,0.7950204906257518
+Wednesday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Tuesday,0.13329940649215272
+Wednesday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Thursday,0.07231078211134814
+Wednesday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Friday,0.731045163528878
+Wednesday,pca,"{""var_kept"": 0.9}",Tuesday,0.14502052230221263
+Wednesday,pca,"{""var_kept"": 0.9}",Thursday,0.03133016075003169
+Wednesday,pca,"{""var_kept"": 0.9}",Friday,0.7904905656545835
+Wednesday,pca,"{""var_kept"": 0.95}",Tuesday,0.13522791004275017
+Wednesday,pca,"{""var_kept"": 0.95}",Thursday,0.04073781069280724
+Wednesday,pca,"{""var_kept"": 0.95}",Friday,0.7780974330362298
+Wednesday,pca,"{""var_kept"": 0.99}",Tuesday,0.08148433773948509
+Wednesday,pca,"{""var_kept"": 0.99}",Thursday,0.01539029939503966
+Wednesday,pca,"{""var_kept"": 0.99}",Friday,0.8173682393512679
+Thursday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Tuesday,0.12388412331100161
+Thursday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Wednesday,0.8965799245639684
+Thursday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Friday,0.7614911540777535
+Thursday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Tuesday,0.19855662363774101
+Thursday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Wednesday,0.9537000734781514
+Thursday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Friday,0.8100105356729146
+Thursday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Tuesday,0.11971320878756947
+Thursday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Wednesday,0.9046411461830068
+Thursday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Friday,0.7395310705855134
+Thursday,pca,"{""var_kept"": 0.9}",Tuesday,0.15014912536166736
+Thursday,pca,"{""var_kept"": 0.9}",Wednesday,0.9528481393059156
+Thursday,pca,"{""var_kept"": 0.9}",Friday,0.8005298171926492
+Thursday,pca,"{""var_kept"": 0.95}",Tuesday,0.14415128558516282
+Thursday,pca,"{""var_kept"": 0.95}",Wednesday,0.9469036806945114
+Thursday,pca,"{""var_kept"": 0.95}",Friday,0.8267809757660227
+Thursday,pca,"{""var_kept"": 0.99}",Tuesday,0.08806971461179004
+Thursday,pca,"{""var_kept"": 0.99}",Wednesday,0.9580390916031718
+Thursday,pca,"{""var_kept"": 0.99}",Friday,0.9137592779702224
+Friday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Tuesday,0.15009749546235854
+Friday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Wednesday,0.8802997821223839
+Friday,iforest,"{""max_samples"": 256, ""max_features"": 1.0}",Thursday,0.0732480690352766
+Friday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Tuesday,0.2024762880617386
+Friday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Wednesday,0.9394725737539632
+Friday,iforest,"{""max_samples"": 4096, ""max_features"": 1.0}",Thursday,0.024174162208690817
+Friday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Tuesday,0.12104987572217085
+Friday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Wednesday,0.8878762813631504
+Friday,iforest,"{""max_samples"": 256, ""max_features"": 0.5}",Thursday,0.06836599148366286
+Friday,pca,"{""var_kept"": 0.9}",Tuesday,0.15471518496240877
+Friday,pca,"{""var_kept"": 0.9}",Wednesday,0.9560488307081892
+Friday,pca,"{""var_kept"": 0.9}",Thursday,0.029845984495783115
+Friday,pca,"{""var_kept"": 0.95}",Tuesday,0.2095001600752511
+Friday,pca,"{""var_kept"": 0.95}",Wednesday,0.9293538087656081
+Friday,pca,"{""var_kept"": 0.95}",Thursday,0.043185201392705576
+Friday,pca,"{""var_kept"": 0.99}",Tuesday,0.10145338717877089
+Friday,pca,"{""var_kept"": 0.99}",Wednesday,0.9559119665323419
+Friday,pca,"{""var_kept"": 0.99}",Thursday,0.01538647610132433

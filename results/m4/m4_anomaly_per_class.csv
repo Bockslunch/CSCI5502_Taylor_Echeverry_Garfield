@@ -1,0 +1,165 @@
+day,model,condition,test_set,flows,attack_class,n,recall
+Tuesday,iforest,A_lodo,half_day,all,FTP-Patator,2966,0.0
+Tuesday,iforest,A_lodo,half_day,all,SSH-Patator,1609,0.0
+Tuesday,iforest,A_lodo,half_day,clean,FTP-Patator,2966,0.0
+Tuesday,iforest,A_lodo,half_day,clean,SSH-Patator,1608,0.0
+Tuesday,iforest,A_lodo,full_day,all,FTP-Patator,5931,0.0
+Tuesday,iforest,A_lodo,full_day,all,SSH-Patator,3219,0.0
+Tuesday,iforest,A_lodo,full_day,clean,FTP-Patator,5931,0.0
+Tuesday,iforest,A_lodo,full_day,clean,SSH-Patator,3217,0.0
+Tuesday,iforest,B_lodo_plus_day_benign,half_day,all,FTP-Patator,2966,0.0
+Tuesday,iforest,B_lodo_plus_day_benign,half_day,all,SSH-Patator,1609,0.0
+Tuesday,iforest,B_lodo_plus_day_benign,half_day,clean,FTP-Patator,2966,0.0
+Tuesday,iforest,B_lodo_plus_day_benign,half_day,clean,SSH-Patator,1608,0.0
+Tuesday,pca,A_lodo,half_day,all,FTP-Patator,2966,0.0
+Tuesday,pca,A_lodo,half_day,all,SSH-Patator,1609,0.0
+Tuesday,pca,A_lodo,half_day,clean,FTP-Patator,2966,0.0
+Tuesday,pca,A_lodo,half_day,clean,SSH-Patator,1608,0.0
+Tuesday,pca,A_lodo,full_day,all,FTP-Patator,5931,0.0
+Tuesday,pca,A_lodo,full_day,all,SSH-Patator,3219,0.0
+Tuesday,pca,A_lodo,full_day,clean,FTP-Patator,5931,0.0
+Tuesday,pca,A_lodo,full_day,clean,SSH-Patator,3217,0.0
+Tuesday,pca,B_lodo_plus_day_benign,half_day,all,FTP-Patator,2966,0.0
+Tuesday,pca,B_lodo_plus_day_benign,half_day,all,SSH-Patator,1609,0.0
+Tuesday,pca,B_lodo_plus_day_benign,half_day,clean,FTP-Patator,2966,0.0
+Tuesday,pca,B_lodo_plus_day_benign,half_day,clean,SSH-Patator,1608,0.0
+Wednesday,iforest,A_lodo,half_day,all,DoS GoldenEye,5143,0.09119191133579622
+Wednesday,iforest,A_lodo,half_day,all,DoS Hulk,86423,0.10034365851683001
+Wednesday,iforest,A_lodo,half_day,all,DoS Slowhttptest,2614,0.7035195103289977
+Wednesday,iforest,A_lodo,half_day,all,DoS slowloris,2692,0.5404903417533432
+Wednesday,iforest,A_lodo,half_day,all,Heartbleed,6,1.0
+Wednesday,iforest,A_lodo,half_day,clean,DoS GoldenEye,5136,0.08995327102803738
+Wednesday,iforest,A_lodo,half_day,clean,DoS Hulk,86327,0.10023515238569625
+Wednesday,iforest,A_lodo,half_day,clean,DoS Slowhttptest,2597,0.7015787447054294
+Wednesday,iforest,A_lodo,half_day,clean,DoS slowloris,2670,0.5367041198501873
+Wednesday,iforest,A_lodo,full_day,all,DoS GoldenEye,10286,0.08992805755395683
+Wednesday,iforest,A_lodo,full_day,all,DoS Hulk,172846,0.09991553174502157
+Wednesday,iforest,A_lodo,full_day,all,DoS Slowhttptest,5228,0.7056235654169855
+Wednesday,iforest,A_lodo,full_day,all,DoS slowloris,5385,0.5348189415041783
+Wednesday,iforest,A_lodo,full_day,all,Heartbleed,11,1.0
+Wednesday,iforest,A_lodo,full_day,clean,DoS GoldenEye,10276,0.0890424289606851
+Wednesday,iforest,A_lodo,full_day,clean,DoS Hulk,172652,0.09978453768273753
+Wednesday,iforest,A_lodo,full_day,clean,DoS Slowhttptest,5200,0.7040384615384615
+Wednesday,iforest,A_lodo,full_day,clean,DoS slowloris,5340,0.5312734082397004
+Wednesday,iforest,A_lodo,full_day,clean,Heartbleed,1,1.0
+Wednesday,iforest,B_lodo_plus_day_benign,half_day,all,DoS GoldenEye,5143,0.09313630176939529
+Wednesday,iforest,B_lodo_plus_day_benign,half_day,all,DoS Hulk,86423,0.2032560776645106
+Wednesday,iforest,B_lodo_plus_day_benign,half_day,all,DoS Slowhttptest,2614,0.891354246365723
+Wednesday,iforest,B_lodo_plus_day_benign,half_day,all,DoS slowloris,2692,0.5612927191679049
+Wednesday,iforest,B_lodo_plus_day_benign,half_day,all,Heartbleed,6,1.0
+Wednesday,iforest,B_lodo_plus_day_benign,half_day,clean,DoS GoldenEye,5136,0.09190031152647975
+Wednesday,iforest,B_lodo_plus_day_benign,half_day,clean,DoS Hulk,86327,0.20327359922156452
+Wednesday,iforest,B_lodo_plus_day_benign,half_day,clean,DoS Slowhttptest,2597,0.8906430496726992
+Wednesday,iforest,B_lodo_plus_day_benign,half_day,clean,DoS slowloris,2670,0.5576779026217229
+Wednesday,pca,A_lodo,half_day,all,DoS GoldenEye,5143,0.0
+Wednesday,pca,A_lodo,half_day,all,DoS Hulk,86423,0.3327354986519792
+Wednesday,pca,A_lodo,half_day,all,DoS Slowhttptest,2614,0.005355776587605203
+Wednesday,pca,A_lodo,half_day,all,DoS slowloris,2692,0.0
+Wednesday,pca,A_lodo,half_day,all,Heartbleed,6,1.0
+Wednesday,pca,A_lodo,half_day,clean,DoS GoldenEye,5136,0.0
+Wednesday,pca,A_lodo,half_day,clean,DoS Hulk,86327,0.33297809491816
+Wednesday,pca,A_lodo,half_day,clean,DoS Slowhttptest,2597,0.005390835579514825
+Wednesday,pca,A_lodo,half_day,clean,DoS slowloris,2670,0.0
+Wednesday,pca,A_lodo,full_day,all,DoS GoldenEye,10286,0.0
+Wednesday,pca,A_lodo,full_day,all,DoS Hulk,172846,0.3340372354581535
+Wednesday,pca,A_lodo,full_day,all,DoS Slowhttptest,5228,0.004973221117061974
+Wednesday,pca,A_lodo,full_day,all,DoS slowloris,5385,0.0
+Wednesday,pca,A_lodo,full_day,all,Heartbleed,11,0.9090909090909091
+Wednesday,pca,A_lodo,full_day,clean,DoS GoldenEye,10276,0.0
+Wednesday,pca,A_lodo,full_day,clean,DoS Hulk,172652,0.33430831962560525
+Wednesday,pca,A_lodo,full_day,clean,DoS Slowhttptest,5200,0.005
+Wednesday,pca,A_lodo,full_day,clean,DoS slowloris,5340,0.0
+Wednesday,pca,A_lodo,full_day,clean,Heartbleed,1,0.0
+Wednesday,pca,B_lodo_plus_day_benign,half_day,all,DoS GoldenEye,5143,0.0
+Wednesday,pca,B_lodo_plus_day_benign,half_day,all,DoS Hulk,86423,0.3390416902907791
+Wednesday,pca,B_lodo_plus_day_benign,half_day,all,DoS Slowhttptest,2614,0.014154552410099464
+Wednesday,pca,B_lodo_plus_day_benign,half_day,all,DoS slowloris,2692,0.0
+Wednesday,pca,B_lodo_plus_day_benign,half_day,all,Heartbleed,6,1.0
+Wednesday,pca,B_lodo_plus_day_benign,half_day,clean,DoS GoldenEye,5136,0.0
+Wednesday,pca,B_lodo_plus_day_benign,half_day,clean,DoS Hulk,86327,0.33929129936172925
+Wednesday,pca,B_lodo_plus_day_benign,half_day,clean,DoS Slowhttptest,2597,0.01424720831728918
+Wednesday,pca,B_lodo_plus_day_benign,half_day,clean,DoS slowloris,2670,0.0
+Thursday,iforest,A_lodo,half_day,all,Infiltration,18,0.3888888888888889
+Thursday,iforest,A_lodo,half_day,all,Web Attack - Brute Force,735,0.0
+Thursday,iforest,A_lodo,half_day,all,Web Attack - Sql Injection,11,0.0
+Thursday,iforest,A_lodo,half_day,all,Web Attack - XSS,326,0.0
+Thursday,iforest,A_lodo,half_day,clean,Infiltration,15,0.26666666666666666
+Thursday,iforest,A_lodo,half_day,clean,Web Attack - Brute Force,79,0.0
+Thursday,iforest,A_lodo,half_day,clean,Web Attack - Sql Injection,6,0.0
+Thursday,iforest,A_lodo,half_day,clean,Web Attack - XSS,15,0.0
+Thursday,iforest,A_lodo,full_day,all,Infiltration,36,0.5
+Thursday,iforest,A_lodo,full_day,all,Web Attack - Brute Force,1470,0.0
+Thursday,iforest,A_lodo,full_day,all,Web Attack - Sql Injection,21,0.0
+Thursday,iforest,A_lodo,full_day,all,Web Attack - XSS,652,0.0
+Thursday,iforest,A_lodo,full_day,clean,Infiltration,29,0.3793103448275862
+Thursday,iforest,A_lodo,full_day,clean,Web Attack - Brute Force,151,0.0
+Thursday,iforest,A_lodo,full_day,clean,Web Attack - Sql Injection,12,0.0
+Thursday,iforest,A_lodo,full_day,clean,Web Attack - XSS,24,0.0
+Thursday,iforest,B_lodo_plus_day_benign,half_day,all,Infiltration,18,0.3888888888888889
+Thursday,iforest,B_lodo_plus_day_benign,half_day,all,Web Attack - Brute Force,735,0.0
+Thursday,iforest,B_lodo_plus_day_benign,half_day,all,Web Attack - Sql Injection,11,0.0
+Thursday,iforest,B_lodo_plus_day_benign,half_day,all,Web Attack - XSS,326,0.0
+Thursday,iforest,B_lodo_plus_day_benign,half_day,clean,Infiltration,15,0.26666666666666666
+Thursday,iforest,B_lodo_plus_day_benign,half_day,clean,Web Attack - Brute Force,79,0.0
+Thursday,iforest,B_lodo_plus_day_benign,half_day,clean,Web Attack - Sql Injection,6,0.0
+Thursday,iforest,B_lodo_plus_day_benign,half_day,clean,Web Attack - XSS,15,0.0
+Thursday,pca,A_lodo,half_day,all,Infiltration,18,0.3333333333333333
+Thursday,pca,A_lodo,half_day,all,Web Attack - Brute Force,735,0.0
+Thursday,pca,A_lodo,half_day,all,Web Attack - Sql Injection,11,0.0
+Thursday,pca,A_lodo,half_day,all,Web Attack - XSS,326,0.0
+Thursday,pca,A_lodo,half_day,clean,Infiltration,15,0.26666666666666666
+Thursday,pca,A_lodo,half_day,clean,Web Attack - Brute Force,79,0.0
+Thursday,pca,A_lodo,half_day,clean,Web Attack - Sql Injection,6,0.0
+Thursday,pca,A_lodo,half_day,clean,Web Attack - XSS,15,0.0
+Thursday,pca,A_lodo,full_day,all,Infiltration,36,0.3611111111111111
+Thursday,pca,A_lodo,full_day,all,Web Attack - Brute Force,1470,0.0
+Thursday,pca,A_lodo,full_day,all,Web Attack - Sql Injection,21,0.0
+Thursday,pca,A_lodo,full_day,all,Web Attack - XSS,652,0.0
+Thursday,pca,A_lodo,full_day,clean,Infiltration,29,0.2413793103448276
+Thursday,pca,A_lodo,full_day,clean,Web Attack - Brute Force,151,0.0
+Thursday,pca,A_lodo,full_day,clean,Web Attack - Sql Injection,12,0.0
+Thursday,pca,A_lodo,full_day,clean,Web Attack - XSS,24,0.0
+Thursday,pca,B_lodo_plus_day_benign,half_day,all,Infiltration,18,0.3888888888888889
+Thursday,pca,B_lodo_plus_day_benign,half_day,all,Web Attack - Brute Force,735,0.0
+Thursday,pca,B_lodo_plus_day_benign,half_day,all,Web Attack - Sql Injection,11,0.0
+Thursday,pca,B_lodo_plus_day_benign,half_day,all,Web Attack - XSS,326,0.0
+Thursday,pca,B_lodo_plus_day_benign,half_day,clean,Infiltration,15,0.26666666666666666
+Thursday,pca,B_lodo_plus_day_benign,half_day,clean,Web Attack - Brute Force,79,0.0
+Thursday,pca,B_lodo_plus_day_benign,half_day,clean,Web Attack - Sql Injection,6,0.0
+Thursday,pca,B_lodo_plus_day_benign,half_day,clean,Web Attack - XSS,15,0.0
+Friday,iforest,A_lodo,half_day,all,Bot,974,0.012320328542094456
+Friday,iforest,A_lodo,half_day,all,DDoS,64007,0.16557564016435702
+Friday,iforest,A_lodo,half_day,all,PortScan,45347,0.002800626281782698
+Friday,iforest,A_lodo,half_day,clean,Bot,919,0.013057671381936888
+Friday,iforest,A_lodo,half_day,clean,DDoS,64006,0.1655782270412149
+Friday,iforest,A_lodo,half_day,clean,PortScan,23998,0.005292107675639637
+Friday,iforest,A_lodo,full_day,all,Bot,1948,0.014887063655030801
+Friday,iforest,A_lodo,full_day,all,DDoS,128014,0.16655990751011607
+Friday,iforest,A_lodo,full_day,all,PortScan,90694,0.0028226784572298056
+Friday,iforest,A_lodo,full_day,clean,Bot,1829,0.015855658829961726
+Friday,iforest,A_lodo,full_day,clean,DDoS,128011,0.16656381092249883
+Friday,iforest,A_lodo,full_day,clean,PortScan,47835,0.00533082470994042
+Friday,iforest,B_lodo_plus_day_benign,half_day,all,Bot,974,0.01026694045174538
+Friday,iforest,B_lodo_plus_day_benign,half_day,all,DDoS,64007,0.15357695252081804
+Friday,iforest,B_lodo_plus_day_benign,half_day,all,PortScan,45347,0.0028447306326769136
+Friday,iforest,B_lodo_plus_day_benign,half_day,clean,Bot,919,0.01088139281828074
+Friday,iforest,B_lodo_plus_day_benign,half_day,clean,DDoS,64006,0.15357935193575603
+Friday,iforest,B_lodo_plus_day_benign,half_day,clean,PortScan,23998,0.005375447953996166
+Friday,pca,A_lodo,half_day,all,Bot,974,0.009240246406570842
+Friday,pca,A_lodo,half_day,all,DDoS,64007,0.09405221303919883
+Friday,pca,A_lodo,half_day,all,PortScan,45347,6.615652634132357e-05
+Friday,pca,A_lodo,half_day,clean,Bot,919,0.009793253536452665
+Friday,pca,A_lodo,half_day,clean,DDoS,64006,0.0940536824672687
+Friday,pca,A_lodo,half_day,clean,PortScan,23998,0.00012501041753479458
+Friday,pca,A_lodo,full_day,all,Bot,1948,0.011806981519507187
+Friday,pca,A_lodo,full_day,all,DDoS,128014,0.0948490008905276
+Friday,pca,A_lodo,full_day,all,PortScan,90694,7.71826140648775e-05
+Friday,pca,A_lodo,full_day,clean,Bot,1829,0.012575177692728267
+Friday,pca,A_lodo,full_day,clean,DDoS,128011,0.09485122372296131
+Friday,pca,A_lodo,full_day,clean,PortScan,47835,0.00014633636458659976
+Friday,pca,B_lodo_plus_day_benign,half_day,all,Bot,974,0.002053388090349076
+Friday,pca,B_lodo_plus_day_benign,half_day,all,DDoS,64007,0.09695814520286844
+Friday,pca,B_lodo_plus_day_benign,half_day,all,PortScan,45347,6.615652634132357e-05
+Friday,pca,B_lodo_plus_day_benign,half_day,clean,Bot,919,0.002176278563656148
+Friday,pca,B_lodo_plus_day_benign,half_day,clean,DDoS,64006,0.09695966003187201
+Friday,pca,B_lodo_plus_day_benign,half_day,clean,PortScan,23998,0.00012501041753479458

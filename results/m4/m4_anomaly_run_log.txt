@@ -1,0 +1,77 @@
+[11:04:30] loaded 2,520,656 rows x 64 features; 55,392 defect-flagged
+[11:04:30] === held-out Monday: 1,592,303 benign training flows, test 502,612 flows (0 attacks)
+[11:04:45]   tune iforest {'max_samples': 256, 'max_features': 1.0}: inner PR-AUC mean 0.453
+[11:05:06]   tune iforest {'max_samples': 4096, 'max_features': 1.0}: inner PR-AUC mean 0.488
+[11:06:18]   tune iforest {'max_samples': 256, 'max_features': 0.5}: inner PR-AUC mean 0.454
+[11:06:18]   iforest chosen: {'max_samples': 4096, 'max_features': 1.0}
+[11:06:35]   iforest A_lodo: 17s thr=0.5968
+[11:06:47]   iforest B_lodo_plus_day_benign: 12s thr=0.5972
+[11:06:53]   tune pca {'var_kept': 0.9}: inner PR-AUC mean 0.483
+[11:07:00]   tune pca {'var_kept': 0.95}: inner PR-AUC mean 0.463
+[11:07:08]   tune pca {'var_kept': 0.99}: inner PR-AUC mean 0.467
+[11:07:08]   pca chosen: {'var_kept': 0.9}
+[11:07:10]   pca A_lodo: 2s thr=63.2342 (11 components)
+[11:07:12]   pca B_lodo_plus_day_benign: 2s thr=57.3123 (11 components)
+[11:07:13] === Monday done in 2.7 min
+[11:07:13] === held-out Tuesday: 1,682,516 benign training flows, test 421,549 flows (9,150 attacks)
+[11:07:25]   tune iforest {'max_samples': 256, 'max_features': 1.0}: inner PR-AUC mean 0.585
+[11:07:44]   tune iforest {'max_samples': 4096, 'max_features': 1.0}: inner PR-AUC mean 0.593
+[11:08:42]   tune iforest {'max_samples': 256, 'max_features': 0.5}: inner PR-AUC mean 0.579
+[11:08:42]   iforest chosen: {'max_samples': 4096, 'max_features': 1.0}
+[11:09:00]   iforest A_lodo: 17s thr=0.5982
+[11:09:12]   iforest B_lodo_plus_day_benign: 12s thr=0.5966
+[11:09:17]   tune pca {'var_kept': 0.9}: inner PR-AUC mean 0.595
+[11:09:23]   tune pca {'var_kept': 0.95}: inner PR-AUC mean 0.591
+[11:09:29]   tune pca {'var_kept': 0.99}: inner PR-AUC mean 0.601
+[11:09:29]   pca chosen: {'var_kept': 0.99}
+[11:09:32]   pca A_lodo: 4s thr=6.6144 (24 components)
+[11:09:36]   pca B_lodo_plus_day_benign: 3s thr=5.9496 (24 components)
+[11:09:36] === Tuesday done in 2.4 min
+[11:09:36] === held-out Wednesday: 1,686,413 benign training flows, test 602,258 flows (193,756 attacks)
+[11:09:46]   tune iforest {'max_samples': 256, 'max_features': 1.0}: inner PR-AUC mean 0.306
+[11:10:01]   tune iforest {'max_samples': 4096, 'max_features': 1.0}: inner PR-AUC mean 0.340
+[11:10:51]   tune iforest {'max_samples': 256, 'max_features': 0.5}: inner PR-AUC mean 0.312
+[11:10:51]   iforest chosen: {'max_samples': 4096, 'max_features': 1.0}
+[11:11:11]   iforest A_lodo: 20s thr=0.5959
+[11:11:25]   iforest B_lodo_plus_day_benign: 13s thr=0.5964
+[11:11:30]   tune pca {'var_kept': 0.9}: inner PR-AUC mean 0.322
+[11:11:35]   tune pca {'var_kept': 0.95}: inner PR-AUC mean 0.318
+[11:11:39]   tune pca {'var_kept': 0.99}: inner PR-AUC mean 0.305
+[11:11:39]   pca chosen: {'var_kept': 0.9}
+[11:11:43]   pca A_lodo: 3s thr=59.5847 (11 components)
+[11:11:46]   pca B_lodo_plus_day_benign: 3s thr=58.3018 (11 components)
+[11:11:47] === Wednesday done in 2.2 min
+[11:11:47] === held-out Thursday: 1,698,675 benign training flows, test 398,419 flows (2,179 attacks)
+[11:11:59]   tune iforest {'max_samples': 256, 'max_features': 1.0}: inner PR-AUC mean 0.594
+[11:12:18]   tune iforest {'max_samples': 4096, 'max_features': 1.0}: inner PR-AUC mean 0.654
+[11:13:09]   tune iforest {'max_samples': 256, 'max_features': 0.5}: inner PR-AUC mean 0.588
+[11:13:09]   iforest chosen: {'max_samples': 4096, 'max_features': 1.0}
+[11:13:24]   iforest A_lodo: 15s thr=0.6003
+[11:13:37]   iforest B_lodo_plus_day_benign: 12s thr=0.5987
+[11:13:43]   tune pca {'var_kept': 0.9}: inner PR-AUC mean 0.635
+[11:13:49]   tune pca {'var_kept': 0.95}: inner PR-AUC mean 0.639
+[11:13:54]   tune pca {'var_kept': 0.99}: inner PR-AUC mean 0.653
+[11:13:54]   pca chosen: {'var_kept': 0.99}
+[11:13:56]   pca A_lodo: 2s thr=6.4331 (23 components)
+[11:13:58]   pca B_lodo_plus_day_benign: 2s thr=5.8645 (24 components)
+[11:13:59] === Thursday done in 2.2 min
+[11:13:59] === held-out Friday: 1,719,753 benign training flows, test 595,818 flows (220,656 attacks)
+[11:14:12]   tune iforest {'max_samples': 256, 'max_features': 1.0}: inner PR-AUC mean 0.368
+[11:14:29]   tune iforest {'max_samples': 4096, 'max_features': 1.0}: inner PR-AUC mean 0.389
+[11:15:17]   tune iforest {'max_samples': 256, 'max_features': 0.5}: inner PR-AUC mean 0.359
+[11:15:17]   iforest chosen: {'max_samples': 4096, 'max_features': 1.0}
+[11:15:35]   iforest A_lodo: 18s thr=0.5963
+[11:15:47]   iforest B_lodo_plus_day_benign: 12s thr=0.5954
+[11:15:52]   tune pca {'var_kept': 0.9}: inner PR-AUC mean 0.380
+[11:15:57]   tune pca {'var_kept': 0.95}: inner PR-AUC mean 0.394
+[11:16:01]   tune pca {'var_kept': 0.99}: inner PR-AUC mean 0.358
+[11:16:01]   pca chosen: {'var_kept': 0.95}
+[11:16:04]   pca A_lodo: 3s thr=18.2200 (15 components)
+[11:16:06]   pca B_lodo_plus_day_benign: 2s thr=20.2736 (15 components)
+[11:16:08] === Friday done in 2.1 min
+[11:16:08] 
+           fpr                                   pr_auc                            recall                           
+day     Friday Monday Thursday Tuesday Wednesday Friday Thursday Tuesday Wednesday Friday Thursday Tuesday Wednesday
+model                                                                                                               
+iforest  0.074  0.008    0.008   0.008     0.008  0.652    0.009   0.092     0.885  0.098    0.008     0.0     0.128
+pca      0.076  0.013    0.005   0.005     0.007  0.625    0.006   0.032     0.897  0.055    0.006     0.0     0.298

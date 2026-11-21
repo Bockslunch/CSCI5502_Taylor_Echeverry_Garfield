@@ -1,0 +1,132 @@
+{
+  "RST Flag Count (+1)": [
+    "RST Flag Count",
+    "ECE Flag Count"
+  ],
+  "ACK Flag Count": [
+    "ACK Flag Count"
+  ],
+  "URG Flag Count": [
+    "URG Flag Count"
+  ],
+  "Bwd Packets/s": [
+    "Bwd Packets/s"
+  ],
+  "Down/Up Ratio": [
+    "Down/Up Ratio"
+  ],
+  "Fwd IAT Min": [
+    "Fwd IAT Min"
+  ],
+  "Fwd Packet Length Min (+1)": [
+    "Fwd Packet Length Min",
+    "Min Packet Length"
+  ],
+  "Bwd Packet Length Min": [
+    "Bwd Packet Length Min"
+  ],
+  "Init_Win_bytes_forward": [
+    "Init_Win_bytes_forward"
+  ],
+  "Init_Win_bytes_backward": [
+    "Init_Win_bytes_backward"
+  ],
+  "PSH Flag Count": [
+    "PSH Flag Count"
+  ],
+  "Flow Bytes/s": [
+    "Flow Bytes/s"
+  ],
+  "Active Std (+1)": [
+    "Active Std",
+    "Idle Std"
+  ],
+  "Total Length of Bwd Packets (+9)": [
+    "Total Length of Bwd Packets",
+    "Bwd Packet Length Max",
+    "Bwd Packet Length Mean",
+    "Max Packet Length",
+    "Packet Length Mean",
+    "Packet Length Std",
+    "Packet Length Variance",
+    "Average Packet Size",
+    "Avg Bwd Segment Size",
+    "Subflow Bwd Bytes"
+  ],
+  "Fwd Packet Length Mean (+1)": [
+    "Fwd Packet Length Mean",
+    "Avg Fwd Segment Size"
+  ],
+  "Total Length of Fwd Packets (+2)": [
+    "Total Length of Fwd Packets",
+    "Fwd Packet Length Max",
+    "Subflow Fwd Bytes"
+  ],
+  "Bwd Packet Length Std": [
+    "Bwd Packet Length Std"
+  ],
+  "Bwd IAT Std": [
+    "Bwd IAT Std"
+  ],
+  "Fwd Packet Length Std": [
+    "Fwd Packet Length Std"
+  ],
+  "Total Backward Packets (+4)": [
+    "Total Backward Packets",
+    "Bwd IAT Total",
+    "Bwd IAT Mean",
+    "Bwd IAT Max",
+    "Bwd Header Length"
+  ],
+  "Bwd IAT Min": [
+    "Bwd IAT Min"
+  ],
+  "Fwd IAT Total (+2)": [
+    "Fwd IAT Total",
+    "Fwd IAT Mean",
+    "Fwd IAT Max"
+  ],
+  "Total Fwd Packets (+1)": [
+    "Total Fwd Packets",
+    "Fwd Header Length"
+  ],
+  "Fwd IAT Std": [
+    "Fwd IAT Std"
+  ],
+  "Flow IAT Std": [
+    "Flow IAT Std"
+  ],
+  "act_data_pkt_fwd": [
+    "act_data_pkt_fwd"
+  ],
+  "Flow Duration (+4)": [
+    "Flow Duration",
+    "Flow Packets/s",
+    "Flow IAT Mean",
+    "Flow IAT Max",
+    "Fwd Packets/s"
+  ],
+  "Active Mean (+5)": [
+    "Active Mean",
+    "Active Max",
+    "Active Min",
+    "Idle Mean",
+    "Idle Max",
+    "Idle Min"
+  ],
+  "Flow IAT Min": [
+    "Flow IAT Min"
+  ],
+  "FIN Flag Count": [
+    "FIN Flag Count"
+  ],
+  "min_seg_size_forward": [
+    "min_seg_size_forward"
+  ],
+  "Fwd PSH Flags": [
+    "Fwd PSH Flags"
+  ],
+  "Fwd URG Flags": [
+    "Fwd URG Flags"
+  ]
+}

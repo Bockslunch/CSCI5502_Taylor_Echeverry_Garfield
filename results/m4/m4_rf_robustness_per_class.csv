@@ -1,0 +1,57 @@
+day,variant,attack_class,n,recall
+Tuesday,seed 1,FTP-Patator,5931,0.3179902208733772
+Tuesday,seed 1,SSH-Patator,3219,0.009630319975147562
+Tuesday,seed 2,FTP-Patator,5931,0.2702748271792278
+Tuesday,seed 2,SSH-Patator,3219,0.010251630941286114
+Tuesday,seed 3,FTP-Patator,5931,0.008261675939976395
+Tuesday,seed 3,SSH-Patator,3219,0.01056228642435539
+Tuesday,no window fields,FTP-Patator,5931,0.31697858708480864
+Tuesday,no window fields,SSH-Patator,3219,0.00807704255980118
+Wednesday,seed 1,DoS GoldenEye,10286,0.5139996111219133
+Wednesday,seed 1,DoS Hulk,172846,0.6549471784131539
+Wednesday,seed 1,DoS Slowhttptest,5228,0.15512624330527927
+Wednesday,seed 1,DoS slowloris,5385,0.27595171773444754
+Wednesday,seed 1,Heartbleed,11,0.6363636363636364
+Wednesday,seed 2,DoS GoldenEye,10286,0.49484736535096246
+Wednesday,seed 2,DoS Hulk,172846,0.5576119782928156
+Wednesday,seed 2,DoS Slowhttptest,5228,0.2102142310635042
+Wednesday,seed 2,DoS slowloris,5385,0.27390900649953576
+Wednesday,seed 2,Heartbleed,11,0.9090909090909091
+Wednesday,seed 3,DoS GoldenEye,10286,0.5039860003888781
+Wednesday,seed 3,DoS Hulk,172846,0.6889138308089282
+Wednesday,seed 3,DoS Slowhttptest,5228,0.18018362662586074
+Wednesday,seed 3,DoS slowloris,5385,0.27595171773444754
+Wednesday,seed 3,Heartbleed,11,1.0
+Wednesday,no window fields,DoS GoldenEye,10286,0.4968889753062415
+Wednesday,no window fields,DoS Hulk,172846,0.753277484003101
+Wednesday,no window fields,DoS Slowhttptest,5228,0.07192042846212701
+Wednesday,no window fields,DoS slowloris,5385,0.2503249767873723
+Wednesday,no window fields,Heartbleed,11,0.0
+Thursday,seed 1,Infiltration,36,0.05555555555555555
+Thursday,seed 1,Web Attack - Brute Force,1470,0.03197278911564626
+Thursday,seed 1,Web Attack - Sql Injection,21,0.47619047619047616
+Thursday,seed 1,Web Attack - XSS,652,0.010736196319018405
+Thursday,seed 2,Infiltration,36,0.08333333333333333
+Thursday,seed 2,Web Attack - Brute Force,1470,0.023809523809523808
+Thursday,seed 2,Web Attack - Sql Injection,21,0.38095238095238093
+Thursday,seed 2,Web Attack - XSS,652,0.02147239263803681
+Thursday,seed 3,Infiltration,36,0.08333333333333333
+Thursday,seed 3,Web Attack - Brute Force,1470,0.04013605442176871
+Thursday,seed 3,Web Attack - Sql Injection,21,0.38095238095238093
+Thursday,seed 3,Web Attack - XSS,652,0.02147239263803681
+Thursday,no window fields,Infiltration,36,0.08333333333333333
+Thursday,no window fields,Web Attack - Brute Force,1470,0.014285714285714285
+Thursday,no window fields,Web Attack - Sql Injection,21,0.23809523809523808
+Thursday,no window fields,Web Attack - XSS,652,0.03680981595092025
+Friday,seed 1,Bot,1948,0.0
+Friday,seed 1,DDoS,128014,0.6381723873951286
+Friday,seed 1,PortScan,90694,0.010199131144287384
+Friday,seed 2,Bot,1948,0.0
+Friday,seed 2,DDoS,128014,0.637914603090287
+Friday,seed 2,PortScan,90694,0.010364522460140692
+Friday,seed 3,Bot,1948,0.0
+Friday,seed 3,DDoS,128014,0.6401096755042417
+Friday,seed 3,PortScan,90694,0.010507861600546894
+Friday,no window fields,Bot,1948,0.0
+Friday,no window fields,DDoS,128014,0.6357898354867436
+Friday,no window fields,PortScan,90694,0.009945531126645644
