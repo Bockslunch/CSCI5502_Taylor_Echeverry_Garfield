@@ -25,3 +25,6 @@ all of them live in `docs/assets/` because GitHub Pages only publishes `docs/`.
 | `m3-rq2-attack-separability.png` | Fig. 12: per-class F1 across feature variants and confusion matrix | `src/m3_figures.py` |
 | `m3-rq2-feature-importance.png` | Fig. 13: permutation importance with and without the window fields | `src/m3_figures.py` |
 | `m3-pooled-vs-lodo-by-class.png` | Fig. 14: per-class recall, unseen day vs. pooled 80/20 split | `src/m3_figures.py` |
+| `m4-recall-by-class-detectors.png` | Fig. 15: per-class recall for gradient boosting, the two anomaly detectors and the hybrid | `src/m4_figures.py` |
+| `m4-heldout-importance.png` | Fig. 16: permutation importance on the unseen days, gradient boosting vs. random forest | `src/m4_figures.py` |
+| `m4-window-dependence.png` | Fig. 17: pooled unseen-day recall with and without the TCP window fields | `src/m4_figures.py` |

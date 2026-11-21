@@ -20,17 +20,13 @@ python -m http.server -d docs 8000   # then open http://localhost:8000
 
 ## Team
 
-| Member             | Role (initial)                 |
-| ------------------ | ------------------------------ |
-| Christopher Taylor | Coordination · Data · Analysis |
-| Luis Echeverry     | Data · Reproducibility         |
-| Tyler Garfield     | Analysis · Visualization       |
+| Member             | Main contributions |
+| ------------------ | ------------------ |
+| Christopher Taylor | Coordination; cleaning replay, quality statistics and EDA figures (`src/m2_*`); Milestone 3 modeling and evaluation (`src/m3_*`); Milestone 4 anomaly detection, held-out importance and robustness (`src/m4_*`); website, reports, documentation |
+| Luis Echeverry     | Data cleaning (`notebooks/01-data-cleaning.ipynb`); random-forest comparison (`notebooks/05-random-forest.ipynb`) |
+| Tyler Garfield     | Exploratory analysis (`notebooks/02-eda.ipynb`); k-means clustering, RQ3 (`notebooks/03-kmeans-clustering.ipynb`); prediction baselines (`notebooks/04-prediction-baselines.ipynb`); random-forest review |
 
-Suggested role split — adjust before submitting. Roles may overlap and may change.
-
-- **Coordination & documentation** — milestone tracking, website content, README upkeep
-- **Data & reproducibility** — acquisition, cleaning, sampling, environment, repo hygiene
-- **Analysis & visualization** — exploratory analysis, comparative work, figures
+The full contribution statement is submitted with the final report.
 
 > Contact information is intentionally omitted from this public repository. Add
 > GitHub or LinkedIn links here only if each member chooses to share them.
@@ -49,7 +45,17 @@ modeling technique. Milestone 3 compares baselines, logistic regression and
 gradient boosting under leave-one-day-out evaluation (with a random forest as a
 comparison and a pooled random split as a known-attack ceiling), plus k-means clustering;
 see the [Models & Evaluation](https://bockslunch.github.io/CSCI5502_Taylor_Echeverry_Garfield/#models)
-section of the website.
+section of the website. Milestone 4 adds benign-only anomaly detectors, a hybrid
+detector, feature importance on the unseen days and random-forest robustness checks.
+
+**Headline findings:** the same models that catch 99.9% of attacks they have seen catch
+about half of never-seen attacks (47.7% gradient boosting, 44–55% random forest across
+seeds) at a 1% benign alert budget. Gradient boosting's transfer leans on a
+host-identifying TCP window field (19.0% without it); the random forest's does not
+(52.0%), so the random forest is the detector we trust. The final report is
+[`docs/final-report.pdf`](docs/final-report.pdf); the answers to each research question
+are in the website's [Results & Conclusion](https://bockslunch.github.io/CSCI5502_Taylor_Echeverry_Garfield/#results)
+section.
 
 ---
 
@@ -163,7 +169,8 @@ Consequences we carry through the analysis:
 | 0         | Project idea and proposal                                                                                    | Approved              |
 | 1         | Project framing & foundation — research questions, background, team, repository, website                     | Complete              |
 | 2         | Data acquisition, preparation & exploration — provenance, cleaning, data dictionary, quality assessment, EDA | Complete              |
-| 3         | Modeling & evaluation — baselines, candidate methods, leave-one-day-out validation, error analysis           | Complete (due Nov 13) |
+| 3         | Modeling & evaluation — baselines, candidate methods, leave-one-day-out validation, error analysis           | Complete              |
+| 4         | Final results, report & presentation — anomaly detection, held-out importance, robustness, final write-up    | Complete              |
 
 ---
 

@@ -33,8 +33,8 @@ two scripts before it save.
 memory); close other programs on an 8 GB machine.
 
 The feature selection planned at Milestone 2 (excluding destination port and identical
-columns) is implemented in `m3_common.feature_list()`. Still planned: `sample.py` (the
-committed `data/sample/` excerpt).
+columns) is implemented in `m3_common.feature_list()`. No data sample is committed,
+because CIC grants no redistribution right (see `data/README.md`).
 
 ## Conventions
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Distinguishing Malicious from Benign Network Traffic — CSCI 5502</title>
-<meta name="description" content="CSCI 5502 Data Mining semester project: flow-level detection of malicious network traffic in CICIDS2017, and the dataset defects that complicate it.">
+<meta name="description" content="CSCI 5502 Data Mining semester project: can flow-based detectors catch attacks they have never seen? Leave-one-day-out evaluation on CICIDS2017, and the dataset defects that complicate it.">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -22,13 +22,12 @@
 <nav class="nav" aria-label="Sections">
   <ul>
     <li><a href="#introduction">Introduction</a></li>
-    <li><a href="#questions">Research Questions</a></li>
     <li><a href="#background">Background</a></li>
     <li><a href="#data">Data</a></li>
     <li><a href="#models">Models</a></li>
+    <li><a href="#results">Results</a></li>
     <li><a href="#guide">Guide</a></li>
     <li><a href="#team">Team</a></li>
-    <li><a href="#proposal">Proposal</a></li>
     <li><a href="#references">References</a></li>
   </ul>
 </nav>
@@ -54,6 +53,27 @@
     no payload at all. This project asks how much of the malicious-versus-benign
     distinction survives in that reduced representation, and whether different
     attack types leave traces distinguishable from one another within it.
+  </p>
+
+  <div class="grid" style="grid-template-columns:repeat(auto-fit, minmax(18rem, 1fr))">
+    <div class="card"><h3>99.9% → about 50%</h3><p>The same models that catch 99.9% of
+      attacks they have seen in training catch about half of attacks they have never
+      seen (<a href="#results">Results</a>).</p></div>
+    <div class="card"><h3>Floods transfer, quiet attacks don't</h3><p>New denial-of-service
+      floods are mostly caught; password guessing, port scans and botnet traffic almost
+      never are.</p></div>
+    <div class="card"><h3>The random forest is the detector we trust</h3><p>Gradient
+      boosting's transfer leans on a host-identifying TCP field (48% → 19% without it);
+      the random forest's does not (55% → 52%).</p></div>
+    <div class="card"><h3>Dataset flaws inflate scores</h3><p>Thursday's web-attack
+      detection falls from 91% to 45% once defective flows are removed.</p></div>
+  </div>
+
+  <p>
+    <strong>Final deliverables:</strong>
+    <a href="final-report.pdf">final report (PDF)</a> ·
+    <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield">code, results and reproduction steps</a> ·
+    the class presentation is available from the team on request.
   </p>
 
   <h3>Stakeholders</h3>
@@ -161,11 +181,8 @@
     <li>Report per class, with scope limits stated plainly: the findings describe a
         five-day simulated capture from July 2017 and a fixed attack catalog.</li>
   </ol>
-</section>
 
-<!-- ========================= B. RESEARCH QUESTIONS ========================= -->
-<section id="questions">
-  <h2>Research Questions</h2>
+  <h3 id="questions">Final research questions</h3>
 
   <ol class="rq">
     <li>
@@ -224,6 +241,22 @@
     <li><strong>RQ5</strong> is kept and defined at the row level, since the
         exploration identified concrete, measurable defects.</li>
   </ul>
+  <p>
+    Milestone 4 extends RQ4 rather than adding a question: a benign-only anomaly
+    detector, a hybrid detector, feature importance measured on the unseen days, and
+    robustness checks of the random forest (Results 9 and 10).
+  </p>
+
+  <h3 id="proposal">Change since the proposal (Milestone 0)</h3>
+  <p>
+    The approved proposal treated source and destination IP address and port as core
+    descriptive features and did not account for published errata on this dataset.
+    Host identifiers and timestamps are now excluded from modeling, because attacker
+    hosts are fixed in this simulation and including them lets a model memorize machine
+    identity rather than attack behavior, and label reliability is treated as a question
+    to measure rather than an assumption. The change narrows the scope but makes the
+    findings defensible.
+  </p>
 </section>
 
 <!-- ============================ BACKGROUND ================================ -->
@@ -284,6 +317,32 @@
     published CSVs, apply the corrections that can be applied at the CSV level, and
     state clearly which findings are limited by the ones that cannot.
   </div>
+
+  <h3>Evaluating machine learning for intrusion detection</h3>
+  <p>
+    Sommer and Paxson <a href="#references">[6]</a> argued that machine learning is
+    best at finding activity similar to what it has already seen, a poor match for
+    intrusion detection, where the attacks that matter are new, and described why
+    learned detectors rarely reach deployment. Arp et al. <a href="#references">[7]</a>
+    reviewed 30 papers from top security venues and found pitfalls such as data
+    snooping, spurious correlations and lab-only evaluation in most of them. Apruzzese
+    et al. <a href="#references">[8]</a> showed that research evaluations rarely let
+    practitioners estimate a detector's operational value. Our leave-one-day-out split
+    and fixed alert budget follow from these critiques.
+  </p>
+
+  <h3>Anomaly detection and feature importance</h3>
+  <p>
+    Lakhina, Crovella and Diot <a href="#references">[10]</a> separated network
+    traffic into normal and anomalous subspaces with principal component analysis; our
+    PCA reconstruction-error detector follows that idea. Liu, Ting and Zhou
+    <a href="#references">[9]</a> proposed Isolation Forest, which isolates unusual
+    points with random partitions and scales to millions of rows. To explain what
+    carries detection we use permutation importance from Breiman's random forests
+    <a href="#references">[12]</a>; because Strobl et al. <a href="#references">[11]</a>
+    showed that correlated features distort it, we also shuffle near-duplicate features
+    together.
+  </p>
 </section>
 
 <!-- ======================= DATA & EXPLORATION (MILESTONE 2) ======================= -->
@@ -529,7 +588,7 @@
            alt="Two bar charts by class: the share of flows sent to the class's most common destination port, and the number of distinct ports. Ten attack classes send 100% of flows to one port; BENIGN uses 53,788 ports, PortScan 1,000 and Bot 702.">
     </picture>
     </a>
-    <figcaption><strong>Figure 5. Most attack classes target a single destination port.</strong> Ten of 14 attack classes use exactly one port, seven of them port 80; benign traffic spans 53,788 ports. Destination Port mostly records which services the testbed's attack scripts targeted, so a model would learn the testbed's layout rather than attack behavior. We keep it for description and exclude it from modeling. Redrawn from Tyler's analysis in <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/02-eda.ipynb">notebooks/02-eda.ipynb</a>.</figcaption>
+    <figcaption><strong>Figure 5. Most attack classes target a single destination port.</strong> Ten of all 14 attack classes (including the three too small for RQ2) use exactly one port, seven of them port 80; benign traffic spans 53,788 ports. Destination Port mostly records which services the testbed's attack scripts targeted, so a model would learn the testbed's layout rather than attack behavior. We keep it for description and exclude it from modeling. Redrawn from Tyler's analysis in <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/02-eda.ipynb">notebooks/02-eda.ipynb</a>.</figcaption>
   </figure>
 
   <figure>
@@ -578,6 +637,9 @@
     from one another once a model has seen them, but a detector trained on four
     capture days catches about half of a fifth day's never-seen attacks, and much of
     what looks like success or failure traces back to known dataset artifacts.
+    Milestone 4 adds a benign-only anomaly detector, a hybrid, feature importance on
+    the unseen days and random-forest robustness checks (Results 9 and 10). All models
+    use scikit-learn <a href="#references">[5]</a>.
   </p>
 
   <h3>Modeling plan</h3>
@@ -693,8 +755,8 @@
       <tr><td>Stratified guess (baseline)</td><td>11.5%</td><td>15.7%</td><td>16.4%</td><td>0.18*</td><td>21.1%</td></tr>
       <tr><td>Single-feature rule (best one feature per fold)</td><td>3.0%</td><td>0.8%</td><td>51.3%</td><td>0.18</td><td>0.3%</td></tr>
       <tr><td>Logistic regression</td><td>22.1%</td><td>3.3%</td><td>63.9%</td><td>0.32</td><td>1.6%</td></tr>
-      <tr><td><strong>Gradient boosting</strong></td><td><strong>47.7%</strong></td><td>4.2%</td><td>75.4%</td><td><strong>0.42</strong></td><td>1.4%</td></tr>
-      <tr><td>Random forest (comparison, untuned)</td><td>55.4%</td><td>4.2%</td><td>77.9%</td><td>0.46</td><td>1.9%</td></tr>
+      <tr><td>Gradient boosting</td><td>47.7%</td><td>4.2%</td><td>75.4%</td><td>0.42</td><td>1.4%</td></tr>
+      <tr><td><strong>Random forest</strong> (untuned, seed 5502)</td><td>55.4%</td><td>4.2%</td><td>77.9%</td><td>0.46</td><td>1.9%</td></tr>
     </tbody>
   </table>
   <p style="font-size:.85rem;color:var(--text-muted)">
@@ -703,7 +765,8 @@
     are in Figure 8 and <code>results/m3/m3_summary_rq4_by_day.csv</code>. The random
     forest's higher pooled recall comes from one Wednesday class: it catches about
     37,000 more DoS Hulk flows, more than its whole lead, while catching fewer on
-    most other classes. It is compared day by day in Result 7.
+    most other classes. It is compared day by day in Result 7; across three more seeds
+    its pooled recall is 44–49% (Result 10).
   </p>
 
   <figure>
@@ -908,8 +971,9 @@
         the largest class (84% caught vs. 63%). On the smaller DoS classes the forest
         catches less: GoldenEye 51% vs. 68%, Slowhttptest 5% vs. 26%, slowloris 28%
         vs. 33%. Result 5 showed that gradient boosting's Wednesday transfer leans on
-        the host-identifying window field. The forest was not rerun without it, so
-        its Wednesday gain may rest on the same field.</li>
+        the host-identifying window field. Milestone 4 reran the forest without it
+        (Result 10): its Wednesday recall stays at 70.7%, so the forest's gain does
+        not rest on that field.</li>
     <li><strong>Thursday's gap does not mean the forest detects worse.</strong> The
         forest catches 2% of web Brute Force and XSS flows, where gradient boosting
         catches 92% and 94%. But Result 4 showed most of gradient boosting's
@@ -922,14 +986,15 @@
     <li><strong>Neither model held the 1% alarm budget on any unseen day.</strong></li>
   </ul>
   <p>
-    <strong>Decision:</strong> gradient boosting stays the primary RQ4 model and the
-    forest is reported as a comparison. The forest was not tuned. An inner
-    leave-one-day-out search like gradient boosting's was too costly on 2.5M rows,
-    and an ordinary grid search with random folds would leak each day's attack types
-    into validation. It also ran with one seed on four of the five days. Both points
-    favor gradient boosting, so the comparison is conservative. Either way, the forest
-    does not change the answer to RQ4: what a model catches on a day with
-    never-seen attacks depends more on the attack type than on the ensemble method.
+    <strong>Milestone 3 decision, revised in Milestone 4:</strong> at Milestone 3 gradient
+    boosting stayed the primary model, because the forest was untuned and ran with one
+    seed. The forest was not tuned because an inner leave-one-day-out search was too
+    costly on 2.5M rows and a random-fold search would leak each day's attack types into
+    validation. Result 10 shows that the forest's detection, unlike boosting's, survives
+    removing the host-identifying window field, so the final project presents the
+    <strong>random forest as the more trustworthy detector</strong>. What a model catches
+    on a day with never-seen attacks still depends more on the attack type than on the
+    ensemble method.
   </p>
 
   <h3>Result 8: the known-attack ceiling — what changes when every attack type has been seen</h3>
@@ -989,6 +1054,122 @@
     CICIDS2017 literature do not carry over to detecting new attacks.
   </p>
 
+
+  <h3>Result 9: an anomaly detector catches different attacks, but fewer (Milestone 4)</h3>
+  <p>
+    A classifier can only recognize attacks resembling ones it was trained on. An
+    anomaly detector learns what <em>normal</em> traffic looks like and flags anything
+    unusual, so in principle it needs no attack examples. We fit two on the benign flows
+    of the four training days only, with the same folds, features and 1% benign alert
+    budget: an Isolation Forest <a href="#references">[9]</a> and a PCA
+    reconstruction-error detector <a href="#references">[10]</a>, each tuned by the same
+    inner leave-one-day-out loop.
+  </p>
+  <table class="full">
+    <thead>
+      <tr><th scope="col">Approach (4 attack days pooled)</th><th scope="col">Recall</th><th scope="col">False alarms</th><th scope="col">Precision</th><th scope="col">PR-AUC</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Gradient boosting (Result 1)</td><td>47.7%</td><td>4.2%</td><td>75.4%</td><td>0.42</td></tr>
+      <tr><td>Isolation Forest (benign-only)</td><td>10.9%</td><td>2.4%</td><td>55.1%</td><td>0.41</td></tr>
+      <tr><td>PCA reconstruction error (benign-only)</td><td>16.4%</td><td>2.2%</td><td>66.3%</td><td>0.39</td></tr>
+      <tr><td>Gradient boosting OR Isolation Forest (shared 1% budget)</td><td>47.7%</td><td>4.7%</td><td>73.3%</td><td>—</td></tr>
+      <tr><td>Random forest OR Isolation Forest (shared 1% budget)</td><td>46.4%</td><td>4.5%</td><td>73.2%</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:.85rem;color:var(--text-muted)">
+    The hybrid raises an alert when either model fires; both are calibrated on the same
+    benign rows and share one 1% budget (about 0.5% each). It produces alerts, not a
+    ranking, so it has no PR-AUC. Source: <code>results/m4/m4_summary_pooled.csv</code>.
+  </p>
+
+  <figure>
+    <a href="assets/m4-recall-by-class-detectors.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/m4-recall-by-class-detectors-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/m4-recall-by-class-detectors.png" width="2372" height="1473" loading="lazy"
+           alt="Heatmap of recall per attack class on its unseen day for gradient boosting, Isolation Forest, PCA error and the hybrid. Isolation Forest beats boosting on Slowhttptest (71% vs 26%), slowloris (53% vs 33%) and Infiltration (50% vs 6%), and catches 0% of brute force, web attacks and under 1% of PortScan. The hybrid reaches 83% on Slowhttptest and 47% on Infiltration.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 15. What each approach catches on an unseen day.</strong> The Isolation Forest catches the slow-rate denial-of-service attacks and infiltration that gradient boosting mostly misses: attacks that are unusual without resembling anything in the other days. It misses every attack whose single flows look ordinary. The hybrid gains on those few classes but loses about as much elsewhere, because each model gets only half the budget.</figcaption>
+  </figure>
+
+  <p>
+    The detectors rank attacks almost as well as gradient boosting (PR-AUC 0.41 vs.
+    0.42), but the most unusual 1% of benign traffic is <em>very</em> unusual, so few
+    attacks clear the threshold. They are also more sensitive to shifts in normal
+    traffic: the Isolation Forest's Friday false-alarm rate is 7.4%, falling to 2.1%
+    once half of Friday's benign flows are added to training. It does not raise the
+    classifiers' Thursday false alarms (0.8%), which fits the reading that those alarms
+    are real but unlabeled scan traffic (Result 3). Anomaly detection is a complement for
+    slow and unusual attacks, not a replacement, and under a shared budget it gives no
+    net gain.
+  </p>
+
+  <h3>Result 10: what carries detection to a new day, and why we trust the random forest (Milestone 4)</h3>
+  <p>
+    The instructor's Milestone 3 feedback asked which features matter most for
+    detection and why. Figure 13 answered a different question (which features
+    separate attack types once seen), so here we measure importance on the
+    <em>unseen</em> days: shuffle one feature across a sample of the held-out day (up to
+    30,000 attack and 60,000 benign flows, three repeats) and record how much PR-AUC
+    drops. Because near-copies hide each other's importance <a href="#references">[11]</a>,
+    features with |Spearman ρ| ≥ 0.9 are shuffled together, which gives 33 groups;
+    “(+9)” means nine near-copies shuffled with the named feature.
+  </p>
+
+  <figure>
+    <a href="assets/m4-heldout-importance.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/m4-heldout-importance-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/m4-heldout-importance.png" width="3088" height="1339" loading="lazy"
+           alt="Two bar charts of permutation importance on unseen days. Gradient boosting's top feature is the artifact-prone Init_Win_bytes_forward (mean PR-AUC drop 0.08), followed by Flow Bytes/s and Bwd Packet Length Std. The random forest's top group is backward packet sizes (Total Length of Bwd Packets plus 9 near-copies, mean drop 0.27), followed by forward bytes, forward packet counts, backward packet counts and forward inter-arrival times; the window fields rank 7th and 9th.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 16. Which features carry detection to an unseen day.</strong> Bars are the mean PR-AUC drop over the four attack days; lines span the smallest to largest day. Orange marks the artifact-prone TCP window fields. Gradient boosting relies most on <code>Init_Win_bytes_forward</code>; the random forest relies on how big the server's replies are and how much the client sends.</figcaption>
+  </figure>
+
+  <p>What the forest's top features mean, in plain terms:</p>
+  <ol>
+    <li><strong>Size of the replies</strong> (backward packet lengths and bytes). Floods and
+        scans tend to get small, uniform replies, while real page loads return large and
+        varied ones; this group carries most of the forest's Wednesday detection.</li>
+    <li><strong>Size of the requests</strong> (forward bytes, largest forward packet).
+        Attack tools send repetitive requests of characteristic sizes.</li>
+    <li><strong>Packet counts</strong> on each side, which separate one-shot probes from
+        long exchanges.</li>
+    <li><strong>Timing</strong> (forward inter-arrival times): bursts versus a slow
+        trickle, the signature of slow-rate denial of service.</li>
+  </ol>
+  <p>
+    These describe how a connection behaves, not which machine started it. The TCP
+    initial-window field is different: it mostly reflects the operating system of the
+    machine, and in this testbed the attackers were always the same machines, so it
+    works like a name tag. Removing the two window fields shows how much each model
+    leaned on that shortcut.
+  </p>
+
+  <figure>
+    <a href="assets/m4-window-dependence.png" title="Open full-size image">
+    <picture>
+      <source srcset="assets/m4-window-dependence-dark.png" media="(prefers-color-scheme: dark)">
+      <img src="assets/m4-window-dependence.png" width="1735" height="1012" loading="lazy"
+           alt="Bar chart of pooled unseen-day recall. Gradient boosting: 48% with all features, 19% without the window fields. Random forest: 55% with all features (seeds 44% to 55%), 52% without the window fields.">
+    </picture>
+    </a>
+    <figcaption><strong>Figure 17. Removing the TCP window fields breaks boosting, not the forest.</strong> Pooled recall over the four attack days at the 1% budget. Dots are the random forest's four seeds (5502, 1, 2, 3).</figcaption>
+  </figure>
+
+  <p>
+    Gradient boosting's pooled recall falls from 47.7% to 19.0% without the window
+    fields; the random forest's moves from 55.4% to 52.0%. Across four seeds the
+    forest's recall ranges from 44.2% to 55.4%, so its lead in recall is within seed
+    noise, but its mean PR-AUC is 0.46–0.47 on every seed against 0.42 for boosting.
+    Refitting gradient boosting reproduced the Milestone 3 numbers exactly on all five
+    days. Because the forest's detection rests on traffic behavior rather than on a
+    host-identifying field, we present it as the more trustworthy detector.
+  </p>
+
   <h3>What this evaluation does not show</h3>
   <ul>
     <li>Not causal: features that predict an attack class describe this testbed's
@@ -1015,8 +1196,93 @@
     and <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/03-kmeans-clustering.ipynb">03</a>.
     The random forest comparison is in Luis's notebook
     <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/blob/main/notebooks/05-random-forest.ipynb">05-random-forest.ipynb</a>, which imports the same
-    <code>m3_common.py</code> functions.
+    <code>m3_common.py</code> functions. Milestone 4 adds <code>m4_anomaly.py</code>,
+    <code>m4_importance.py</code>, <code>m4_hybrid.py</code> and <code>m4_figures.py</code>, with
+    result tables in
+    <a href="https://github.com/Bockslunch/CSCI5502_Taylor_Echeverry_Garfield/tree/main/results/m4">results/m4/</a>.
   </p>
+</section>
+
+<!-- ======================= RESULTS & CONCLUSION (M4) ======================= -->
+<section id="results">
+  <h2>Results &amp; Conclusion</h2>
+
+  <p class="lede">
+    Detecting attacks a model has already seen is easy on this benchmark. Detecting new
+    ones is not: flow statistics catch about half, mostly the loud ones, and some of what
+    looks like success comes from dataset artifacts.
+  </p>
+
+  <h3>Answers to the research questions</h3>
+  <ol class="rq">
+    <li><span class="tag">RQ1 · Descriptive</span>
+      Features are heavily skewed, classes span five orders of magnitude (about 190,000
+      to 1), and data-quality issues are class-specific: duplicates in repetitive attacks,
+      the timeout in Heartbleed, zero-payload flows in web attacks, the −1 window code in
+      non-TCP benign traffic.</li>
+    <li><span class="tag">RQ2 · Comparative</span>
+      Once seen, attack types separate cleanly: macro-F1 0.917 across 11 classes, 0.893
+      without artifact-prone features, with 9 of 11 classes at F1 ≥ 0.93 in every
+      variant. Web brute force and XSS do not separate (63% of XSS predicted as brute
+      force).</li>
+    <li><span class="tag">RQ3 · Pattern</span>
+      The four exploratory groups hold only partly at the flow level (adjusted Rand index
+      at most 0.227). Clustering agrees with the supervised results: brute force and XSS
+      land together and Bot sits with benign traffic.</li>
+    <li><span class="tag">RQ4 · Predictive</span>
+      The same models that catch 99.9% of attacks they have seen catch about half of new
+      ones: 47.7% for gradient boosting and 44–55% for the random forest at the 1% budget.
+      Floods are caught (DoS Hulk 84%, DDoS 64% for the forest); password guessing, port
+      scans and botnets are not (0–2%). Most of the drop comes from the unseen attacks,
+      not from shifted benign traffic, except on Thursday. The random forest is the
+      detector we trust, because its detection survives removing the host-identifying
+      window field (52.0%) while gradient boosting's does not (19.0%). A benign-only
+      anomaly detector complements it on slow attacks but gives no net gain under a
+      shared budget.</li>
+    <li><span class="tag">RQ5 · Explanatory</span>
+      Defective flows inflate results where they are common: Thursday's recall falls from
+      91% to 45% on defect-free flows, because most "web attack" flows carried no payload.
+      Elsewhere, cleaning changes little beyond seed-to-seed noise.</li>
+  </ol>
+
+  <h3>Why it matters</h3>
+  <ul>
+    <li><strong>For defenders:</strong> a detector validated on a random split of a lab
+        dataset should be expected to catch roughly half of genuinely new attacks, mostly
+        the noisy ones, and its false-alarm rate will drift when normal traffic changes.
+        Quiet attacks such as password guessing and scans need features that look across
+        connections, not one flow at a time.</li>
+    <li><strong>For researchers:</strong> 99%+ scores on CICIDS2017 measure recognition of
+        known attacks, not detection of new ones. Evaluations should hold out attack types,
+        fix an alert budget, and check what the model relies on.</li>
+    <li><strong>For model choice:</strong> similar headline recall can hide very different
+        reliance on shortcuts; checking importance on unseen data is what separated our two
+        tree ensembles.</li>
+  </ul>
+
+  <h3>Limitations</h3>
+  <ul>
+    <li>One simulated network from 2017, with scripted benign users, fixed attacker hosts
+        and a fixed attack catalog; each held-out day holds only one or two attack
+        families, and day is confounded with attack type.</li>
+    <li>The flow-construction and labeling errors documented in <a href="#references">[2]</a>
+        are built into the published CSVs; web-attack results describe connection attempts
+        rather than executed attacks.</li>
+    <li>One alert budget; the random forest was not tuned and ran with four seeds; the
+        hybrid split one budget instead of giving the anomaly detector its own.</li>
+    <li>Heartbleed, SQL injection and Infiltration are too small for conclusions.</li>
+  </ul>
+
+  <h3>Future work</h3>
+  <ul>
+    <li>Repeat the evaluation on corrected CICIDS2017 flows and on other datasets, to test
+        whether the forest's behavior-based detection transfers across networks.</li>
+    <li>Tune the random forest with a leave-one-day-out search on a subsample.</li>
+    <li>Evaluate a range of alert budgets, and give the anomaly detector a budget of its
+        own.</li>
+    <li>Add features that aggregate across connections (for example per-host counts over
+        time windows), the most direct way to see scans and password guessing.</li>
+  </ul>
 </section>
 
 <!-- ===================== PLAIN-LANGUAGE GUIDE (M3) ======================== -->
@@ -1244,7 +1510,8 @@
         before it. "Histogram" means each feature's values are grouped into 255 bins
         first, which keeps 2 million rows in memory. <em>Early stopping</em> holds out
         10% of the training rows and stops adding trees once they stop improving the
-        score on those rows. This is our primary RQ4 model.</dd>
+        score on those rows. It was the primary RQ4 model at Milestone 3; its
+        cross-day detection turned out to lean on the window field (Result 10).</dd>
 
     <dt id="g-forest">Random forest and bagging</dt>
     <dd>Trains 100 trees independently, each on its own random sample of rows and
@@ -1252,7 +1519,9 @@
         their votes. <em>Bagging</em> (bootstrap aggregating) is this idea of
         training many models on random resamples and averaging them. Averaging
         cancels the random mistakes individual trees make, but not mistakes they all
-        share, which is why it did not fix Tuesday (Result 7).</dd>
+        share, which is why it did not fix Tuesday (Result 7). Its detection does not
+        depend on the window field, which is why the final project trusts it most
+        (Result 10).</dd>
 
     <dt id="g-ensemble">Ensemble</dt>
     <dd>A model made of many smaller models whose answers are combined. Gradient
@@ -1382,80 +1651,27 @@
 
   </div>
 
-  <h3>Responsibilities</h3>
-  <p>
-    Roles are initial assignments. They overlap in practice and may change as the
-    project develops.
-  </p>
+  <h3>Contributions</h3>
   <ul>
-    <li><strong>Coordination &amp; documentation</strong> — milestone tracking,
-        website content, repository documentation.</li>
-    <li><strong>Data &amp; reproducibility</strong> — acquisition, cleaning,
-        sampling, environment setup, repository hygiene.</li>
-    <li><strong>Analysis &amp; visualization</strong> — exploratory analysis,
-        comparative work, figures.</li>
+    <li><strong>Christopher Taylor</strong> — project coordination; cleaning replay,
+        data-quality statistics and exploratory figures (Milestone 2); the Milestone 3
+        modeling pipeline (leave-one-day-out evaluation, RQ2, RQ4 and RQ5 analyses, error
+        analysis, stability and known-attack ceiling); the Milestone 4 anomaly detectors,
+        hybrid, held-out feature importance and robustness checks; the website, reports
+        and repository documentation.</li>
+    <li><strong>Luis Echeverry</strong> — the data-cleaning notebook that turns the raw
+        files into the analysis-ready dataset (<code>01-data-cleaning.ipynb</code>); the
+        random-forest comparison (<code>05-random-forest.ipynb</code>) that became the
+        project's most trustworthy detector.</li>
+    <li><strong>Tyler Garfield</strong> — exploratory analysis of destination ports, the
+        120-second timeout and attack durations (<code>02-eda.ipynb</code>); k-means
+        clustering for RQ3 (<code>03-kmeans-clustering.ipynb</code>); the prediction
+        baselines (<code>04-prediction-baselines.ipynb</code>); review and framing of the
+        random-forest results on the website.</li>
   </ul>
-</section>
-
-<!-- ========================= D. PROPOSAL OVERVIEW ========================== -->
-<section id="proposal">
-  <h2>Proposal Overview</h2>
-
-  <dl class="overview">
-    <dt>Problem</dt>
-    <dd>
-      Network intrusion detection depends on distinguishing malicious from benign
-      traffic, and on separating attack types from one another, using flow records
-      rather than payload inspection. High-volume environments need detection that
-      is both fast and reliable.
-    </dd>
-
-    <dt>Goal</dt>
-    <dd>
-      Characterize the flow-level patterns that separate benign from malicious
-      traffic and attack categories from each other, while assessing how far those
-      patterns reflect attacker behavior rather than artifacts of how the dataset
-      was constructed.
-    </dd>
-
-    <dt>Data sources</dt>
-    <dd>
-      CICIDS2017 (Canadian Institute for Cybersecurity): eight CSV files of
-      labeled bidirectional flow records covering five days of simulated
-      enterprise traffic in July 2017 — 2,830,743 flows, 78 features per flow,
-      885 MB in total. Obtained from CIC after registration. CIC states no license
-      and grants no redistribution right, so the project repository carries code
-      and acquisition instructions rather than the data. See
-      <a href="#data">Data &amp; Exploration</a>.
-    </dd>
-
-    <dt>Current questions</dt>
-    <dd>See <a href="#questions">Research Questions</a>.</dd>
-
-    <dt>Major constraints</dt>
-    <dd>
-      Severe class imbalance, with
-      benign flows dominating and Monday benign-only; a fixed 2017 attack
-      catalog that cannot speak to novel or contemporary attack vectors; and
-      documented labeling and flow-construction errors that limit which per-class
-      findings can be trusted.
-    </dd>
-  </dl>
-
-  <h3>Change since Milestone 0</h3>
-  <p>
-    The approved proposal treated source and destination IP address and port as
-    core descriptive features, and did not account for published errata on this
-    dataset. Both have been revised.
-  </p>
-  <p>
-    Host identifiers and timestamps are now excluded from modelling, because
-    attacker hosts are fixed in this simulation and including them lets a model
-    memorize machine identity rather than attack behavior. Label reliability is
-    treated as an explicit analysis question rather than an assumption. The change
-    narrows the scope but makes the findings defensible — it converts a hidden
-    threat to validity into a stated one, and gives the project a question worth
-    answering rather than a benchmark score worth reporting.
+  <p style="font-size:.85rem;color:var(--text-muted)">
+    All three members prepared and delivered the final presentation. The full
+    contribution statement is submitted with the final report.
   </p>
 </section>
 
@@ -1519,8 +1735,58 @@
       F. Pedregosa <em>et al.</em>, "Scikit-learn: Machine Learning in Python,"
       <em>Journal of Machine Learning Research</em>, vol. 12, pp. 2825–2830, 2011.
       <p class="contrib">
-        The library used for every Milestone 3 model, split and metric.
+        The library used for every model, split and metric in Milestones 3 and 4.
       </p>
+    </li>
+    <li>
+      R. Sommer and V. Paxson, "Outside the Closed World: On Using Machine Learning for
+      Network Intrusion Detection," in <em>Proc. IEEE Symposium on Security and
+      Privacy</em>, 2010, pp. 305–316.
+      <a href="https://doi.org/10.1109/SP.2010.25">DOI</a>
+      <p class="contrib">Why learned detectors struggle outside the lab; motivates
+        testing on never-seen attacks.</p>
+    </li>
+    <li>
+      D. Arp, E. Quiring, F. Pendlebury, A. Warnecke, F. Pierazzi, C. Wressnegger,
+      L. Cavallaro, and K. Rieck, "Dos and Don'ts of Machine Learning in Computer
+      Security," in <em>Proc. 31st USENIX Security Symposium</em>, 2022.
+      <a href="https://www.usenix.org/conference/usenixsecurity22/presentation/arp">Link</a>
+      <p class="contrib">Common evaluation pitfalls (data snooping, spurious
+        correlations, lab-only evaluation) that our design avoids.</p>
+    </li>
+    <li>
+      G. Apruzzese, P. Laskov, and J. Schneider, "SoK: Pragmatic Assessment of Machine
+      Learning for Network Intrusion Detection," in <em>Proc. 8th IEEE European
+      Symposium on Security and Privacy (EuroS&amp;P)</em>, 2023, pp. 592–614.
+      <a href="https://doi.org/10.1109/EuroSP57164.2023.00042">DOI</a>
+      <p class="contrib">Argues for evaluations that estimate operational value; the
+        basis for our fixed alert budget.</p>
+    </li>
+    <li>
+      F. T. Liu, K. M. Ting, and Z.-H. Zhou, "Isolation Forest," in <em>Proc. 8th IEEE
+      Int. Conf. on Data Mining (ICDM)</em>, 2008, pp. 413–422.
+      <a href="https://doi.org/10.1109/ICDM.2008.17">DOI</a>
+      <p class="contrib">The benign-only anomaly detector in Result 9.</p>
+    </li>
+    <li>
+      A. Lakhina, M. Crovella, and C. Diot, "Diagnosing Network-Wide Traffic Anomalies,"
+      in <em>Proc. ACM SIGCOMM</em>, 2004, pp. 219–230.
+      <a href="https://doi.org/10.1145/1030194.1015492">DOI</a>
+      <p class="contrib">The PCA subspace method behind our reconstruction-error
+        detector.</p>
+    </li>
+    <li>
+      C. Strobl, A.-L. Boulesteix, T. Kneib, T. Augustin, and A. Zeileis, "Conditional
+      Variable Importance for Random Forests," <em>BMC Bioinformatics</em>, vol. 9,
+      p. 307, 2008.
+      <a href="https://doi.org/10.1186/1471-2105-9-307">DOI</a>
+      <p class="contrib">Shows that correlated features distort permutation importance;
+        the reason we shuffle near-duplicates together.</p>
+    </li>
+    <li>
+      L. Breiman, "Random Forests," <em>Machine Learning</em>, vol. 45, no. 1,
+      pp. 5–32, 2001.
+      <p class="contrib">The random forest and permutation importance.</p>
     </li>
   </ol>
 </section>
